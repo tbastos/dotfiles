@@ -1,0 +1,130 @@
+export EDITOR='mvim -f --remote-silent'
+export VISUAL=$EDITOR
+export CLICOLOR=1
+
+alias e=$EDITOR
+alias v=$VISUAL
+
+cdpath=(
+  $HOME/Projects
+  $HOME
+)
+
+source ~/.dotfiles/zsh/z/z.sh
+
+# ls, the common ones I use a lot shortened for rapid fire usage
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+alias ldot='ls -ld .*'
+
+alias zshrc='vim ~/.zshrc' # Quick access to the ~/.zshrc file
+
+alias grep='grep --color'
+alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
+
+alias t='tail -f'
+
+# because typing 'cd' is A LOT of work!!
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+
+# Command line head / tail shortcuts
+alias -g H='| head'
+alias -g T='| tail'
+alias -g G='| grep'
+alias -g L="| less"
+alias -g M="| most"
+
+alias fd='find . -type d -name'
+alias ff='find . -type f -name'
+
+alias h='history'
+alias hgrep="fc -El 0 | grep"
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Automatically list directory contents on `cd`.
+auto-ls () { ls; }
+chpwd_functions=( auto-ls $chpwd_functions )
+
+#######################################################################
+# Antigen Bundles
+#######################################################################
+
+ADOTDIR=~/.dotfiles/zsh/antigen
+source $ADOTDIR/antigen.zsh
+
+# Theme
+antigen bundle sindresorhus/pure
+
+# Basic Bundles
+antigen bundles <<EOBUNDLES
+  zsh-users/zsh-completions
+  # These must be last, in order:
+  zsh-users/zsh-syntax-highlighting
+  zsh-users/zsh-history-substring-search
+EOBUNDLES
+
+antigen apply
+
+# Setup highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+#######################################################################
+# Git aliases
+#######################################################################
+
+hub_path=$(which hub)
+if (( $+commands[hub] )); then
+  alias git=$hub_path
+fi
+
+# The rest of my fun git aliases
+alias gl='git pull --prune'
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+alias gp='git push origin HEAD'
+alias gd='git diff'
+alias gc='git commit'
+alias gca='git commit -a'
+alias gco='git checkout'
+alias gcb='git copy-branch-name'
+alias gb='git branch'
+alias gs='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
+
+#######################################################################
+# Vi mode
+#######################################################################
+
+bindkey -v
+
+bindkey '^P' up-history
+bindkey '^N' down-history
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^w' backward-kill-word
+bindkey '^r' history-incremental-search-backward
+bindkey -a u undo
+bindkey -a '^R' redo
+
+precmd() {
+  RPROMPT=""
+}
+zle-keymap-select() {
+  RPROMPT=""
+  [[ $KEYMAP = vicmd ]] && RPROMPT="%F{blue}[NORMAL]%f"
+  () { return $__prompt_status }
+  zle reset-prompt
+}
+zle-line-init() {
+  typeset -g __prompt_status="$?"
+}
+zle -N zle-keymap-select
+zle -N zle-line-init
+
+export KEYTIMEOUT=1
+

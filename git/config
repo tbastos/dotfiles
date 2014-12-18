@@ -1,0 +1,16 @@
+[user]
+	name = Thiago Bastos
+	email = tbastos@users.noreply.github.com
+[branch]
+	autosetuprebase = always
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+[core]
+	autocrlf = input
+	excludesfile = ~/.dotfiles/git/excludes
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
