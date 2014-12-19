@@ -1,37 +1,27 @@
-export EDITOR='mvim -f --remote-silent'
-export VISUAL=$EDITOR
-export CLICOLOR=1
+DOTDIR=~/.dotfiles
+ZDOTDIR=$DOTDIR/zsh
 
-alias e=$EDITOR
-alias v=$VISUAL
+export PATH=$DOTDIR/bin:$PATH:$DOTDIR/bin/base16
 
-cdpath=(
-  $HOME/Projects
-  $HOME
-)
+# Editor settings
+export EDITOR='vim -f'
+alias e='mvim --remote-silent'
 
-source ~/.dotfiles/zsh/z/z.sh
+# Quick access to vimrc, zshrc and karabiner's private.xml
+alias vimrc='e ~/.vimrc'
+alias zshrc='e ~/.zshrc'
+alias karxml='e $DOTDIR/osx/karabiner.xml'
 
-# ls, the common ones I use a lot shortened for rapid fire usage
-alias l='ls -lFh'     #size,show type,human readable
-alias la='ls -lAFh'   #long list,show almost all,show type,human readable
-alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
-alias ldot='ls -ld .*'
-
-alias zshrc='vim ~/.zshrc' # Quick access to the ~/.zshrc file
+#######################################################################
+# Aliases
+#######################################################################
 
 alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
 
 alias t='tail -f'
 
-# because typing 'cd' is A LOT of work!!
-alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
-
-# Command line head / tail shortcuts
+# command line head / tail shortcuts
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
@@ -48,35 +38,36 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-# Automatically list directory contents on `cd`.
+#######################################################################
+# Filesystem Navigation
+#######################################################################
+
+cdpath=(
+  $HOME/Projects
+  $HOME
+)
+
+# listing
+alias l='ls -lFh'     #size,show type,human readable
+alias la='ls -lAFh'   #long list,show almost all,show type,human readable
+alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
+alias ldot='ls -ld .*'
+
+# ascending
+alias ..='cd ../'
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+
+# Z directory jumping command
+source $ZDOTDIR/modules/z/z.sh
+
+# automatically list directory contents on 'cd'
 auto-ls () { ls; }
 chpwd_functions=( auto-ls $chpwd_functions )
 
 #######################################################################
-# Antigen Bundles
-#######################################################################
-
-ADOTDIR=~/.dotfiles/zsh/antigen
-source $ADOTDIR/antigen.zsh
-
-# Theme
-antigen bundle sindresorhus/pure
-
-# Basic Bundles
-antigen bundles <<EOBUNDLES
-  zsh-users/zsh-completions
-  # These must be last, in order:
-  zsh-users/zsh-syntax-highlighting
-  zsh-users/zsh-history-substring-search
-EOBUNDLES
-
-antigen apply
-
-# Setup highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-#######################################################################
-# Git aliases
+# Git
 #######################################################################
 
 hub_path=$(which hub)
@@ -84,47 +75,76 @@ if (( $+commands[hub] )); then
   alias git=$hub_path
 fi
 
-# The rest of my fun git aliases
-alias gl='git pull --prune'
-alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative"
+alias gu='git pull --prune'
+alias gl='git log --oneline --decorate'
 alias gp='git push origin HEAD'
-alias gd='git diff'
+alias gd='git diff --word-diff'
 alias gc='git commit'
 alias gca='git commit -a'
 alias gco='git checkout'
 alias gcb='git copy-branch-name'
 alias gb='git branch'
-alias gs='git status -sb' # upgrade your git if -sb breaks for you. it's fun.
+alias gs='git status -sb'
 
 #######################################################################
-# Vi mode
+# Modules
 #######################################################################
 
-bindkey -v
+# Completions
+fpath=($ZDOTDIR/functions $ZDOTDIR/modules/zsh-completions/src $fpath)
+autoload -U compinit && compinit
 
-bindkey '^P' up-history
-bindkey '^N' down-history
-bindkey '^?' backward-delete-char
-bindkey '^h' backward-delete-char
-bindkey '^w' backward-kill-word
-bindkey '^r' history-incremental-search-backward
-bindkey -a u undo
-bindkey -a '^R' redo
+# Highlighting
+source $ZDOTDIR/modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
-precmd() {
-  RPROMPT=""
-}
-zle-keymap-select() {
-  RPROMPT=""
-  [[ $KEYMAP = vicmd ]] && RPROMPT="%F{blue}[NORMAL]%f"
-  () { return $__prompt_status }
-  zle reset-prompt
-}
-zle-line-init() {
-  typeset -g __prompt_status="$?"
-}
-zle -N zle-keymap-select
-zle -N zle-line-init
+# History Substring Search (must come after highlighting)
+source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-export KEYTIMEOUT=1
+#######################################################################
+# Zaw widgets
+#######################################################################
+
+source $ZDOTDIR/modules/zaw/zaw.zsh
+
+# better incremental history search
+bindkey '^R' zaw-history
+bindkey -M filterselect '^R' down-line-or-history
+bindkey -M filterselect '^E' accept-search
+bindkey -M filterselect '^P' up-line-or-history
+bindkey -M filterselect '^N' down-line-or-history
+bindkey -M filterselect '^[' send-break
+
+zstyle ':filter-select:highlight' matched fg=green
+zstyle ':filter-select' max-lines 5
+zstyle ':filter-select' case-insensitive yes # enable case-insensitive
+zstyle ':filter-select' extended-search yes # see below
+
+#######################################################################
+# Key Bindings (like vim, but always in insert mode)
+#######################################################################
+
+bindkey '^W' backward-kill-word
+bindkey '^H' backward-delete-char
+bindkey '^U' backward-kill-line
+
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+
+# add some PC key bindings just in case
+bindkey '^Z' undo
+bindkey '^Y' redo
+bindkey '^[[H' beginning-of-line       # Home
+bindkey '^[[F' end-of-line             # End
+bindkey '^[[3~' delete-char            # Del
+bindkey '^[[5~' vi-backward-blank-word # Page Up
+bindkey '^[[6~' vi-forward-blank-word  # Page Down
+
+#######################################################################
+# Theme
+#######################################################################
+
+source base16-eighties.dark.sh
+source $ZDOTDIR/prompt.zsh
+export CLICOLOR=1 # enable colors on OSX
 

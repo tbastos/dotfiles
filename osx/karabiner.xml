@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<root>
+  <vkchangeinputsourcedef>
+    <name>KeyCode::VK_CHANGE_INPUTSOURCE_US_INTERNATIONAL</name>
+    <inputsourceid_equal>com.apple.keylayout.USInternational-PC</inputsourceid_equal>
+  </vkchangeinputsourcedef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Web</name>
+    <url type="file">/Applications/Google Chrome.app</url>
+  </vkopenurldef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Editor</name>
+    <url type="file">/Applications/MacVim.app</url>
+  </vkopenurldef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Spotify</name>
+    <url type="file">/Applications/Spotify.app</url>
+  </vkopenurldef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Commandline</name>
+    <url type="file">/Applications/iTerm.app</url>
+  </vkopenurldef>
+
+  <item>
+    <name>Use Escape as Fn</name>
+    <appendix>A tap sends Escape.</appendix>
+    <identifier>private.escape_to_fn</identifier>
+    <autogen>__KeyOverlaidModifier__ KeyCode::ESCAPE, KeyCode::FN, KeyCode::ESCAPE</autogen>
+  </item>
+
+  <item>
+    <name>Use CapsLock as the HYPER modifier</name>
+    <appendix>A tap sends Escape.</appendix>
+    <appendix>Hyper+W opens Chrome (Web browser)</appendix>
+    <appendix>Hyper+E opens Vim (Editor)</appendix>
+    <appendix>Hyper+S opens Spotify</appendix>
+    <appendix>Hyper+D opens Dictionary</appendix>
+    <appendix>Hyper+F opens Finder</appendix>
+    <appendix>Hyper+C opens iTerm (to enter Commands)</appendix>
+    <identifier>private.hyper_capslock</identifier>
+    <modifierdef>HYPER</modifierdef>
+    <autogen>__KeyOverlaidModifier__ KeyCode::F19, KeyCode::VK_MODIFIER_HYPER, KeyCode::ESCAPE</autogen>
+    <autogen>__KeyToKey__ KeyCode::W, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Web</autogen>
+    <autogen>__KeyToKey__ KeyCode::E, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Editor</autogen>
+    <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Spotify</autogen>
+    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Dictionary</autogen>
+    <autogen>__KeyToKey__ KeyCode::F, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Finder</autogen>
+    <autogen>__KeyToKey__ KeyCode::C, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Commandline</autogen>
+  </item>
+
+  <item>
+    <name>Use right Option as SUPER modifier</name>
+    <appendix>Super+' switches to US International Keyboard</appendix>
+    <appendix>Super+/ switches to US Keyboard</appendix>
+    <identifier>private.super_option_r</identifier>
+    <modifierdef>SUPER</modifierdef>
+    <autogen>__KeyToKey__ KeyCode::OPTION_R, KeyCode::VK_MODIFIER_SUPER</autogen>
+    <autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::SUPER, KeyCode::VK_CHANGE_INPUTSOURCE_US_INTERNATIONAL</autogen>
+    <autogen>__KeyToKey__ KeyCode::SLASH, ModifierFlag::SUPER, KeyCode::VK_CHANGE_INPUTSOURCE_US</autogen>
+  </item>
+
+</root>
