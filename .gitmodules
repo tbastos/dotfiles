@@ -16,3 +16,6 @@
 [submodule "zsh/modules/zsh-history-substring-search"]
 	path = zsh/modules/zsh-history-substring-search
 	url = https://github.com/zsh-users/zsh-history-substring-search
+[submodule "vim/bundle/neobundle.vim"]
+	path = vim/bundle/neobundle.vim
+	url = https://github.com/Shougo/neobundle.vim

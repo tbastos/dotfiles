@@ -1,0 +1,351 @@
+" .vimrc
+" Author: Thiago Bastos <tbastos@tbastos.com>
+" Source: https://github.com/tbastos/dotfiles/vim/vimrc
+
+"-----------------------------------------------------------------------
+" NeoBundle
+"-----------------------------------------------------------------------
+
+if has('vim_starting')
+  if &compatible
+    set nocompatible
+  endif
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+call neobundle#begin(expand('~/.vim/bundle'))
+
+" Let NeoBundle manage NeoBundle (required)
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" Use vimproc for async command execution
+NeoBundle 'Shougo/vimproc.vim', {
+\ 'build' : {
+\     'windows' : 'tools\\update-dll-mingw',
+\     'cygwin' : 'make -f make_cygwin.mak',
+\     'mac' : 'make -f make_mac.mak',
+\     'linux' : 'make',
+\     'unix' : 'gmake',
+\    },
+\ }
+
+" Bundles here:
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'bling/vim-airline'
+NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'junegunn/goyo.vim' " distraction free editing
+NeoBundle 'junegunn/limelight.vim' " focused writing
+NeoBundle 'junegunn/vim-easy-align'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'mileszs/ack.vim'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'tpope/vim-commentary.git'
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-unimpaired'
+
+" Required:
+call neobundle#end()
+filetype plugin indent on
+NeoBundleCheck
+
+"-----------------------------------------------------------------------
+" Basic Settings
+"-----------------------------------------------------------------------
+
+syntax enable
+
+set autoread " auto reload changed files (if not changed in vim)
+set complete-=i " autocomplete should not scan included files (can be slow)
+set display+=lastline " show part of the last line even if it doesn't fit
+set encoding=utf-8
+set formatoptions+=j " delete comment char when joining commented lines
+set hidden  " buffer becomes hidden when it is abandoned
+set history=1000
+set laststatus=2
+set lazyredraw " don't redraw while executing macros (for speed)
+set modelines=0
+set nrformats-=octal " no octal input
+set number
+set ruler
+set scrolloff=3 " vertical context around the cursor
+set shortmess+=I " disable welcome screen
+set showcmd " show partial commands at far BR of the screen
+set showmatch " highlight matching brackets
+set sidescrolloff=5 " horizontal context around the cursor
+set ttimeout
+set ttimeoutlen=100
+set ttyfast " assume a fast terminal
+set updatetime=1000 " msecs idle before updating swap file and gitgutter
+set visualbell
+set wildmenu " autocomplete :commands
+
+""
+"" Space and Formatting
+""
+set backspace=indent,eol,start " backspace through everything in insert mode
+set list " show invisible chars
+set listchars=tab:▸\ ,trail:.,extends:>,precedes:<,nbsp:⌴
+"set listchars+=eol:¬
+set nowrap " don't wrap lines by default
+set autoindent " copy indentation of the previous line
+set expandtab " use spaces, not tabs
+set smartindent " indent based on syntax
+set shiftwidth=2 " an autoindent is two spaces
+set softtabstop=2 " a tab adds two spaces while editing
+set tabstop=8 " a real tab is displayed as eight spaces
+set textwidth=80 " opa
+set formatoptions=cqrn1j
+let &colorcolumn=join(range(81,120),",")
+
+""
+"" Searching
+""
+set hlsearch   " highlight matches
+set incsearch  " incremental searching
+set ignorecase " searches are case insensitive...
+set smartcase  " ... unless they contain at least one capital letter
+
+""
+"" Wild
+""
+" Disable output and VCS files
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+" Disable archive files
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+" Disable temp and backup files
+set wildignore+=*.swp,*~,._*
+
+""
+"" Undo and Swap Files
+""
+set undodir=~/.vim/.tmp/undo//     " undo files
+set directory=~/.vim/.tmp/swap//   " swap files
+if !isdirectory(expand(&undodir))
+  call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&directory))
+  call mkdir(expand(&directory), "p")
+endif
+
+"-----------------------------------------------------------------------
+" Key Mappings
+"-----------------------------------------------------------------------
+
+" Leader
+let mapleader = ","
+let maplocalleader = "\\"
+
+" FN keys
+nnoremap <F3> :TagbarToggle<CR>
+nnoremap <F6> :set paste!<CR>
+
+" Move based on display lines, not buffer lines
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
+
+" Change focus between windows
+map <C-H> <C-W>h
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+
+" Adjust viewports to the same size
+map <Leader>= <C-w>=
+
+" Format the entire file
+nnoremap <leader>fef :normal! gg=G``<CR>
+
+" Upper/lower word
+nmap <leader>u mQviwU`Q
+nmap <leader>l mQviwu`Q
+
+" Upper/lower first char of word
+nmap <leader>U mQgewvU`Q
+nmap <leader>L mQgewvu`Q
+
+" Change the window-local working dir to the current buffer's dir
+nmap <silent> <leader>cd :lcd %:h<CR>
+
+" Create the directory containing the buffer
+nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
+
+" Edit file (%% expands the current file's directory)
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
+map <leader>ew :e %%
+map <leader>es :sp %%
+map <leader>ev :vsp %%
+map <leader>et :tabe %%
+
+" Swap two words
+nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
+
+" Toggle text wrapping
+nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+
+" Visually select the text that was last edited/pasted
+nmap gV `[v`]
+
+" Pressing * or # in visual mode searches the selection
+vnoremap <silent> * :call VisualSelection('f', '')<CR>
+vnoremap <silent> # :call VisualSelection('b', '')<CR>
+
+" Explore the filesystem with Command-E
+map <D-e> :Explore<CR>
+
+" CtrlP mappings
+map <D-r> :CtrlPMRU<CR>
+map <D-p> :CtrlPLastMode<CR>
+map <D-t> :CtrlPBufTag<CR>
+map <D-f> :CtrlPMixed<CR>
+
+" join inverted: move current line to the end of the next line
+nmap K ]ekJ
+
+""
+"" Formatting
+""
+
+" Reformat paragraph or selection
+nnoremap Q gqip
+vnoremap Q gq
+
+" Reformat the entire file
+nnoremap <leader>fef :normal! gg=G``<CR>
+
+" Start EasyAlign in visual mode (e.g. vip<Enter>)
+vmap <Enter> <Plug>(EasyAlign)
+
+" Start EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
+if has("gui_macvim") && has("gui_running")
+  " Command-[] changes indentation, keeps original selection in visual mode
+  vmap <D-]> >gv
+  vmap <D-[> <gv
+  nmap <D-]> >>
+  nmap <D-[> <<
+  omap <D-]> >>
+  omap <D-[> <<
+  imap <D-]> <Esc>>>i
+  imap <D-[> <Esc><<i
+
+  " Bubble single lines
+  nmap <D-k> [e
+  nmap <D-j> ]e
+
+  " Bubble multiple lines
+  vmap <D-k> [egv
+  vmap <D-j> ]egv
+endif
+
+"-----------------------------------------------------------------------
+" Theme
+"-----------------------------------------------------------------------
+
+" Font
+let g:font = 'Sauce Code Powerline Light'
+let g:font_size = 12
+function! SetFontSize(size)
+  let &guifont = g:font . ':h' . a:size
+endfunction
+call SetFontSize(g:font_size)
+
+" Color Scheme
+set background=dark
+let base16colorspace=256
+let g:base16_shell_path="~/.dotfiles/bin/base16/"
+colorscheme base16-eighties
+
+" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts=1
+
+" GitGutter
+let g:gitgutter_sign_column_always = 1
+
+""
+"" GUI Options
+""
+if has("gui_running")
+  set guioptions= " minimalist gui
+  autocmd VimResized * wincmd = " resize splits when resizing GUI window
+  if has("gui_macvim")
+    let macvim_skip_colorscheme = 1
+    let macvim_skip_cmd_opt_movement = 1
+    " Free some interesting key bindings
+    macmenu File.Print key=<nop>
+    macmenu Edit.Find.Find\.\.\. key=<nop>
+    " Go back to iTerm when the last window closes
+    autocmd VimLeave * :!open -a iTerm
+  endif
+endif
+
+""
+"" Goyo distraction-free editing
+""
+nnoremap <silent> <leader>z :Goyo<cr>
+
+function! s:goyo_enter()
+  Limelight
+  if has('gui_running')
+    set fullscreen
+    "set background=light
+    set linespace=3
+    let &guifont = g:font . ':h15'
+  elseif exists('$TMUX')
+    silent !tmux set status off
+  endif
+endfunction
+
+function! s:goyo_leave()
+  Limelight!
+  if has('gui_running')
+    set nofullscreen
+    "set background=dark
+    set linespace=0
+    call SetFontSize(g:font_size)
+  elseif exists('$TMUX')
+    silent !tmux set status on
+  endif
+endfunction
+
+autocmd! User GoyoEnter
+autocmd! User GoyoLeave
+autocmd  User GoyoEnter nested call <SID>goyo_enter()
+autocmd  User GoyoLeave nested call <SID>goyo_leave()
+
+"-----------------------------------------------------------------------
+" Syntastic
+"-----------------------------------------------------------------------
+
+let g:syntastic_check_on_open = 1
+let g:syntastic_auto_loc_list=2
+"let g:syntastic_aggregate_errors = 1
+
+let g:syntastic_lua_checkers = ["luac", "luacheck"]
+let g:syntastic_lua_luacheck_args = "--no-unused-args"
+
+"-----------------------------------------------------------------------
+" Filetype Options
+"-----------------------------------------------------------------------
+
+" Remember last location in file, but not for commit messages.
+au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 &&
+  \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+" All .md files are Markdown
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+
+" Vim
+augroup ft_vim
+  au!
+  au FileType vim setlocal foldmethod=marker
+  au FileType help setlocal textwidth=78
+  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+

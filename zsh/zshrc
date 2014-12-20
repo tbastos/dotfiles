@@ -6,15 +6,16 @@ export PATH=$DOTDIR/bin:$PATH:$DOTDIR/bin/base16
 # Editor settings
 export EDITOR='vim -f'
 alias e='mvim --remote-silent'
+bindkey -e
 
 # Quick access to vimrc, zshrc and karabiner's private.xml
 alias vimrc='e ~/.vimrc'
 alias zshrc='e ~/.zshrc'
 alias karxml='e $DOTDIR/osx/karabiner.xml'
 
-#######################################################################
+########################################################################
 # Aliases
-#######################################################################
+########################################################################
 
 alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
@@ -38,12 +39,13 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-#######################################################################
+########################################################################
 # Filesystem Navigation
-#######################################################################
+########################################################################
 
 cdpath=(
   $HOME/Projects
+  $HOME/Dropbox
   $HOME
 )
 
@@ -60,15 +62,16 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 
 # Z directory jumping command
+_Z_DATA=$ZDOTDIR/.z
 source $ZDOTDIR/modules/z/z.sh
 
 # automatically list directory contents on 'cd'
 auto-ls () { ls; }
 chpwd_functions=( auto-ls $chpwd_functions )
 
-#######################################################################
+########################################################################
 # Git
-#######################################################################
+########################################################################
 
 hub_path=$(which hub)
 if (( $+commands[hub] )); then
@@ -86,9 +89,9 @@ alias gcb='git copy-branch-name'
 alias gb='git branch'
 alias gs='git status -sb'
 
-#######################################################################
+########################################################################
 # Modules
-#######################################################################
+########################################################################
 
 # Completions
 fpath=($ZDOTDIR/functions $ZDOTDIR/modules/zsh-completions/src $fpath)
@@ -101,9 +104,9 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # History Substring Search (must come after highlighting)
 source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-search.zsh
 
-#######################################################################
+########################################################################
 # Zaw widgets
-#######################################################################
+########################################################################
 
 source $ZDOTDIR/modules/zaw/zaw.zsh
 
@@ -120,9 +123,9 @@ zstyle ':filter-select' max-lines 5
 zstyle ':filter-select' case-insensitive yes # enable case-insensitive
 zstyle ':filter-select' extended-search yes # see below
 
-#######################################################################
+########################################################################
 # Key Bindings (like vim, but always in insert mode)
-#######################################################################
+########################################################################
 
 bindkey '^W' backward-kill-word
 bindkey '^H' backward-delete-char
@@ -131,18 +134,18 @@ bindkey '^U' backward-kill-line
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
 
-# add some PC key bindings just in case
-bindkey '^Z' undo
-bindkey '^Y' redo
+# custom bindings for things not available in vim's insert mode
+bindkey '^_' undo # C-/ like in emacs
+bindkey '^Y' redo # C-Y like in PCs
 bindkey '^[[H' beginning-of-line       # Home
 bindkey '^[[F' end-of-line             # End
 bindkey '^[[3~' delete-char            # Del
 bindkey '^[[5~' vi-backward-blank-word # Page Up
 bindkey '^[[6~' vi-forward-blank-word  # Page Down
 
-#######################################################################
+########################################################################
 # Theme
-#######################################################################
+########################################################################
 
 source base16-eighties.dark.sh
 source $ZDOTDIR/prompt.zsh
