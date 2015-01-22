@@ -1,10 +1,10 @@
 " .vimrc
 " Author: Thiago Bastos <tbastos@tbastos.com>
-" Source: https://github.com/tbastos/dotfiles/vim/vimrc
+" Source: https://github.com/tbastos/dotfiles/blob/master/vim/vimrc
 
-"-----------------------------------------------------------------------
-" NeoBundle
-"-----------------------------------------------------------------------
+" Bundles ----------------------------------------------------------{{{1
+
+" NeoBundle Begin {{{2
 
 if has('vim_starting')
   if &compatible
@@ -28,39 +28,127 @@ NeoBundle 'Shougo/vimproc.vim', {
 \     'unix' : 'gmake',
 \    },
 \ }
+"}}}
 
-" Bundles here:
-NeoBundle 'airblade/vim-gitgutter'
+" General
+NeoBundle 'mhinz/vim-startify'
+NeoBundle 'tpope/vim-repeat'
+NeoBundle 'tpope/vim-abolish' " :Subvert
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'bufkill.vim'
+NeoBundle 'matchit.zip'
+
+" UI
 NeoBundle 'bling/vim-airline'
-NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'chriskempson/base16-vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'bronson/vim-trailing-whitespace'
+NeoBundle 'yonchu/accelerated-smooth-scroll'
 NeoBundle 'junegunn/goyo.vim' " distraction free editing
 NeoBundle 'junegunn/limelight.vim' " focused writing
-NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'mileszs/ack.vim'
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'terryma/vim-multiple-cursors'
-NeoBundle 'tpope/vim-commentary.git'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-unimpaired'
 
-" Required:
+" Search
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/unite-help'
+NeoBundle 'Shougo/unite-outline'
+NeoBundle 'Shougo/neomru.vim'
+NeoBundle 'rking/ag.vim'
+
+" Browsing
+NeoBundle 'Shougo/vimfiler.vim'
+
+" Git
+NeoBundle 'tpope/vim-fugitive'
+
+" Undo Tree
+NeoBundle 'mbbill/undotree'
+
+" Tags
+NeoBundle 'majutsushi/tagbar'
+
+" Motions
+NeoBundle 'justinmk/vim-sneak'
+"NeoBundle 'Lokaltog/vim-easymotion'
+
+" Text Objects
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-entire' " ae, ie
+NeoBundle 'kana/vim-textobj-function' " af, if
+NeoBundle 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
+NeoBundle 'kana/vim-textobj-line' " al, il
+NeoBundle 'kana/vim-textobj-indent' " ai, ii, aI, iI
+NeoBundle 'lucapette/vim-textobj-underscore' " a_, i_
+NeoBundle 'glts/vim-textobj-comment' " ac, ic, aC, iC
+NeoBundle 'nelstrom/vim-textobj-rubyblock' " ar, ir
+NeoBundle 'thinca/vim-textobj-function-javascript'
+
+" Editing and Formatting
+NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-commentary.git'
+NeoBundle 'jiangmiao/auto-pairs'
+NeoBundle 'godlygeek/tabular'
+NeoBundle 'Chiel92/vim-autoformat'
+NeoBundle 'junegunn/vim-easy-align'
+NeoBundle 'terryma/vim-expand-region'
+NeoBundle 'terryma/vim-multiple-cursors'
+
+" Code Completion
+NeoBundle 'Shougo/neocomplete.vim'
+
+" Snippets
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'honza/vim-snippets'
+
+" Code Analysis
+NeoBundle 'scrooloose/syntastic'
+
+" Shell
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tyru/open-browser.vim'
+"NeoBundle 'mattn/webapi-vim'
+
+" C/C++
+NeoBundle 'octol/vim-cpp-enhanced-highlight'
+NeoBundle 'osyo-manga/vim-marching' " async clang code completion
+NeoBundle 'kana/vim-operator-user' " required by clang-format
+NeoBundle 'rhysd/vim-clang-format'
+
+" Web
+NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
+NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
+NeoBundleLazy 'othree/html5.vim', {'autoload':{'filetypes':['html']}}
+NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']}}
+NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
+NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
+NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
+
+" Rails
+NeoBundle 'tpope/vim-rails'
+NeoBundle 'tpope/vim-bundler'
+
+" Markdown
+NeoBundleLazy 'nelstrom/vim-markdown-folding', {'autoload':{'filetypes':['markdown']}}
+
+" NeoBundle End {{{2
 call neobundle#end()
 filetype plugin indent on
 NeoBundleCheck
+"}}}
 
-"-----------------------------------------------------------------------
-" Basic Settings
-"-----------------------------------------------------------------------
+" Base Options -----------------------------------------------------{{{1
 
 syntax enable
 
-set autoread " auto reload changed files (if not changed in vim)
-set complete-=i " autocomplete should not scan included files (can be slow)
-set display+=lastline " show part of the last line even if it doesn't fit
+set autoread " auto reload changed files (unless vim contains changes)
+set complete-=i " autocomplete should not scan included files (slow)
+set completeopt=longest,menuone,preview
+set display+=lastline " show part of the last line when it doesn't fit
 set encoding=utf-8
+set foldlevelstart=99
 set formatoptions+=j " delete comment char when joining commented lines
 set hidden  " buffer becomes hidden when it is abandoned
 set history=1000
@@ -70,77 +158,157 @@ set modelines=0
 set nrformats-=octal " no octal input
 set number
 set ruler
-set scrolloff=3 " vertical context around the cursor
 set shortmess+=I " disable welcome screen
 set showcmd " show partial commands at far BR of the screen
+set showfulltag
 set showmatch " highlight matching brackets
-set sidescrolloff=5 " horizontal context around the cursor
+set splitbelow
+set splitright
+set synmaxcol=800 " don't try to highlight lines longer than 800 chars
+set notimeout
 set ttimeout
-set ttimeoutlen=100
+set ttimeoutlen=10
 set ttyfast " assume a fast terminal
-set updatetime=1000 " msecs idle before updating swap file and gitgutter
+set updatetime=1000 " msecs idle to update swap file and send CursorHold event
 set visualbell
-set wildmenu " autocomplete :commands
 
-""
-"" Space and Formatting
-""
-set backspace=indent,eol,start " backspace through everything in insert mode
-set list " show invisible chars
-set listchars=tab:▸\ ,trail:.,extends:>,precedes:<,nbsp:⌴
-"set listchars+=eol:¬
-set nowrap " don't wrap lines by default
+" Space and Formatting ---------------{{{2
+
 set autoindent " copy indentation of the previous line
+let &colorcolumn=join(range(81,120),",")
+set backspace=indent,eol,start " backspace through everything in insert mode
 set expandtab " use spaces, not tabs
-set smartindent " indent based on syntax
+set formatoptions=cqrn1j
+set linebreak
+set list " show invisible chars
+set listchars=tab:▸\ ,trail:.,extends:❯,precedes:❮,nbsp:⌴
+"set listchars+=eol:¬
+set shiftround " round indent to multiple of shiftwidth
 set shiftwidth=2 " an autoindent is two spaces
+let &showbreak='↪ '
+set smartindent " indent based on syntax
 set softtabstop=2 " a tab adds two spaces while editing
 set tabstop=8 " a real tab is displayed as eight spaces
-set textwidth=80 " opa
-set formatoptions=cqrn1j
-let &colorcolumn=join(range(81,120),",")
+set textwidth=80
+set wrap " wrap lines by default
 
-""
-"" Searching
-""
-set hlsearch   " highlight matches
-set incsearch  " incremental searching
-set ignorecase " searches are case insensitive...
-set smartcase  " ... unless they contain at least one capital letter
+" Cache Dir --------------------------{{{2
 
-""
-"" Wild
-""
-" Disable output and VCS files
-set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
-" Disable archive files
-set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
-" Disable temp and backup files
-set wildignore+=*.swp,*~,._*
+function! s:get_cache_dir(suffix)
+  return '~/.vim/.cache/' . a:suffix
+endfunction
 
-""
-"" Undo and Swap Files
-""
-set undodir=~/.vim/.tmp/undo//     " undo files
-set directory=~/.vim/.tmp/swap//   " swap files
-if !isdirectory(expand(&undodir))
-  call mkdir(expand(&undodir), "p")
-endif
-if !isdirectory(expand(&directory))
-  call mkdir(expand(&directory), "p")
-endif
+function! EnsureExists(path)
+  if !isdirectory(expand(a:path))
+    call mkdir(expand(a:path))
+  endif
+endfunction
 
-"-----------------------------------------------------------------------
-" Key Mappings
-"-----------------------------------------------------------------------
+" Undo and Swap Files ----------------{{{2
+
+set undofile
+set undoreload=10000
+set undodir=~/.vim/.cache/undo//
+set directory=~/.vim/.cache/swap//
+
+call EnsureExists(&undodir)
+call EnsureExists(&directory)
+
+" Wild -------------------------------{{{2
+
+set wildmenu " autocomplete commands
+set wildmode=list:longest,full " list all and complete till longest common string
+set wildignorecase
+
+set wildignore+=*.git " VCS files
+set wildignore+=*.o,*.out,*.obj " intermediate files
+set wildignore+=*.jpg,*.png,*.gif " binary images
+set wildignore+=*.zip,*.gz,*.bz2,*.xz " archive files
+set wildignore+=*.swp,*~,._* " temp and backup files
+set wildignore+=*.DS_Store " OSX files
+
+" Convenience Mappings ---------------------------------------------{{{1
 
 " Leader
 let mapleader = ","
 let maplocalleader = "\\"
 
+" Toggle spell checking
+map <LocalLeader>s :setlocal spell!<CR>
+
+" U to redo (makes more sense than c-r)
+nnoremap U :redo<cr>
+
 " FN keys
-nnoremap <F3> :TagbarToggle<CR>
-nnoremap <F6> :set paste!<CR>
+nnoremap <F1> :Startify<CR>
+nnoremap <F2> :VimFilerBufferDir<CR>
+nnoremap <F3> :UndotreeToggle<CR>
+noremap  <F4> :TagbarToggle<CR>
+inoremap <F4> <ESC>:TagbarToggle<CR>a
+noremap  <F6> :set paste!<CR>
+inoremap <F6> <ESC>:set paste!<CR>a
+
+" Navigate the quickfix list
+nnoremap <left>  :cprev<cr>zvzz
+nnoremap <right> :cnext<cr>zvzz
+
+" Navigate the location list
+nnoremap <up>    :lprev<cr>zvzz
+nnoremap <down>  :lnext<cr>zvzz
+
+" Quick horizontal (_) and vertical (|) splits
+nnoremap _ :split<CR>
+nnoremap <Bar> :vsplit<CR>
+
+" Adjust viewports to the same size
+map <Leader>= <C-w>=
+
+" Change focus between windows
+map <c-h> <c-w>h
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-l> <c-w>l
+
+" Cycle through the splits
+nnoremap <c-x> <c-w>w
+
+" Switch to alternate buffer
+nnoremap <c-z> <c-^>
+
+" Create the directory containing the buffer
+nmap <silent> <Leader>md :!mkdir -p %:p:h<CR>
+
+" %% expands to the current file's directory
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
+
+" Fugitive
+nnoremap <Leader>ga :Git add %:p<CR><CR>
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gc :Gcommit -v -q<CR>
+nnoremap <Leader>gt :Gcommit -v -q %:p<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>ge :Gedit<CR>
+nnoremap <Leader>gr :Gread<CR>
+nnoremap <Leader>gw :Gwrite<CR><CR>
+nnoremap <Leader>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <Leader>gp :Ggrep<Space>
+nnoremap <Leader>gm :Gmove<Space>
+nnoremap <Leader>gb :Git branch<Space>
+nnoremap <Leader>go :Git checkout<Space>
+nnoremap <Leader>gps :Dispatch! git push<CR>
+nnoremap <Leader>gpl :Dispatch! git pull<CR>
+
+" Searching and Movement -------------------------------------------{{{1
+
+set hlsearch   " highlight matches
+set incsearch  " incremental searching
+set ignorecase " searches are case insensitive...
+set smartcase  " ... unless they contain at least one capital letter
+
+set scrolloff=9 " min number of lines above/below the cursor
+set sidescroll=1 " fast sidescroll
+set sidescrolloff=10 " horizontal context around the cursor
+set virtualedit+=block
 
 " Move based on display lines, not buffer lines
 noremap j gj
@@ -148,80 +316,68 @@ noremap k gk
 noremap gj j
 noremap gk k
 
-" Change focus between windows
-map <C-H> <C-W>h
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-L> <C-W>l
+" Keep search matches in the middle of the window.
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
-" Adjust viewports to the same size
-map <Leader>= <C-w>=
+" Same when jumping around
+nnoremap g; g;zz
+nnoremap g, g,zz
+nnoremap <c-o> <c-o>zz
 
-" Format the entire file
-nnoremap <leader>fef :normal! gg=G``<CR>
+" Easier to type, and I never use the default behavior.
+noremap H ^
+noremap L $
+vnoremap L g_
 
-" Upper/lower word
-nmap <leader>u mQviwU`Q
-nmap <leader>l mQviwu`Q
-
-" Upper/lower first char of word
-nmap <leader>U mQgewvU`Q
-nmap <leader>L mQgewvu`Q
-
-" Change the window-local working dir to the current buffer's dir
-nmap <silent> <leader>cd :lcd %:h<CR>
-
-" Create the directory containing the buffer
-nmap <silent> <leader>md :!mkdir -p %:p:h<CR>
-
-" Edit file (%% expands the current file's directory)
-cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
-map <leader>ew :e %%
-map <leader>es :sp %%
-map <leader>ev :vsp %%
-map <leader>et :tabe %%
-
-" Swap two words
-nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
-" Toggle text wrapping
-nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+" Clear search matches
+noremap <silent> <Leader><space> :noh<CR>:call clearmatches()<CR>
 
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
 
-" Pressing * or # in visual mode searches the selection
+" Select the contents of the current line, excluding indentation.
+nnoremap vv ^vg_
+
+" Search the selection in visual mode by pressing * or #
 vnoremap <silent> * :call VisualSelection('f', '')<CR>
 vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
-" Explore the filesystem with Command-E
-map <D-e> :Explore<CR>
+" Editing and Formatting -------------------------------------------{{{1
 
-" CtrlP mappings
-map <D-r> :CtrlPMRU<CR>
-map <D-p> :CtrlPLastMode<CR>
-map <D-t> :CtrlPBufTag<CR>
-map <D-f> :CtrlPMixed<CR>
+" Upper/lower word
+nmap <Leader>u mQviwU`Q
+nmap <Leader>l mQviwu`Q
 
-" join inverted: move current line to the end of the next line
+" Upper/lower first char of word
+nmap <Leader>U mQgewvU`Q
+nmap <Leader>L mQgewvu`Q
+
+" Swap two words
+nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
+
+" Join inverted (move current line to the end of the next line)
 nmap K ]ekJ
 
-""
-"" Formatting
-""
+" Zip right (move current char to the end of the line)
+nnoremap zr :let @z=@"<cr>x$p:let @"=@z<cr>
 
 " Reformat paragraph or selection
 nnoremap Q gqip
 vnoremap Q gq
 
-" Reformat the entire file
-nnoremap <leader>fef :normal! gg=G``<CR>
+" Reformat entire file
+nnoremap <LocalLeader>fef :normal! gg=G``<CR>
 
 " Start EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
 
 " Start EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" Reselect visual block after indent
+vnoremap < <gv
+vnoremap > >gv
 
 if has("gui_macvim") && has("gui_running")
   " Command-[] changes indentation, keeps original selection in visual mode
@@ -243,9 +399,290 @@ if has("gui_macvim") && has("gui_running")
   vmap <D-j> ]egv
 endif
 
-"-----------------------------------------------------------------------
-" Theme
-"-----------------------------------------------------------------------
+" File-type-specific Configurations ---------------------------------{{{1
+
+augroup MyAutoCmd
+  au!
+
+  " Reload .vimrc when edited
+  au BufWritePost $MYVIMRC source $MYVIMRC
+
+  " Remember last location in file, but not for commit messages
+  au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 &&
+    \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
+
+augroup END
+
+" Assembly {{{2
+augroup ft_asm
+  au!
+  au FileType asm setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
+augroup END
+
+" C {{{2
+augroup ft_c
+  au!
+  au FileType c setlocal foldmethod=marker foldmarker={,}
+augroup END
+
+" Markdown {{{2
+augroup markdown
+  au!
+  au BufNewFile,BufReadPost *.md,*.markdown set filetype=markdown
+augroup END
+
+" Vim {{{2
+augroup ft_vim
+  au!
+  au FileType vim setlocal foldmethod=marker
+  au FileType help setlocal textwidth=78
+  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+augroup END
+
+" XML {{{2
+augroup ft_xml
+  au!
+  " Indent tag
+  au FileType xml nnoremap <buffer> <localleader>= Vat=
+augroup END
+
+" Plugin Options ---------------------------------------------------{{{1
+
+" BufKill -----------------------------{{{2
+
+let g:BufKillOverrideCtrlCaret = 1
+
+" Clang Completion (marching) ---------{{{2
+
+let g:marching_enable_neocomplete = 1
+let g:marching_clang_command_option = "-std=c++11 -stdlib=libc++"
+
+" Clang Format -----------------------{{{2
+
+let g:clang_format#auto_formatexpr = 1
+let g:clang_format#auto_format_on_insert_leave = 1
+
+let g:clang_format#code_style = "LLVM"
+let g:clang_format#style_options = {
+\ "Language" : "Cpp",
+\ "Standard" : "Cpp11",
+\ "TabWidth" : 2,
+\ "DerivePointerBinding" : "false",
+\ "PointerBindsToType" : "true",
+\ }
+
+augroup ClangFormatSettings
+  au!
+  au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
+augroup END
+
+" NeoComplete ------------------------{{{2
+
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+
+let g:neocomplete#data_directory=s:get_cache_dir('neocomplete')
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" NeoMRU -----------------------------{{{2
+
+let g:neomru#file_mru_limit = 100
+let g:neomru#file_mru_path = s:get_cache_dir('neomru/file')
+let g:neomru#directory_mru_path = s:get_cache_dir('neomru/directory')
+
+" NeoSnippet -------------------------{{{2
+
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
+let g:neosnippet#data_directory=s:get_cache_dir('neosnippet')
+
+" Plugin key-mappings.
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+" Startify ---------------------------{{{2
+
+let g:startify_enable_special = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_session_persistence = 1
+let g:startify_session_delete_buffers = 1
+
+let g:startify_session_dir = '~/.vim/.session'
+let g:startify_bookmarks = [ '~/.vimrc', '~/Work' ]
+
+" Syntastic --------------------------{{{2
+
+let g:syntastic_check_on_open = 1
+let g:syntastic_auto_loc_list = 1
+"let g:syntastic_aggregate_errors = 1
+
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_style_error_symbol = '✠'
+let g:syntastic_warning_symbol = '∆'
+let g:syntastic_style_warning_symbol = '≈'
+
+" C++
+let g:syntastic_cpp_compiler = 'clang'
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
+
+" Lua
+let g:syntastic_lua_checkers = ["luac", "luacheck"]
+let g:syntastic_lua_luacheck_args = "--no-unused-args"
+
+" Unite ------------------------------{{{2
+
+" Disable trailing whitespace plugin for unite views
+let g:extra_whitespace_ignored_filetypes = [ 'unite' ]
+
+" Fuzzy match by default
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+call unite#filters#sorter_default#use(['sorter_rank'])
+
+" Fuzzy matching for plugins not using matcher_default as filter
+call unite#custom#source('outline,line,grep', 'matchers', ['matcher_fuzzy'])
+call unite#custom#source('outline,line,grep', 'sorters', ['sorter_rank'])
+
+" Use 'wildignore' patterns to ignore files in file_rec
+call unite#custom#source('file_rec', 'ignore_globs', split(&wildignore, ','))
+
+" Prettier prompt
+call unite#custom#profile('default', 'context', {
+\   'start_insert': 1,
+\   'direction': 'botright',
+\   'prompt': '» ',
+\   'prompt_direction': 'top',
+\ })
+" \   'short_source_names': 1,
+
+" Better time formats
+let g:unite_source_buffer_time_format = "%Y-%m-%d  %H:%M:%S "
+
+let g:unite_data_directory=s:get_cache_dir('unite')
+let g:unite_source_history_yank_enable=1
+let g:unite_source_rec_max_cache_files=5000
+
+if executable('ag')
+  let g:unite_source_grep_command = 'ag'
+  let g:unite_source_grep_default_opts = '--line-numbers --nocolor --nogroup'
+  let g:unite_source_grep_recursive_opt = ''
+elseif executable('ack')
+  let g:unite_source_grep_command = 'ack'
+  let g:unite_source_grep_default_opts = '--no-heading --no-color -a -w'
+  let g:unite_source_grep_recursive_opt = ''
+endif
+
+" Map space to the prefix for Unite
+nnoremap [unite] <Nop>
+nmap <space> [unite]
+
+" Resume the last Unite view (in normal mode, to preserve selection)
+nnoremap <silent> [unite]<space> :<C-u>UniteResume -no-start-insert<CR>
+
+" Search everything (in terms of files)
+nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
+
+" Search registers
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+
+" Search buffers and recent files (switch...)
+nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files buffer file_mru<CR>
+
+" Search the yank history
+nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+
+" Search the outline
+nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+
+" Search a directory to change to
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
+
+" Search files
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+
+" Grep (using Ag) from the cwd
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
+
+" Search all help files
+nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
+
+" Search lines in the current buffer to jump to (replaces /)
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
+nmap <silent> / [unite]l
+
+" Search bookmarks
+nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
+
+" Search the Ex command history
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
+
+" Search all Unite sources
+nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
+
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+
+  " Esc to exit at any time
+  nmap <buffer> <ESC> <Plug>(unite_exit)
+  imap <buffer> <ESC> <Plug>(unite_exit)
+
+  " Navigate options with Control-J/K
+  imap <buffer> <C-j> <Plug>(unite_insert_leave)
+  imap <buffer> <C-k> <Plug>(unite_insert_leave)
+  nmap <buffer> <C-j> <Plug>(unite_loop_cursor_down)
+  nmap <buffer> <C-k> <Plug>(unite_loop_cursor_up)
+
+  " Split with C-s/v
+  inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+  nnoremap <silent><buffer><expr> <C-s> unite#do_action('split')
+  inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+
+endfunction
+
+" VimFiler ---------------------------{{{2
+
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_data_directory = s:get_cache_dir('vimshell')
+let g:vimfiler_time_format = "%Y-%m-%d  %H:%M:%S "
+let g:vimfiler_tree_leaf_icon = ' '
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_marked_file_icon = '✓'
+
+" VimShell ---------------------------{{{2
+
+let g:vimshell_data_directory = s:get_cache_dir('vimshell')
+let g:vimshell_right_prompt='getcwd()'
+
+" Theme ------------------------------------------------------------{{{1
 
 " Font
 let g:font = 'Sauce Code Powerline Light'
@@ -261,19 +698,26 @@ let base16colorspace=256
 let g:base16_shell_path="~/.dotfiles/bin/base16/"
 colorscheme base16-eighties
 
+" Resize splits when the window is resized
+autocmd VimResized * wincmd =
+
+" Show cursorline only in the current window
+augroup cline
+  au!
+  au WinLeave,InsertEnter * set nocursorline
+  au WinEnter,InsertLeave * set cursorline
+augroup END
+
 " Airline
-let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts=1
 
 " GitGutter
 let g:gitgutter_sign_column_always = 1
 
-""
-"" GUI Options
-""
+" GUI Options ------------------------{{{2
 if has("gui_running")
   set guioptions= " minimalist gui
-  autocmd VimResized * wincmd = " resize splits when resizing GUI window
   if has("gui_macvim")
     let macvim_skip_colorscheme = 1
     let macvim_skip_cmd_opt_movement = 1
@@ -283,12 +727,10 @@ if has("gui_running")
     " Go back to iTerm when the last window closes
     autocmd VimLeave * :!open -a iTerm
   endif
-endif
-
-""
-"" Goyo distraction-free editing
-""
-nnoremap <silent> <leader>z :Goyo<cr>
+end
+"}}}
+" Goyo distraction-free editing ------{{{2
+nnoremap <silent> <Leader>z :Goyo<cr>
 
 function! s:goyo_enter()
   Limelight
@@ -318,34 +760,5 @@ autocmd! User GoyoEnter
 autocmd! User GoyoLeave
 autocmd  User GoyoEnter nested call <SID>goyo_enter()
 autocmd  User GoyoLeave nested call <SID>goyo_leave()
-
-"-----------------------------------------------------------------------
-" Syntastic
-"-----------------------------------------------------------------------
-
-let g:syntastic_check_on_open = 1
-let g:syntastic_auto_loc_list=2
-"let g:syntastic_aggregate_errors = 1
-
-let g:syntastic_lua_checkers = ["luac", "luacheck"]
-let g:syntastic_lua_luacheck_args = "--no-unused-args"
-
-"-----------------------------------------------------------------------
-" Filetype Options
-"-----------------------------------------------------------------------
-
-" Remember last location in file, but not for commit messages.
-au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 &&
-  \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
-" All .md files are Markdown
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-
-" Vim
-augroup ft_vim
-  au!
-  au FileType vim setlocal foldmethod=marker
-  au FileType help setlocal textwidth=78
-  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
-augroup END
+"}}}
 

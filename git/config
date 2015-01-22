@@ -1,16 +1,28 @@
 [user]
-	name = Thiago Bastos
-	email = tbastos@users.noreply.github.com
+  name = Thiago Bastos
+  email = tbastos@users.noreply.github.com
+
 [branch]
-	autosetuprebase = always
+  autosetuprebase = always
+
 [color]
-	diff = auto
-	status = auto
-	branch = auto
+  diff = auto
+  status = auto
+  branch = auto
+
 [core]
-	autocrlf = input
-	excludesfile = ~/.dotfiles/git/excludes
+  autocrlf = input
+  excludesfile = ~/.dotfiles/git/excludes
+
 [diff]
-	tool = vimdiff
+  tool = vimdiff
+
 [difftool]
-	prompt = false
+  prompt = false
+
+[merge]
+  tool = vimdiff3
+
+[mergetool "vimdiff3"]
+  cmd = vim -g -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+

@@ -1,100 +1,19 @@
-DOTDIR=~/.dotfiles
-ZDOTDIR=$DOTDIR/zsh
+#######################################################################
+# History
+#######################################################################
 
-export PATH=$DOTDIR/bin:$PATH:$DOTDIR/bin/base16
-
-# Editor settings
-export EDITOR='vim -f'
-alias e='mvim --remote-silent'
-bindkey -e
-
-# Quick access to vimrc, zshrc and karabiner's private.xml
-alias vimrc='e ~/.vimrc'
-alias zshrc='e ~/.zshrc'
-alias karxml='e $DOTDIR/osx/karabiner.xml'
+HISTFILE=$ZDOTDIR/.history     # enable history saving on shell exit
+HISTSIZE=150                   # lines of history to maintain memory
+SAVEHIST=100                   # lines of history to maintain in history file.
+setopt APPEND_HISTORY
+setopt HIST_EXPIRE_DUPS_FIRST
 
 ########################################################################
-# Aliases
-########################################################################
-
-alias grep='grep --color'
-alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '
-
-alias t='tail -f'
-
-# command line head / tail shortcuts
-alias -g H='| head'
-alias -g T='| tail'
-alias -g G='| grep'
-alias -g L="| less"
-alias -g M="| most"
-
-alias fd='find . -type d -name'
-alias ff='find . -type f -name'
-
-alias h='history'
-alias hgrep="fc -El 0 | grep"
-
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-
-########################################################################
-# Filesystem Navigation
-########################################################################
-
-cdpath=(
-  $HOME/Projects
-  $HOME/Dropbox
-  $HOME
-)
-
-# listing
-alias l='ls -lFh'     #size,show type,human readable
-alias la='ls -lAFh'   #long list,show almost all,show type,human readable
-alias lr='ls -tRFh'   #sorted by date,recursive,show type,human readable
-alias ldot='ls -ld .*'
-
-# ascending
-alias ..='cd ../'
-alias ...='cd ../../'
-alias ....='cd ../../../'
-alias .....='cd ../../../../'
-
-# Z directory jumping command
-_Z_DATA=$ZDOTDIR/.z
-source $ZDOTDIR/modules/z/z.sh
-
-# automatically list directory contents on 'cd'
-auto-ls () { ls; }
-chpwd_functions=( auto-ls $chpwd_functions )
-
-########################################################################
-# Git
-########################################################################
-
-hub_path=$(which hub)
-if (( $+commands[hub] )); then
-  alias git=$hub_path
-fi
-
-alias gu='git pull --prune'
-alias gl='git log --oneline --decorate'
-alias gp='git push origin HEAD'
-alias gd='git diff --word-diff'
-alias gc='git commit'
-alias gca='git commit -a'
-alias gco='git checkout'
-alias gcb='git copy-branch-name'
-alias gb='git branch'
-alias gs='git status -sb'
-
-########################################################################
-# Modules
+# Interactive Modules
 ########################################################################
 
 # Completions
-fpath=($ZDOTDIR/functions $ZDOTDIR/modules/zsh-completions/src $fpath)
+fpath=($ZDOTDIR/modules/zsh-completions/src $fpath)
 autoload -U compinit && compinit
 
 # Highlighting

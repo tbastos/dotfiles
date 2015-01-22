@@ -2,7 +2,7 @@
 
 On OSX:
 ```zsh
-brew install ack cmake cscope ctags git hub lua luarocks tmux
+brew install cmake cscope ctags git hub lua luarocks the_silver_searcher tmux
 brew install macvim --custom-icons --override-system-vim --with-lua --with-cscope --HEAD
 ```
 
@@ -22,7 +22,8 @@ git pull && git submodule update --init --recursive
 
 ```zsh
 # Zsh
-ln -s ~/.dotfiles/zsh/zshrc ~/.zshrc
+ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
+ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
 
 # Git
 ln -s ~/.dotfiles/git/config ~/.gitconfig
@@ -31,6 +32,9 @@ ln -s ~/.dotfiles/git/config ~/.gitconfig
 ln -s ~/.dotfiles/vim ~/.vim
 ln -s ~/.dotfiles/vim/vimrc ~/.vimrc
 ln -s ~/.dotfiles/vim/gvimrc ~/.gvimrc
+
+# Ruby
+ln -s ~/.dotfiles/gemrc ~/.gemrc
 
 # Karabiner (OSX)
 ln -s ~/.dotfiles/osx/karabiner.xml ~/Library/Application\ Support/Karabiner/private.xml
