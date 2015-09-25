@@ -1,9 +1,6 @@
 [submodule "zsh/z"]
 	path = zsh/modules/z
 	url = https://github.com/rupa/z
-[submodule "bin/base16"]
-	path = bin/base16
-	url = https://github.com/chriskempson/base16-shell
 [submodule "zsh/modules/zaw"]
 	path = zsh/modules/zaw
 	url = https://github.com/zsh-users/zaw
