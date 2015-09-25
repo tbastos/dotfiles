@@ -1,11 +1,11 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:$DOTDIR/bin/base16
+export PATH=$DOTDIR/bin:$PATH
 fpath=($ZDOTDIR/functions $fpath)
 
 # Editor settings
-export EDITOR='vim -g -f --remote-silent'
+export EDITOR=vim
 alias e='vim -g --remote-silent'
 bindkey -e
 

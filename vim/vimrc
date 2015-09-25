@@ -34,19 +34,27 @@ NeoBundle 'Shougo/vimproc.vim', {
 NeoBundle 'mhinz/vim-startify'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-abolish' " :Subvert
+NeoBundle 'tpope/vim-eunuch' " UNIX helper commands
 NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'artnez/vim-wipeout'
 NeoBundle 'bufkill.vim'
 NeoBundle 'matchit.zip'
 
 " UI
 NeoBundle 'bling/vim-airline'
 NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'chriskempson/base16-vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'yonchu/accelerated-smooth-scroll'
+NeoBundle 'regedarek/ZoomWin' " zoom in/out a split with <c-w>-o
+NeoBundle 'milkypostman/vim-togglelist' " toggle quickfix/location lists
 NeoBundle 'junegunn/goyo.vim' " distraction free editing
 NeoBundle 'junegunn/limelight.vim' " focused writing
+
+" Colors
+NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'reedes/vim-colors-pencil'
+NeoBundle 'kergoth/vim-hilinks' " :HLT! for debugging syntax highlighting
 
 " Search
 NeoBundle 'Shougo/unite.vim'
@@ -87,7 +95,8 @@ NeoBundle 'thinca/vim-textobj-function-javascript'
 " Editing and Formatting
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-commentary.git'
-NeoBundle 'jiangmiao/auto-pairs'
+NeoBundle 'tommcdo/vim-exchange'
+" NeoBundle 'jiangmiao/auto-pairs' " conflicts with several other plugins
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'Chiel92/vim-autoformat'
 NeoBundle 'junegunn/vim-easy-align'
@@ -99,7 +108,6 @@ NeoBundle 'Shougo/neocomplete.vim'
 
 " Snippets
 NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'honza/vim-snippets'
 
 " Code Analysis
@@ -112,10 +120,13 @@ NeoBundle 'tyru/open-browser.vim'
 "NeoBundle 'mattn/webapi-vim'
 
 " C/C++
-NeoBundle 'octol/vim-cpp-enhanced-highlight'
+" NeoBundle 'octol/vim-cpp-enhanced-highlight'
 NeoBundle 'osyo-manga/vim-marching' " async clang code completion
 NeoBundle 'kana/vim-operator-user' " required by clang-format
 NeoBundle 'rhysd/vim-clang-format'
+
+" Lua
+NeoBundle 'tbastos/vim-lua'
 
 " Web
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
@@ -130,8 +141,8 @@ NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-bundler'
 
-" Markdown
-NeoBundleLazy 'nelstrom/vim-markdown-folding', {'autoload':{'filetypes':['markdown']}}
+" Text
+NeoBundleLazy 'plasticboy/vim-markdown', {'autoload':{'filetypes':['markdown']}}
 
 " NeoBundle End {{{2
 call neobundle#end()
@@ -158,6 +169,7 @@ set modelines=0
 set nrformats-=octal " no octal input
 set number
 set ruler
+set sessionoptions=blank,buffers,curdir,folds,help,localoptions,options,winsize
 set shortmess+=I " disable welcome screen
 set showcmd " show partial commands at far BR of the screen
 set showfulltag
@@ -170,16 +182,18 @@ set ttimeout
 set ttimeoutlen=10
 set ttyfast " assume a fast terminal
 set updatetime=1000 " msecs idle to update swap file and send CursorHold event
+" set verbose=1
 set visualbell
 
 " Space and Formatting ---------------{{{2
 
 set autoindent " copy indentation of the previous line
-let &colorcolumn=join(range(81,120),",")
+"let &colorcolumn=join(range(81,120),",")
 set backspace=indent,eol,start " backspace through everything in insert mode
 set expandtab " use spaces, not tabs
 set formatoptions=cqrn1j
 set linebreak
+set linespace=1
 set list " show invisible chars
 set listchars=tab:▸\ ,trail:.,extends:❯,precedes:❮,nbsp:⌴
 "set listchars+=eol:¬
@@ -189,7 +203,7 @@ let &showbreak='↪ '
 set smartindent " indent based on syntax
 set softtabstop=2 " a tab adds two spaces while editing
 set tabstop=8 " a real tab is displayed as eight spaces
-set textwidth=80
+set textwidth=79
 set wrap " wrap lines by default
 
 " Cache Dir --------------------------{{{2
@@ -229,14 +243,20 @@ set wildignore+=*.DS_Store " OSX files
 
 " Convenience Mappings ---------------------------------------------{{{1
 
-" Leader
+" Leader keys
 let mapleader = ","
 let maplocalleader = "\\"
 
-" Toggle spell checking
-map <LocalLeader>s :setlocal spell!<CR>
+" Quit all windows
+nnoremap Q :qa<CR>
 
-" U to redo (makes more sense than c-r)
+" Close current buffer (unless it's open in another window)
+nnoremap <c-q> :BD<CR>
+
+" Close all hidden buffers (leave only active buffers open)
+nnoremap <Leader>bo :Wipeout<CR>
+
+" U to redo (much better than c-r)
 nnoremap U :redo<cr>
 
 " FN keys
@@ -245,41 +265,53 @@ nnoremap <F2> :VimFilerBufferDir<CR>
 nnoremap <F3> :UndotreeToggle<CR>
 noremap  <F4> :TagbarToggle<CR>
 inoremap <F4> <ESC>:TagbarToggle<CR>a
+nnoremap <F5> :SClose<CR>
 noremap  <F6> :set paste!<CR>
 inoremap <F6> <ESC>:set paste!<CR>a
 
+" Default Make (builds the project)
+nnoremap M :Make<CR>
+
+" Default Dispatch (usually invokes tests)
+nnoremap <Leader>t :Dispatch<CR>
+
+" Custom Make/Dispatch (prompts for arguments)
+nnoremap <Leader>m :Make<Space>
+nnoremap <Leader>d :Dispatch<Space>
+
 " Navigate the quickfix list
-nnoremap <left>  :cprev<cr>zvzz
-nnoremap <right> :cnext<cr>zvzz
+nnoremap <left>  :cprev<CR>zvzz
+nnoremap <right> :cnext<CR>zvzz
 
 " Navigate the location list
-nnoremap <up>    :lprev<cr>zvzz
-nnoremap <down>  :lnext<cr>zvzz
+nnoremap <up>    :lprev<CR>zvzz
+nnoremap <down>  :lnext<CR>zvzz
 
-" Quick horizontal (_) and vertical (|) splits
-nnoremap _ :split<CR>
-nnoremap <Bar> :vsplit<CR>
+" Quick splits
+nnoremap <bar> :vsplit<CR>
+nnoremap <c-\> :split<CR>
 
-" Adjust viewports to the same size
-map <Leader>= <C-w>=
+" Switch to alternate file
+nnoremap <c-a> <c-^>
 
-" Change focus between windows
-map <c-h> <c-w>h
-map <c-j> <c-w>j
-map <c-k> <c-w>k
-map <c-l> <c-w>l
-
-" Cycle through the splits
+" Cycle between windows (next/previous)
 nnoremap <c-x> <c-w>w
+nnoremap <c-z> <c-w>p
 
-" Switch to alternate buffer
-nnoremap <c-z> <c-^>
+" Move cursor between windows (directionally)
+nnoremap <c-h> <c-w>h
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-l> <c-w>l
 
-" Create the directory containing the buffer
-nmap <silent> <Leader>md :!mkdir -p %:p:h<CR>
+" Change the window layout by moving the current window
+nnoremap <c-w>h <c-w>H
+nnoremap <c-w>j <c-w>J
+nnoremap <c-w>k <c-w>K
+nnoremap <c-w>l <c-w>L
 
-" %% expands to the current file's directory
-cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<CR>
+" Toggle spell checking
+nnoremap <LocalLeader>s :setlocal spell!<CR>
 
 " Fugitive
 nnoremap <Leader>ga :Git add %:p<CR><CR>
@@ -291,12 +323,12 @@ nnoremap <Leader>ge :Gedit<CR>
 nnoremap <Leader>gr :Gread<CR>
 nnoremap <Leader>gw :Gwrite<CR><CR>
 nnoremap <Leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <Leader>gp :Ggrep<Space>
+nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gm :Gmove<Space>
 nnoremap <Leader>gb :Git branch<Space>
 nnoremap <Leader>go :Git checkout<Space>
-nnoremap <Leader>gps :Dispatch! git push<CR>
-nnoremap <Leader>gpl :Dispatch! git pull<CR>
+nnoremap <Leader>gp :Dispatch! git push<CR>
+nnoremap <Leader>gP :Dispatch! git pull<CR>
 
 " Searching and Movement -------------------------------------------{{{1
 
@@ -316,13 +348,11 @@ noremap k gk
 noremap gj j
 noremap gk k
 
-" Keep search matches in the middle of the window.
-nnoremap n nzzzv
-nnoremap N Nzzzv
-
-" Same when jumping around
-nnoremap g; g;zz
-nnoremap g, g,zz
+" Auto-center after some common moves
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap } }zz
+nnoremap { {zz
 nnoremap <c-o> <c-o>zz
 
 " Easier to type, and I never use the default behavior.
@@ -330,11 +360,8 @@ noremap H ^
 noremap L $
 vnoremap L g_
 
-" Clear search matches
-noremap <silent> <Leader><space> :noh<CR>:call clearmatches()<CR>
-
-" Visually select the text that was last edited/pasted
-nmap gV `[v`]
+" Select the text that was last edited/pasted
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " Select the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
@@ -353,21 +380,14 @@ nmap <Leader>l mQviwu`Q
 nmap <Leader>U mQgewvU`Q
 nmap <Leader>L mQgewvu`Q
 
-" Swap two words
-nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
 " Join inverted (move current line to the end of the next line)
-nmap K ]ekJ
+nmap <Leader>j ]ekJ
 
-" Zip right (move current char to the end of the line)
-nnoremap zr :let @z=@"<cr>x$p:let @"=@z<cr>
-
-" Reformat paragraph or selection
-nnoremap Q gqip
-vnoremap Q gq
-
-" Reformat entire file
-nnoremap <LocalLeader>fef :normal! gg=G``<CR>
+" Delete/change inside/all argument (in a comma-separated list)
+nmap di, f,dT,
+nmap ci, f,cT,
+nmap da, f,ld2F,i,<ESC>l
+nmap ca, f,ld2F,i,<ESC>a
 
 " Start EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
@@ -401,16 +421,11 @@ endif
 
 " File-type-specific Configurations ---------------------------------{{{1
 
-augroup MyAutoCmd
+augroup ft_all
   au!
-
-  " Reload .vimrc when edited
-  au BufWritePost $MYVIMRC source $MYVIMRC
-
   " Remember last location in file, but not for commit messages
   au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 &&
     \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
-
 augroup END
 
 " Assembly {{{2
@@ -425,17 +440,19 @@ augroup ft_c
   au FileType c setlocal foldmethod=marker foldmarker={,}
 augroup END
 
-" Markdown {{{2
-augroup markdown
+" Lua {{{2
+augroup ft_lua
   au!
-  au BufNewFile,BufReadPost *.md,*.markdown set filetype=markdown
+  au FileType lua setlocal foldmethod=syntax | let b:dispatch = 'busted --output=plainterminal --suppress-pending'
 augroup END
+
+" Text {{{2
+let g:vim_markdown_frontmatter=1
 
 " Vim {{{2
 augroup ft_vim
   au!
   au FileType vim setlocal foldmethod=marker
-  au FileType help setlocal textwidth=78
   au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
@@ -451,6 +468,7 @@ augroup END
 " BufKill -----------------------------{{{2
 
 let g:BufKillOverrideCtrlCaret = 1
+let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'cancel'
 
 " Clang Completion (marching) ---------{{{2
 
@@ -476,6 +494,13 @@ augroup ClangFormatSettings
   au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
 augroup END
 
+" Lua --------------------------------{{{2
+
+let g:lua_check_syntax = 0
+let g:lua_check_globals = 0
+let g:lua_complete_omni = 1
+let g:lua_safe_omni_modules = 1
+
 " NeoComplete ------------------------{{{2
 
 let g:neocomplete#enable_at_startup = 1
@@ -483,9 +508,20 @@ let g:neocomplete#enable_smart_case = 1
 
 let g:neocomplete#data_directory=s:get_cache_dir('neocomplete')
 
+" Ctrl-J/K selects entries from the pum
+inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
+
+" <CR> closes pum
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  " return neocomplete#close_popup() . "\<CR>"
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html,markdown,mkd setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -494,8 +530,10 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplete#sources#omni#input_patterns.c =
+\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
+let g:neocomplete#sources#omni#input_patterns.cpp =
+\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 " NeoMRU -----------------------------{{{2
 
@@ -505,6 +543,7 @@ let g:neomru#directory_mru_path = s:get_cache_dir('neomru/directory')
 
 " NeoSnippet -------------------------{{{2
 
+let g:neosnippet#disable_runtime_snippets = { '_' : 1 } " disable neosnippet-snippets
 let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
 let g:neosnippet#data_directory=s:get_cache_dir('neosnippet')
@@ -522,26 +561,36 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: "\<TAB>"
 
-" For snippet_complete marker.
+" Conceal markers.
 if has('conceal')
-  set conceallevel=2 concealcursor=i
+  set conceallevel=2 concealcursor=niv
 endif
 
 " Startify ---------------------------{{{2
 
-let g:startify_enable_special = 0
-let g:startify_change_to_vcs_root = 1
-let g:startify_session_persistence = 1
+let g:startify_files_number           = 15
+let g:startify_relative_path          = 1
+let g:startify_change_to_vcs_root     = 1
+let g:startify_session_persistence    = 1
 let g:startify_session_delete_buffers = 1
 
 let g:startify_session_dir = '~/.vim/.session'
 let g:startify_bookmarks = [ '~/.vimrc', '~/Work' ]
 
+let g:startify_list_order = [
+      \ ['  Bookmarks:'],
+      \ 'bookmarks',
+      \ ['  Sessions:'],
+      \ 'sessions',
+      \ ['  Recent files:'],
+      \ 'files',
+      \ ]
+
 " Syntastic --------------------------{{{2
 
 let g:syntastic_check_on_open = 1
-let g:syntastic_auto_loc_list = 1
-"let g:syntastic_aggregate_errors = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_aggregate_errors = 1
 
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_style_error_symbol = '✠'
@@ -624,7 +673,7 @@ nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR
 nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
 
 " Search files
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async file/new<CR>
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async<CR>
 
 " Grep (using Ag) from the cwd
 nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
@@ -632,18 +681,17 @@ nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
 " Search all help files
 nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
 
-" Search lines in the current buffer to jump to (replaces /)
+" Search lines in the current buffer to jump to
 nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
-nmap <silent> / [unite]l
 
 " Search bookmarks
 nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
 
-" Search the Ex command history
-nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=history -default-action=edit history/command command<CR>
+" Search commands
+nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=command -default-action=edit command<CR>
 
 " Search all Unite sources
-nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=sources source<CR>
+nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=sources source<CR>
 
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
@@ -653,17 +701,9 @@ function! s:unite_settings()
   nmap <buffer> <ESC> <Plug>(unite_exit)
   imap <buffer> <ESC> <Plug>(unite_exit)
 
-  " Navigate options with Control-J/K
-  imap <buffer> <C-j> <Plug>(unite_insert_leave)
-  imap <buffer> <C-k> <Plug>(unite_insert_leave)
-  nmap <buffer> <C-j> <Plug>(unite_loop_cursor_down)
-  nmap <buffer> <C-k> <Plug>(unite_loop_cursor_up)
-
-  " Split with C-s/v
-  inoremap <silent><buffer><expr> <C-s> unite#do_action('split')
-  nnoremap <silent><buffer><expr> <C-s> unite#do_action('split')
-  inoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
-  nnoremap <silent><buffer><expr> <C-v> unite#do_action('vsplit')
+  " Navigate options with Ctrl-J/K
+  imap <buffer> <C-j> <C-n>
+  imap <buffer> <C-k> <C-p>
 
 endfunction
 
@@ -671,7 +711,7 @@ endfunction
 
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_data_directory = s:get_cache_dir('vimshell')
-let g:vimfiler_time_format = "%Y-%m-%d  %H:%M:%S "
+let g:vimfiler_time_format = "%Y-%m-%d  %H:%M:%S"
 let g:vimfiler_tree_leaf_icon = ' '
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
@@ -684,28 +724,38 @@ let g:vimshell_right_prompt='getcwd()'
 
 " Theme ------------------------------------------------------------{{{1
 
-" Font
-let g:font = 'Sauce Code Powerline Light'
-let g:font_size = 12
-function! SetFontSize(size)
-  let &guifont = g:font . ':h' . a:size
-endfunction
-call SetFontSize(g:font_size)
+set background=light
 
-" Color Scheme
-set background=dark
-let base16colorspace=256
-let g:base16_shell_path="~/.dotfiles/bin/base16/"
-colorscheme base16-eighties
+let g:theme_default = {
+\  'typeface': 'Anonymice Powerline',
+\  'font_size': 13,
+\  'linespace': 1,
+\  'colorscheme': 'solarized',
+\ }
+
+let g:theme_pencil = {
+\  'typeface': 'Anonymice Powerline',
+\  'font_size': 15,
+\  'linespace': 3,
+\  'colorscheme': 'pencil',
+\ }
+
+function! SetTheme(t)
+  let &guifont = a:t.typeface . ':h' . a:t.font_size
+  let &linespace = a:t.linespace
+  execute 'colorscheme ' . a:t.colorscheme
+endfunction
+
+call SetTheme(g:theme_default)
 
 " Resize splits when the window is resized
 autocmd VimResized * wincmd =
 
 " Show cursorline only in the current window
-augroup cline
-  au!
-  au WinLeave,InsertEnter * set nocursorline
-  au WinEnter,InsertLeave * set cursorline
+augroup CursorLine
+  autocmd!
+  autocmd WinLeave,InsertEnter * set nocursorline
+  autocmd WinEnter,InsertLeave * set cursorline
 augroup END
 
 " Airline
@@ -713,52 +763,42 @@ augroup END
 let g:airline_powerline_fonts=1
 
 " GitGutter
-let g:gitgutter_sign_column_always = 1
+" let g:gitgutter_sign_column_always = 1
 
 " GUI Options ------------------------{{{2
+
 if has("gui_running")
+  set relativenumber
   set guioptions= " minimalist gui
   if has("gui_macvim")
     let macvim_skip_colorscheme = 1
     let macvim_skip_cmd_opt_movement = 1
-    " Free some interesting key bindings
-    macmenu File.Print key=<nop>
-    macmenu Edit.Find.Find\.\.\. key=<nop>
     " Go back to iTerm when the last window closes
-    autocmd VimLeave * :!open -a iTerm
+    " autocmd VimLeave * :!open -a iTerm
   endif
 end
 "}}}
-" Goyo distraction-free editing ------{{{2
-nnoremap <silent> <Leader>z :Goyo<cr>
+
+" Distraction-Free Text Editing ------{{{2
+
+nmap <Leader>G :Goyo<CR>
+nmap <Leader>L :Limelight!!<CR>
+nmap <Leader>T :call SetTheme(g:theme_pencil)<CR>:Goyo<CR>
+
+" let g:limelight_default_coefficient = 0.3
 
 function! s:goyo_enter()
   Limelight
-  if has('gui_running')
-    set fullscreen
-    "set background=light
-    set linespace=3
-    let &guifont = g:font . ':h15'
-  elseif exists('$TMUX')
-    silent !tmux set status off
-  endif
 endfunction
 
 function! s:goyo_leave()
   Limelight!
-  if has('gui_running')
-    set nofullscreen
-    "set background=dark
-    set linespace=0
-    call SetFontSize(g:font_size)
-  elseif exists('$TMUX')
-    silent !tmux set status on
-  endif
+  call SetTheme(g:theme_default)
 endfunction
 
 autocmd! User GoyoEnter
-autocmd! User GoyoLeave
 autocmd  User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave
 autocmd  User GoyoLeave nested call <SID>goyo_leave()
 "}}}
 

@@ -7,12 +7,17 @@
 
   <vkopenurldef>
     <name>KeyCode::VK_OPEN_URL_APP_Web</name>
-    <url type="file">/Applications/Google Chrome.app</url>
+    <url type="file">/Applications/Firefox.app</url>
   </vkopenurldef>
 
   <vkopenurldef>
-    <name>KeyCode::VK_OPEN_URL_APP_Editor</name>
+    <name>KeyCode::VK_OPEN_URL_APP_Vim</name>
     <url type="file">/Applications/MacVim.app</url>
+  </vkopenurldef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_iTunes</name>
+    <url type="file">/Applications/iTunes.app</url>
   </vkopenurldef>
 
   <vkopenurldef>
@@ -21,8 +26,18 @@
   </vkopenurldef>
 
   <vkopenurldef>
-    <name>KeyCode::VK_OPEN_URL_APP_Commandline</name>
+    <name>KeyCode::VK_OPEN_URL_APP_iTerm</name>
     <url type="file">/Applications/iTerm.app</url>
+  </vkopenurldef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_Todoist</name>
+    <url type="file">/Applications/Todoist.app</url>
+  </vkopenurldef>
+
+  <vkopenurldef>
+    <name>KeyCode::VK_OPEN_URL_APP_PomoDone</name>
+    <url type="file">/Applications/PomoDone.app</url>
   </vkopenurldef>
 
   <item>
@@ -33,34 +48,35 @@
   </item>
 
   <item>
-    <name>Use CapsLock as the HYPER modifier</name>
-    <appendix>A tap sends Escape.</appendix>
-    <appendix>Hyper+W opens Chrome (Web browser)</appendix>
-    <appendix>Hyper+E opens Vim (Editor)</appendix>
-    <appendix>Hyper+S opens Spotify</appendix>
-    <appendix>Hyper+D opens Dictionary</appendix>
-    <appendix>Hyper+F opens Finder</appendix>
-    <appendix>Hyper+C opens iTerm (to enter Commands)</appendix>
-    <identifier>private.hyper_capslock</identifier>
-    <modifierdef>HYPER</modifierdef>
-    <autogen>__KeyOverlaidModifier__ KeyCode::F19, KeyCode::VK_MODIFIER_HYPER, KeyCode::ESCAPE</autogen>
-    <autogen>__KeyToKey__ KeyCode::W, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Web</autogen>
-    <autogen>__KeyToKey__ KeyCode::E, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Editor</autogen>
-    <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Spotify</autogen>
-    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Dictionary</autogen>
-    <autogen>__KeyToKey__ KeyCode::F, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Finder</autogen>
-    <autogen>__KeyToKey__ KeyCode::C, ModifierFlag::HYPER, KeyCode::VK_OPEN_URL_APP_Commandline</autogen>
+    <name>Use Fn to open common applications</name>
+    <appendix>Fn+Z opens Firefox</appendix>
+    <appendix>Fn+X opens Vim</appendix>
+    <appendix>Fn+C opens iTerm</appendix>
+    <appendix>Fn+A opens iTunes</appendix>
+    <appendix>Fn+S opens Spotify</appendix>
+    <appendix>Fn+D opens Dictionary</appendix>
+    <appendix>Fn+F opens Finder</appendix>
+    <appendix>Fn+W opens Todoist (for What to do)</appendix>
+    <appendix>Fn+P opens PomoDone</appendix>
+    <identifier>private.fn_shortcuts</identifier>
+    <autogen>__KeyToKey__ KeyCode::Z, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Web</autogen>
+    <autogen>__KeyToKey__ KeyCode::X, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Vim</autogen>
+    <autogen>__KeyToKey__ KeyCode::C, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_iTerm</autogen>
+    <autogen>__KeyToKey__ KeyCode::A, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_iTunes</autogen>
+    <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Spotify</autogen>
+    <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Dictionary</autogen>
+    <autogen>__KeyToKey__ KeyCode::F, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Finder</autogen>
+    <autogen>__KeyToKey__ KeyCode::W, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Todoist</autogen>
+    <autogen>__KeyToKey__ KeyCode::P, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_PomoDone</autogen>
   </item>
 
   <item>
-    <name>Use right Option as SUPER modifier</name>
-    <appendix>Super+' switches to US International Keyboard</appendix>
-    <appendix>Super+/ switches to US Keyboard</appendix>
+    <name>Use Option_R to change keyboard input source</name>
+    <appendix>Opt_R+' switches to US International Keyboard</appendix>
+    <appendix>Opt_R+/ switches to US Keyboard</appendix>
     <identifier>private.super_option_r</identifier>
-    <modifierdef>SUPER</modifierdef>
-    <autogen>__KeyToKey__ KeyCode::OPTION_R, KeyCode::VK_MODIFIER_SUPER</autogen>
-    <autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::SUPER, KeyCode::VK_CHANGE_INPUTSOURCE_US_INTERNATIONAL</autogen>
-    <autogen>__KeyToKey__ KeyCode::SLASH, ModifierFlag::SUPER, KeyCode::VK_CHANGE_INPUTSOURCE_US</autogen>
+    <autogen>__KeyToKey__ KeyCode::QUOTE, ModifierFlag::OPTION_R, KeyCode::VK_CHANGE_INPUTSOURCE_US_INTERNATIONAL</autogen>
+    <autogen>__KeyToKey__ KeyCode::SLASH, ModifierFlag::OPTION_R, KeyCode::VK_CHANGE_INPUTSOURCE_US</autogen>
   </item>
 
 </root>
