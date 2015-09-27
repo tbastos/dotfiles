@@ -20,14 +20,14 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Use vimproc for async command execution
 NeoBundle 'Shougo/vimproc.vim', {
-\ 'build' : {
-\     'windows' : 'tools\\update-dll-mingw',
-\     'cygwin' : 'make -f make_cygwin.mak',
-\     'mac' : 'make -f make_mac.mak',
-\     'linux' : 'make',
-\     'unix' : 'gmake',
-\    },
-\ }
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'linux' : 'make',
+      \     'unix' : 'gmake',
+      \    },
+      \ }
 "}}}
 
 " General
@@ -42,7 +42,6 @@ NeoBundle 'matchit.zip'
 
 " UI
 NeoBundle 'bling/vim-airline'
-NeoBundle 'airblade/vim-gitgutter'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'bronson/vim-trailing-whitespace'
 NeoBundle 'yonchu/accelerated-smooth-scroll'
@@ -63,11 +62,11 @@ NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'rking/ag.vim'
 
-" Browsing
+" Shell
 NeoBundle 'Shougo/vimfiler.vim'
-
-" Git
-NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tyru/open-browser.vim'
+"NeoBundle 'mattn/webapi-vim'
 
 " Undo Tree
 NeoBundle 'mbbill/undotree'
@@ -110,14 +109,15 @@ NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'honza/vim-snippets'
 
+" Git
+NeoBundle 'airblade/vim-gitgutter'
+NeoBundle 'tpope/vim-fugitive'
+
+" Testing
+NeoBundle 'janko-m/vim-test'
+
 " Code Analysis
 NeoBundle 'scrooloose/syntastic'
-
-" Shell
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'tyru/open-browser.vim'
-"NeoBundle 'mattn/webapi-vim'
 
 " C/C++
 " NeoBundle 'octol/vim-cpp-enhanced-highlight'
@@ -128,6 +128,9 @@ NeoBundle 'rhysd/vim-clang-format'
 " Lua
 NeoBundle 'tbastos/vim-lua'
 
+" Text
+NeoBundleLazy 'gabrielelana/vim-markdown', {'autoload':{'filetypes':['markdown']}}
+
 " Web
 NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
 NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
@@ -136,13 +139,6 @@ NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']
 NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
 NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
 NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
-
-" Rails
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-bundler'
-
-" Text
-NeoBundleLazy 'plasticboy/vim-markdown', {'autoload':{'filetypes':['markdown']}}
 
 " NeoBundle End {{{2
 call neobundle#end()
@@ -272,8 +268,8 @@ inoremap <F6> <ESC>:set paste!<CR>a
 " Default Make (builds the project)
 nnoremap M :Make<CR>
 
-" Default Dispatch (usually invokes tests)
-nnoremap <Leader>t :Dispatch<CR>
+" Default Dispatch
+nnoremap K :Dispatch<CR>
 
 " Custom Make/Dispatch (prompts for arguments)
 nnoremap <Leader>m :Make<Space>
@@ -327,8 +323,8 @@ nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gm :Gmove<Space>
 nnoremap <Leader>gb :Git branch<Space>
 nnoremap <Leader>go :Git checkout<Space>
-nnoremap <Leader>gp :Dispatch! git push<CR>
-nnoremap <Leader>gP :Dispatch! git pull<CR>
+nnoremap <Leader>gp :Gpush<CR>
+nnoremap <Leader>gP :Gpull<CR>
 
 " Searching and Movement -------------------------------------------{{{1
 
@@ -425,7 +421,7 @@ augroup ft_all
   au!
   " Remember last location in file, but not for commit messages
   au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 &&
-    \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
+        \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
 augroup END
 
 " Assembly {{{2
@@ -443,11 +439,8 @@ augroup END
 " Lua {{{2
 augroup ft_lua
   au!
-  au FileType lua setlocal foldmethod=syntax | let b:dispatch = 'busted --output=plainterminal --suppress-pending'
+  au FileType lua setlocal foldmethod=syntax "| let b:dispatch = 'busted --output=plainterminal --suppress-pending'
 augroup END
-
-" Text {{{2
-let g:vim_markdown_frontmatter=1
 
 " Vim {{{2
 augroup ft_vim
@@ -482,46 +475,51 @@ let g:clang_format#auto_format_on_insert_leave = 1
 
 let g:clang_format#code_style = "LLVM"
 let g:clang_format#style_options = {
-\ "Language" : "Cpp",
-\ "Standard" : "Cpp11",
-\ "TabWidth" : 2,
-\ "DerivePointerBinding" : "false",
-\ "PointerBindsToType" : "true",
-\ }
+      \ "Language" : "Cpp",
+      \ "Standard" : "Cpp11",
+      \ "TabWidth" : 2,
+      \ "DerivePointerBinding" : "false",
+      \ "PointerBindsToType" : "true",
+      \ }
 
 augroup ClangFormatSettings
   au!
   au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
 augroup END
 
-" Lua --------------------------------{{{2
+" Indent Guides (<leader>ig)----------{{{2
 
-let g:lua_check_syntax = 0
-let g:lua_check_globals = 0
-let g:lua_complete_omni = 1
-let g:lua_safe_omni_modules = 1
+let g:indent_guides_start_level = 2
+" let g:indent_guides_guide_size = 1
 
 " NeoComplete ------------------------{{{2
 
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_auto_select = 1
 
 let g:neocomplete#data_directory=s:get_cache_dir('neocomplete')
 
-" Ctrl-J/K selects entries from the pum
-inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
+" Complete using <TAB> and cancel using C-E
+inoremap <expr><C-e> neocomplete#cancel_popup()
 
-" <CR> closes pum
+" <CR> cancels popup and inserts <CR>
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  " return neocomplete#close_popup() . "\<CR>"
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+  return neocomplete#cancel_popup() . "\<CR>"
 endfunction
+
+" C-J/K selects entries from the popup menu
+inoremap <C-j> <C-n>
+inoremap <C-k> <C-p>
+
+" C-H undoes the completion; C-L completes the common substring
+inoremap <expr><C-h> neocomplete#undo_completion()
+inoremap <expr><C-l> neocomplete#complete_common_string()
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown,mkd setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -531,9 +529,9 @@ if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
 let g:neocomplete#sources#omni#input_patterns.c =
-\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
 let g:neocomplete#sources#omni#input_patterns.cpp =
-\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+      \ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 " NeoMRU -----------------------------{{{2
 
@@ -548,18 +546,13 @@ let g:neosnippet#enable_snipmate_compatibility = 1
 let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
 let g:neosnippet#data_directory=s:get_cache_dir('neosnippet')
 
-" Plugin key-mappings.
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
+" Expand snippets using <TAB>
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: pumvisible() ? neocomplete#close_popup() : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+      \ "\<Plug>(neosnippet_expand_or_jump)"
+      \: "\<TAB>"
 
 " Conceal markers.
 if has('conceal')
@@ -605,6 +598,20 @@ let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
 let g:syntastic_lua_checkers = ["luac", "luacheck"]
 let g:syntastic_lua_luacheck_args = "--no-unused-args"
 
+" Test -------------------------------{{{2
+
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>l :TestLast<CR>
+nmap <silent> <leader>g :TestVisit<CR>
+
+" if has("gui_macvim")
+"   let test#strategy = "iterm"
+" else
+  let test#strategy = "dispatch"
+" endif
+
 " Unite ------------------------------{{{2
 
 " Disable trailing whitespace plugin for unite views
@@ -618,17 +625,13 @@ call unite#filters#sorter_default#use(['sorter_rank'])
 call unite#custom#source('outline,line,grep', 'matchers', ['matcher_fuzzy'])
 call unite#custom#source('outline,line,grep', 'sorters', ['sorter_rank'])
 
-" Use 'wildignore' patterns to ignore files in file_rec
-call unite#custom#source('file_rec', 'ignore_globs', split(&wildignore, ','))
-
 " Prettier prompt
 call unite#custom#profile('default', 'context', {
-\   'start_insert': 1,
-\   'direction': 'botright',
-\   'prompt': '» ',
-\   'prompt_direction': 'top',
-\ })
-" \   'short_source_names': 1,
+      \   'start_insert': 1,
+      \   'direction': 'botright',
+      \   'prompt': '» ',
+      \   'prompt_direction': 'top',
+      \ })
 
 " Better time formats
 let g:unite_source_buffer_time_format = "%Y-%m-%d  %H:%M:%S "
@@ -641,10 +644,14 @@ if executable('ag')
   let g:unite_source_grep_command = 'ag'
   let g:unite_source_grep_default_opts = '--line-numbers --nocolor --nogroup'
   let g:unite_source_grep_recursive_opt = ''
+  let g:unite_source_rec_async_command =
+        \ ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', '']
+
 elseif executable('ack')
   let g:unite_source_grep_command = 'ack'
   let g:unite_source_grep_default_opts = '--no-heading --no-color -a -w'
   let g:unite_source_grep_recursive_opt = ''
+  let g:unite_source_rec_async_command = ['ack', '-f', '--nofilter']
 endif
 
 " Map space to the prefix for Unite
@@ -705,40 +712,38 @@ function! s:unite_settings()
   imap <buffer> <C-j> <C-n>
   imap <buffer> <C-k> <C-p>
 
+  " Clear cache / redraw
+  imap <buffer> <C-a> <Plug>(unite_redraw)
+
 endfunction
 
 " VimFiler ---------------------------{{{2
 
 let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_data_directory = s:get_cache_dir('vimshell')
+let g:vimfiler_data_directory = s:get_cache_dir('vimfiler')
 let g:vimfiler_time_format = "%Y-%m-%d  %H:%M:%S"
 let g:vimfiler_tree_leaf_icon = ' '
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_marked_file_icon = '✓'
 
-" VimShell ---------------------------{{{2
-
-let g:vimshell_data_directory = s:get_cache_dir('vimshell')
-let g:vimshell_right_prompt='getcwd()'
-
 " Theme ------------------------------------------------------------{{{1
 
 set background=light
 
 let g:theme_default = {
-\  'typeface': 'Anonymice Powerline',
-\  'font_size': 13,
-\  'linespace': 1,
-\  'colorscheme': 'solarized',
-\ }
+      \  'typeface': 'Anonymice Powerline',
+      \  'font_size': 13,
+      \  'linespace': 1,
+      \  'colorscheme': 'solarized',
+      \ }
 
 let g:theme_pencil = {
-\  'typeface': 'Anonymice Powerline',
-\  'font_size': 15,
-\  'linespace': 3,
-\  'colorscheme': 'pencil',
-\ }
+      \  'typeface': 'Anonymice Powerline',
+      \  'font_size': 15,
+      \  'linespace': 3,
+      \  'colorscheme': 'pencil',
+      \ }
 
 function! SetTheme(t)
   let &guifont = a:t.typeface . ':h' . a:t.font_size
@@ -781,9 +786,9 @@ end
 
 " Distraction-Free Text Editing ------{{{2
 
-nmap <Leader>G :Goyo<CR>
-nmap <Leader>L :Limelight!!<CR>
-nmap <Leader>T :call SetTheme(g:theme_pencil)<CR>:Goyo<CR>
+nmap <LocalLeader>g :Goyo<CR>
+nmap <LocalLeader>l :Limelight!!<CR>
+nmap <LocalLeader>t :call SetTheme(g:theme_pencil)<CR>:Goyo<CR>
 
 " let g:limelight_default_coefficient = 0.3
 
