@@ -252,7 +252,7 @@ nnoremap <c-q> :BD<CR>
 nnoremap <Leader>bo :Wipeout<CR>
 
 " U to redo (much better than c-r)
-nnoremap U :redo<cr>
+nnoremap U :redo<CR>
 
 " FN keys
 nnoremap <F1> :Startify<CR>
@@ -273,8 +273,8 @@ nnoremap <Leader>m :Make<Space>
 nnoremap <Leader>d :Dispatch<Space>
 
 " Close/Open the quickfix window
-nnoremap <Leader>q :cclose
-nnoremap <Leader>Q :copen
+nnoremap <Leader>q :cclose<CR>
+nnoremap <Leader>Q :copen<CR>
 
 " Navigate the quickfix list
 nnoremap <left>  :cprev<CR>zvzz
@@ -551,7 +551,7 @@ endif
 " Startify ---------------------------{{{2
 
 let g:startify_enable_special         = 0
-let g:startify_files_number           = 15
+let g:startify_files_number           = 10
 let g:startify_relative_path          = 1
 let g:startify_change_to_vcs_root     = 1
 let g:startify_session_persistence    = 1
@@ -568,6 +568,9 @@ let g:startify_list_order = [
       \ ['  Recent files:'],
       \ 'files',
       \ ]
+
+let g:startify_custom_header =
+      \ map(split(system('figlet Welcome'), '\n'), '"   ". v:val') + ['','']
 
 " Syntastic --------------------------{{{2
 

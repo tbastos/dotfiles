@@ -26,3 +26,5 @@
 [mergetool "vimdiff3"]
   cmd = vim -g -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 
+[push]
+	default = simple
