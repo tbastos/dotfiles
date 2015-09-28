@@ -40,13 +40,18 @@ NeoBundle 'artnez/vim-wipeout'
 NeoBundle 'bufkill.vim'
 NeoBundle 'matchit.zip'
 
+" Shell
+NeoBundle 'Shougo/vimfiler.vim'
+NeoBundle 'tpope/vim-dispatch'
+NeoBundle 'tyru/open-browser.vim'
+"NeoBundle 'mattn/webapi-vim'
+
 " UI
 NeoBundle 'bling/vim-airline'
+NeoBundle 't9md/vim-choosewin' " visual window selection
 NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'bronson/vim-trailing-whitespace'
-NeoBundle 'yonchu/accelerated-smooth-scroll'
+NeoBundle 'ntpeters/vim-better-whitespace'
 NeoBundle 'regedarek/ZoomWin' " zoom in/out a split with <c-w>-o
-NeoBundle 'milkypostman/vim-togglelist' " toggle quickfix/location lists
 NeoBundle 'junegunn/goyo.vim' " distraction free editing
 NeoBundle 'junegunn/limelight.vim' " focused writing
 
@@ -61,12 +66,6 @@ NeoBundle 'Shougo/unite-help'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'rking/ag.vim'
-
-" Shell
-NeoBundle 'Shougo/vimfiler.vim'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'tyru/open-browser.vim'
-"NeoBundle 'mattn/webapi-vim'
 
 " Undo Tree
 NeoBundle 'mbbill/undotree'
@@ -257,13 +256,11 @@ nnoremap U :redo<cr>
 
 " FN keys
 nnoremap <F1> :Startify<CR>
-nnoremap <F2> :VimFilerBufferDir<CR>
+nnoremap <F2> :VimFilerExplorer<CR>
 nnoremap <F3> :UndotreeToggle<CR>
 noremap  <F4> :TagbarToggle<CR>
 inoremap <F4> <ESC>:TagbarToggle<CR>a
 nnoremap <F5> :SClose<CR>
-noremap  <F6> :set paste!<CR>
-inoremap <F6> <ESC>:set paste!<CR>a
 
 " Default Make (builds the project)
 nnoremap M :Make<CR>
@@ -274,6 +271,10 @@ nnoremap K :Dispatch<CR>
 " Custom Make/Dispatch (prompts for arguments)
 nnoremap <Leader>m :Make<Space>
 nnoremap <Leader>d :Dispatch<Space>
+
+" Close/Open the quickfix window
+nnoremap <Leader>q :cclose
+nnoremap <Leader>Q :copen
 
 " Navigate the quickfix list
 nnoremap <left>  :cprev<CR>zvzz
@@ -290,9 +291,8 @@ nnoremap <c-\> :split<CR>
 " Switch to alternate file
 nnoremap <c-a> <c-^>
 
-" Cycle between windows (next/previous)
-nnoremap <c-x> <c-w>w
-nnoremap <c-z> <c-w>p
+" Jump to another window (visual selection)
+nmap  -  <Plug>(choosewin)
 
 " Move cursor between windows (directionally)
 nnoremap <c-h> <c-w>h
@@ -305,9 +305,6 @@ nnoremap <c-w>h <c-w>H
 nnoremap <c-w>j <c-w>J
 nnoremap <c-w>k <c-w>K
 nnoremap <c-w>l <c-w>L
-
-" Toggle spell checking
-nnoremap <LocalLeader>s :setlocal spell!<CR>
 
 " Fugitive
 nnoremap <Leader>ga :Git add %:p<CR><CR>
@@ -367,14 +364,6 @@ vnoremap <silent> * :call VisualSelection('f', '')<CR>
 vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
 " Editing and Formatting -------------------------------------------{{{1
-
-" Upper/lower word
-nmap <Leader>u mQviwU`Q
-nmap <Leader>l mQviwu`Q
-
-" Upper/lower first char of word
-nmap <Leader>U mQgewvU`Q
-nmap <Leader>L mQgewvu`Q
 
 " Join inverted (move current line to the end of the next line)
 nmap <Leader>j ]ekJ
@@ -453,7 +442,7 @@ augroup END
 augroup ft_xml
   au!
   " Indent tag
-  au FileType xml nnoremap <buffer> <localleader>= Vat=
+  au FileType xml nnoremap <buffer> <LocalLeader>= Vat=
 augroup END
 
 " Plugin Options ---------------------------------------------------{{{1
@@ -487,7 +476,7 @@ augroup ClangFormatSettings
   au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
 augroup END
 
-" Indent Guides (<leader>ig)----------{{{2
+" Indent Guides (<Leader>ig)----------{{{2
 
 let g:indent_guides_start_level = 2
 " let g:indent_guides_guide_size = 1
@@ -561,6 +550,7 @@ endif
 
 " Startify ---------------------------{{{2
 
+let g:startify_enable_special         = 0
 let g:startify_files_number           = 15
 let g:startify_relative_path          = 1
 let g:startify_change_to_vcs_root     = 1
@@ -568,7 +558,7 @@ let g:startify_session_persistence    = 1
 let g:startify_session_delete_buffers = 1
 
 let g:startify_session_dir = '~/.vim/.session'
-let g:startify_bookmarks = [ '~/.vimrc', '~/Work' ]
+let g:startify_bookmarks = [ '~/.dotfiles/vim/vimrc' ]
 
 let g:startify_list_order = [
       \ ['  Bookmarks:'],
@@ -600,22 +590,19 @@ let g:syntastic_lua_luacheck_args = "--no-unused-args"
 
 " Test -------------------------------{{{2
 
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
-nmap <silent> <leader>l :TestLast<CR>
-nmap <silent> <leader>g :TestVisit<CR>
+nmap <silent> <Leader>t :TestNearest<CR>
+nmap <silent> <Leader>T :TestFile<CR>
+nmap <silent> <Leader>a :TestSuite<CR>
+nmap <silent> <Leader>l :TestLast<CR>
+nmap <silent> <Leader>v :TestVisit<CR>
 
-" if has("gui_macvim")
-"   let test#strategy = "iterm"
-" else
+if has("gui_macvim")
+  let test#strategy = "iterm"
+else
   let test#strategy = "dispatch"
-" endif
+endif
 
 " Unite ------------------------------{{{2
-
-" Disable trailing whitespace plugin for unite views
-let g:extra_whitespace_ignored_filetypes = [ 'unite' ]
 
 " Fuzzy match by default
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -725,16 +712,18 @@ let g:vimfiler_time_format = "%Y-%m-%d  %H:%M:%S"
 let g:vimfiler_tree_leaf_icon = ' '
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_marked_file_icon = '✓'
+let g:vimfiler_marked_file_icon = '*'
+
+" Disable trailing whitespace plugin
+let g:better_whitespace_filetypes_blacklist+=['vimfiler']
 
 " Theme ------------------------------------------------------------{{{1
-
-set background=light
 
 let g:theme_default = {
       \  'typeface': 'Anonymice Powerline',
       \  'font_size': 13,
       \  'linespace': 1,
+      \  'background': 'dark',
       \  'colorscheme': 'solarized',
       \ }
 
@@ -742,12 +731,14 @@ let g:theme_pencil = {
       \  'typeface': 'Anonymice Powerline',
       \  'font_size': 15,
       \  'linespace': 3,
+      \  'background': 'light',
       \  'colorscheme': 'pencil',
       \ }
 
 function! SetTheme(t)
   let &guifont = a:t.typeface . ':h' . a:t.font_size
   let &linespace = a:t.linespace
+  let &background = a:t.background
   execute 'colorscheme ' . a:t.colorscheme
 endfunction
 
@@ -778,8 +769,12 @@ if has("gui_running")
   if has("gui_macvim")
     let macvim_skip_colorscheme = 1
     let macvim_skip_cmd_opt_movement = 1
-    " Go back to iTerm when the last window closes
-    " autocmd VimLeave * :!open -a iTerm
+
+    " change default startup dir
+    autocmd VimEnter *  if !argc() | cd ~/Work | endif
+
+    " go back to iTerm2 when the last window closes
+    autocmd VimLeave * :!open -a iTerm2
   endif
 end
 "}}}
