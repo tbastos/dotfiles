@@ -255,12 +255,12 @@ nnoremap <Leader>bo :Wipeout<CR>
 nnoremap U :redo<CR>
 
 " FN keys
-nnoremap <F1> :Startify<CR>
-nnoremap <F2> :VimFilerExplorer<CR>
-nnoremap <F3> :UndotreeToggle<CR>
-noremap  <F4> :TagbarToggle<CR>
-inoremap <F4> <ESC>:TagbarToggle<CR>a
-nnoremap <F5> :SClose<CR>
+nnoremap <silent> <F1> :Startify<CR>
+nnoremap <silent> <F2> :VimFilerExplorer<CR>
+nnoremap <silent> <F3> :UndotreeToggle<CR>
+noremap  <silent> <F4> :TagbarToggle<CR>
+inoremap <silent> <F4> <ESC>:TagbarToggle<CR>a
+nnoremap <silent> <F5> :SClose<CR>
 
 " Default Make (builds the project)
 nnoremap M :Make<CR>
@@ -273,8 +273,8 @@ nnoremap <Leader>m :Make<Space>
 nnoremap <Leader>d :Dispatch<Space>
 
 " Close/Open the quickfix window
-nnoremap <Leader>q :cclose<CR>
-nnoremap <Leader>Q :copen<CR>
+nnoremap <silent> <Leader>q :cclose<CR>
+nnoremap <silent> <Leader>Q :copen<CR>
 
 " Navigate the quickfix list
 nnoremap <left>  :cprev<CR>zvzz
@@ -447,12 +447,16 @@ augroup END
 
 " Plugin Options ---------------------------------------------------{{{1
 
-" BufKill -----------------------------{{{2
+" Better Whitespace ------------------{{{2
+
+let g:better_whitespace_filetypes_blacklist+=['startify','vimfiler']
+
+" BufKill ----------------------------{{{2
 
 let g:BufKillOverrideCtrlCaret = 1
 let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'cancel'
 
-" Clang Completion (marching) ---------{{{2
+" Clang Completion (marching) --------{{{2
 
 let g:marching_enable_neocomplete = 1
 let g:marching_clang_command_option = "-std=c++11 -stdlib=libc++"
@@ -551,7 +555,7 @@ endif
 " Startify ---------------------------{{{2
 
 let g:startify_enable_special         = 0
-let g:startify_files_number           = 10
+let g:startify_files_number           = 15
 let g:startify_relative_path          = 1
 let g:startify_change_to_vcs_root     = 1
 let g:startify_session_persistence    = 1
@@ -568,6 +572,10 @@ let g:startify_list_order = [
       \ ['  Recent files:'],
       \ 'files',
       \ ]
+
+let g:startify_custom_indices =
+      \ map(range(0,9), 'string(v:val)') +
+      \ map(range(char2nr('A'),char2nr('Z')), 'nr2char(v:val)')
 
 let g:startify_custom_header =
       \ map(split(system('figlet Welcome'), '\n'), '"   ". v:val') + ['','']
@@ -717,9 +725,6 @@ let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_marked_file_icon = '*'
 
-" Disable trailing whitespace plugin
-let g:better_whitespace_filetypes_blacklist+=['vimfiler']
-
 " Theme ------------------------------------------------------------{{{1
 
 let g:theme_default = {
@@ -762,6 +767,8 @@ augroup END
 let g:airline_powerline_fonts=1
 
 " GitGutter
+
+let g:gitgutter_max_signs = 2048
 " let g:gitgutter_sign_column_always = 1
 
 " GUI Options ------------------------{{{2
