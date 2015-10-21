@@ -48,10 +48,11 @@ NeoBundle 'tyru/open-browser.vim'
 
 " UI
 NeoBundle 'bling/vim-airline'
-NeoBundle 't9md/vim-choosewin' " visual window selection
 NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'ntpeters/vim-better-whitespace'
+NeoBundle 't9md/vim-choosewin' " visual window selection
 NeoBundle 'regedarek/ZoomWin' " zoom in/out a split with <c-w>-o
+NeoBundle 'mbbill/undotree'
+NeoBundle 'majutsushi/tagbar'
 NeoBundle 'junegunn/goyo.vim' " distraction free editing
 NeoBundle 'junegunn/limelight.vim' " focused writing
 
@@ -60,41 +61,37 @@ NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'reedes/vim-colors-pencil'
 NeoBundle 'kergoth/vim-hilinks' " :HLT! for debugging syntax highlighting
 
-" Search
+" Search and Motion
+NeoBundle 'justinmk/vim-sneak'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/unite-help'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'rking/ag.vim'
 
-" Undo Tree
-NeoBundle 'mbbill/undotree'
-
-" Tags
-NeoBundle 'majutsushi/tagbar'
-
-" Motions
-NeoBundle 'justinmk/vim-sneak'
-"NeoBundle 'Lokaltog/vim-easymotion'
-
 " Text Objects
-NeoBundle 'tpope/vim-surround'
 NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'kana/vim-textobj-entire' " ae, ie
-NeoBundle 'kana/vim-textobj-function' " af, if
-NeoBundle 'kana/vim-textobj-lastpat' " a/, i/, a?, i?
-NeoBundle 'kana/vim-textobj-line' " al, il
-NeoBundle 'kana/vim-textobj-indent' " ai, ii, aI, iI
-NeoBundle 'lucapette/vim-textobj-underscore' " a_, i_
-NeoBundle 'glts/vim-textobj-comment' " ac, ic, aC, iC
-NeoBundle 'nelstrom/vim-textobj-rubyblock' " ar, ir
-NeoBundle 'thinca/vim-textobj-function-javascript'
+NeoBundle 'kana/vim-textobj-line' " al  il
+NeoBundle 'kana/vim-textobj-entire' " ae  ie
+NeoBundle 'saaguero/vim-textobj-pastedtext' " gb
+NeoBundle 'kana/vim-textobj-lastpat' " a/  i/  a?  i?
+NeoBundle 'kana/vim-textobj-indent' " ai  ii  aI  iI
+NeoBundle 'thinca/vim-textobj-between' " af{char}  if{char}  (region between {char}s)
+NeoBundle 'beloglazov/vim-textobj-quotes' " aq  iq
+NeoBundle 'rhysd/vim-textobj-anyblock' " ab  ib  (quotes, (), {}, [] and <>)
+NeoBundle 'kana/vim-textobj-function' " aF  iF
+NeoBundle 'sgur/vim-textobj-parameter' " a,  i,
+NeoBundle 'glts/vim-textobj-comment' " ac  ic
+NeoBundle 'Julian/vim-textobj-variable-segment' " av  iv  (word_in_identifier; camelCaseToo)
+NeoBundle 'whatyouhide/vim-textobj-xmlattr' " ax  ix
 
 " Editing and Formatting
+NeoBundle 'kana/vim-operator-user'
+NeoBundle 'kana/vim-operator-replace'
+NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-commentary.git'
 NeoBundle 'tommcdo/vim-exchange'
-" NeoBundle 'jiangmiao/auto-pairs' " conflicts with several other plugins
 NeoBundle 'godlygeek/tabular'
 NeoBundle 'Chiel92/vim-autoformat'
 NeoBundle 'junegunn/vim-easy-align'
@@ -121,23 +118,26 @@ NeoBundle 'scrooloose/syntastic'
 " C/C++
 " NeoBundle 'octol/vim-cpp-enhanced-highlight'
 NeoBundle 'osyo-manga/vim-marching' " async clang code completion
-NeoBundle 'kana/vim-operator-user' " required by clang-format
 NeoBundle 'rhysd/vim-clang-format'
+
+" JavaScript
+NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']}}
+NeoBundleLazy 'marijnh/tern_for_vim', {'autoload':{'filetypes':['javascript']}, 'build': 'npm install'}
+NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript']}}
+NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
 
 " Lua
 NeoBundle 'tbastos/vim-lua'
 
 " Text
-NeoBundleLazy 'gabrielelana/vim-markdown', {'autoload':{'filetypes':['markdown']}}
+NeoBundleLazy 'plasticboy/vim-markdown', {'autoload':{'filetypes':['markdown']}}
+NeoBundleLazy 'kannokanno/previm', {'autoload':{'filetypes':['markdown']}}
 
 " Web
-NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
-NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less','styl']}}
 NeoBundleLazy 'othree/html5.vim', {'autoload':{'filetypes':['html']}}
-NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']}}
-NeoBundleLazy 'kchmck/vim-coffee-script', {'autoload':{'filetypes':['coffee']}}
-NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript','coffee','ls','typescript']}}
-NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
+NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less']}}
+NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
+NeoBundleLazy 'mxw/vim-jsx', {'autoload':{'filetypes':['javascript']}}
 
 " NeoBundle End {{{2
 call neobundle#end()
@@ -154,6 +154,7 @@ set complete-=i " autocomplete should not scan included files (slow)
 set completeopt=longest,menuone,preview
 set display+=lastline " show part of the last line when it doesn't fit
 set encoding=utf-8
+set nofoldenable
 set foldlevelstart=99
 set formatoptions+=j " delete comment char when joining commented lines
 set hidden  " buffer becomes hidden when it is abandoned
@@ -164,7 +165,7 @@ set modelines=0
 set nrformats-=octal " no octal input
 set number
 set ruler
-set sessionoptions=blank,buffers,curdir,folds,help,localoptions,options,winsize
+set sessionoptions=blank,curdir,folds,help,winpos,winsize
 set shortmess+=I " disable welcome screen
 set showcmd " show partial commands at far BR of the screen
 set showfulltag
@@ -256,25 +257,28 @@ nnoremap U :redo<CR>
 
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
-nnoremap <silent> <F2> :VimFilerExplorer<CR>
+nnoremap <silent> <F2> :VimFilerExplorer -force-quit<CR>
 nnoremap <silent> <F3> :UndotreeToggle<CR>
 noremap  <silent> <F4> :TagbarToggle<CR>
 inoremap <silent> <F4> <ESC>:TagbarToggle<CR>a
 nnoremap <silent> <F5> :SClose<CR>
 
-" Default Make (builds the project)
-nnoremap M :Make<CR>
+" Live preview (Markdown)
+nnoremap <silent> <Leader>p :PrevimOpen<CR>
 
-" Default Dispatch
-nnoremap K :Dispatch<CR>
+" Default Make (usually builds the project)
+nnoremap M :Make!<CR>
+
+" Default Dispatch (usually runs the project)
+nnoremap K :Dispatch!<CR>
 
 " Custom Make/Dispatch (prompts for arguments)
-nnoremap <Leader>m :Make<Space>
-nnoremap <Leader>d :Dispatch<Space>
+nnoremap <Leader>m :Make!<Space>
+nnoremap <Leader>d :Dispatch!<Space>
 
 " Close/Open the quickfix window
 nnoremap <silent> <Leader>q :cclose<CR>
-nnoremap <silent> <Leader>Q :copen<CR>
+nnoremap <silent> <Leader>Q :Copen<CR>
 
 " Navigate the quickfix list
 nnoremap <left>  :cprev<CR>zvzz
@@ -323,7 +327,7 @@ nnoremap <Leader>go :Git checkout<Space>
 nnoremap <Leader>gp :Gpush<CR>
 nnoremap <Leader>gP :Gpull<CR>
 
-" Searching and Movement -------------------------------------------{{{1
+" Search and Movement ----------------------------------------------{{{1
 
 set hlsearch   " highlight matches
 set incsearch  " incremental searching
@@ -353,9 +357,6 @@ noremap H ^
 noremap L $
 vnoremap L g_
 
-" Select the text that was last edited/pasted
-nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
-
 " Select the contents of the current line, excluding indentation.
 nnoremap vv ^vg_
 
@@ -363,16 +364,44 @@ nnoremap vv ^vg_
 vnoremap <silent> * :call VisualSelection('f', '')<CR>
 vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
-" Editing and Formatting -------------------------------------------{{{1
+" 2-character Sneak (default)
+nmap s <Plug>Sneak_s
+nmap S <Plug>Sneak_S
+" visual-mode
+xmap s <Plug>Sneak_s
+xmap S <Plug>Sneak_S
+" operator-pending-mode
+omap s <Plug>Sneak_s
+omap S <Plug>Sneak_S
+
+" Editing ----------------------------------------------------------{{{1
+
+" Use <Space>[] to add spaces in normal mode (complements vim-unimpaired)
+nnoremap <Space>[ i<Space><ESC>
+nnoremap <Space>] a<Space><ESC>
 
 " Join inverted (move current line to the end of the next line)
 nmap <Leader>j ]ekJ
 
-" Delete/change inside/all argument (in a comma-separated list)
-nmap di, f,dT,
-nmap ci, f,cT,
-nmap da, f,ld2F,i,<ESC>l
-nmap ca, f,ld2F,i,<ESC>a
+" Shortcut for operations on the nearest pair of quotes (cq, dq, etc)
+xmap q iq
+omap q iq
+
+" Paste over a text-obj (register 0)
+map <C-p> "0<Plug>(operator-replace)
+
+" Surround operators
+map <silent><C-s>a <Plug>(operator-surround-append)
+map <silent><C-s>d <Plug>(operator-surround-delete)
+map <silent><C-s>c <Plug>(operator-surround-replace)
+
+" Inner-most surround (among quotes, (), {}, [], <>, etc.)
+nmap <silent><C-s><C-d> <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
+nmap <silent><C-s><C-s> <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
+
+" Surround between a char
+nmap <silent><C-s>db <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
+nmap <silent><C-s>cb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
 
 " Start EasyAlign in visual mode (e.g. vip<Enter>)
 vmap <Enter> <Plug>(EasyAlign)
@@ -384,27 +413,7 @@ nmap ga <Plug>(EasyAlign)
 vnoremap < <gv
 vnoremap > >gv
 
-if has("gui_macvim") && has("gui_running")
-  " Command-[] changes indentation, keeps original selection in visual mode
-  vmap <D-]> >gv
-  vmap <D-[> <gv
-  nmap <D-]> >>
-  nmap <D-[> <<
-  omap <D-]> >>
-  omap <D-[> <<
-  imap <D-]> <Esc>>>i
-  imap <D-[> <Esc><<i
-
-  " Bubble single lines
-  nmap <D-k> [e
-  nmap <D-j> ]e
-
-  " Bubble multiple lines
-  vmap <D-k> [egv
-  vmap <D-j> ]egv
-endif
-
-" File-type-specific Configurations ---------------------------------{{{1
+" Filetype-specific Configurations ---------------------------------{{{1
 
 augroup ft_all
   au!
@@ -428,7 +437,7 @@ augroup END
 " Lua {{{2
 augroup ft_lua
   au!
-  au FileType lua setlocal foldmethod=syntax "| let b:dispatch = 'busted --output=plainterminal --suppress-pending'
+  au FileType lua setlocal foldmethod=syntax
 augroup END
 
 " Vim {{{2
@@ -438,18 +447,7 @@ augroup ft_vim
   au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
 augroup END
 
-" XML {{{2
-augroup ft_xml
-  au!
-  " Indent tag
-  au FileType xml nnoremap <buffer> <LocalLeader>= Vat=
-augroup END
-
-" Plugin Options ---------------------------------------------------{{{1
-
-" Better Whitespace ------------------{{{2
-
-let g:better_whitespace_filetypes_blacklist+=['startify','vimfiler']
+" Plugin-specific Configurations -----------------------------------{{{1
 
 " BufKill ----------------------------{{{2
 
@@ -484,6 +482,11 @@ augroup END
 
 let g:indent_guides_start_level = 2
 " let g:indent_guides_guide_size = 1
+
+" Markdown ---------------------------{{{2
+
+let g:vim_markdown_no_default_key_mappings=1
+let g:vim_markdown_frontmatter=1
 
 " NeoComplete ------------------------{{{2
 
@@ -547,10 +550,20 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
       \ "\<Plug>(neosnippet_expand_or_jump)"
       \: "\<TAB>"
 
+" Trigger a snippet on a visual selection
+xmap <TAB> <Plug>(neosnippet_expand_target)
+
 " Conceal markers.
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+" Sneak ------------------------------{{{2
+
+let g:sneak#s_next = 1
+let g:sneak#textobject_z = 0
+let g:sneak#use_ic_scs = 0
+let g:sneak#prompt = 'sneak>'
 
 " Startify ---------------------------{{{2
 
@@ -607,11 +620,9 @@ nmap <silent> <Leader>a :TestSuite<CR>
 nmap <silent> <Leader>l :TestLast<CR>
 nmap <silent> <Leader>v :TestVisit<CR>
 
-if has("gui_macvim")
-  let test#strategy = "iterm"
-else
-  let test#strategy = "dispatch"
-endif
+let test#strategy = "dispatch"
+
+let test#lua#busted#options = '--output=plainterminal --suppress-pending'
 
 " Unite ------------------------------{{{2
 
@@ -698,7 +709,7 @@ nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=command -default-action=edit
 " Search all Unite sources
 nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=sources source<CR>
 
-" Custom mappings for the unite buffer
+" Custom mappings unite buffers
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
 
@@ -751,9 +762,6 @@ function! SetTheme(t)
 endfunction
 
 call SetTheme(g:theme_default)
-
-" Resize splits when the window is resized
-autocmd VimResized * wincmd =
 
 " Show cursorline only in the current window
 augroup CursorLine

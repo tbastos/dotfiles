@@ -1,6 +1,22 @@
-snippet     ----
-abbr        Heading Comment
-options     head
-        -------------------------------------------------------------------------------
-        -- ${0:TARGET}
-        -------------------------------------------------------------------------------
+snippet ---
+abbr    Heading Comment
+options head
+  -------------------------------------------------------------------------------
+  -- ${0:TARGET}
+  -------------------------------------------------------------------------------
+
+snippet desc
+abbr    Busted describe() module
+options head indent
+  describe('Module ${1} should offer', function()
+    ${2}
+  end)
+
+
+snippet it
+abbr    Busted it()
+options head indent
+  it('${1}', function()
+   ${2}
+  end)
+
