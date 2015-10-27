@@ -244,7 +244,7 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 " Quit all windows
-nnoremap Q :qa<CR>
+noremap Q :qa<CR>
 
 " Close current buffer (unless it's open in another window)
 nnoremap <c-q> :BD<CR>
@@ -252,12 +252,12 @@ nnoremap <c-q> :BD<CR>
 " Close all hidden buffers (leave only active buffers open)
 nnoremap <Leader>bo :Wipeout<CR>
 
-" U to redo (much better than c-r)
+" U to redo (better than c-r)
 nnoremap U :redo<CR>
 
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
-nnoremap <silent> <F2> :VimFilerExplorer -force-quit<CR>
+nnoremap <silent> <F2> :VimFilerExplorer -force-hide<CR>
 nnoremap <silent> <F3> :UndotreeToggle<CR>
 noremap  <silent> <F4> :TagbarToggle<CR>
 inoremap <silent> <F4> <ESC>:TagbarToggle<CR>a
