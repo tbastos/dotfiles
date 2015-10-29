@@ -28,6 +28,10 @@ NeoBundle 'Shougo/vimproc.vim', {
       \     'unix' : 'gmake',
       \    },
       \ }
+
+" Increase time limit for installs
+let g:neobundle#install_process_timeout = 1500
+
 "}}}
 
 " General
@@ -98,12 +102,11 @@ NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'terryma/vim-expand-region'
 NeoBundle 'terryma/vim-multiple-cursors'
 
-" Code Completion
-NeoBundle 'Shougo/neocomplete.vim'
-
-" Snippets
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'honza/vim-snippets'
+" Code Completion and Snippets
+NeoBundle 'Raimondi/delimitMate' " auto-closes quotes, parens, brackets, etc.
+NeoBundle 'Valloric/YouCompleteMe', {'build': {'unix': './install.py --clang-completer --system-libclang --system-boost'}} " brew install boost-python
+" NeoBundle 'rdnetto/YCM-Generator' " provides :YcmGenerateConfig and :CCGenerateConfig
+NeoBundle 'SirVer/ultisnips'
 
 " Git
 NeoBundle 'airblade/vim-gitgutter'
@@ -115,10 +118,13 @@ NeoBundle 'janko-m/vim-test'
 " Code Analysis
 NeoBundle 'scrooloose/syntastic'
 
-" C/C++
-" NeoBundle 'octol/vim-cpp-enhanced-highlight'
-NeoBundle 'osyo-manga/vim-marching' " async clang code completion
+" C, C++ and Objective C
 NeoBundle 'rhysd/vim-clang-format'
+NeoBundleLazy 'jeaye/color_coded', {
+      \ 'build': {'unix': 'cmake . && make && make install'},
+      \ 'autoload': { 'filetypes' : ['c', 'cpp', 'objc', 'objcpp'] },
+      \ 'build_commands' : ['cmake', 'make']
+      \}
 
 " JavaScript
 NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']}}
@@ -130,7 +136,7 @@ NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
 NeoBundle 'tbastos/vim-lua'
 
 " Text
-NeoBundleLazy 'plasticboy/vim-markdown', {'autoload':{'filetypes':['markdown']}}
+NeoBundleLazy 'rcmdnk/vim-markdown', {'autoload':{'filetypes':['markdown']}}
 NeoBundleLazy 'kannokanno/previm', {'autoload':{'filetypes':['markdown']}}
 
 " Web
@@ -152,6 +158,8 @@ syntax enable
 set autoread " auto reload changed files (unless vim contains changes)
 set complete-=i " autocomplete should not scan included files (slow)
 set completeopt=longest,menuone,preview
+" set conceallevel=2
+" set concealcursor=niv
 set display+=lastline " show part of the last line when it doesn't fit
 set encoding=utf-8
 set nofoldenable
@@ -165,8 +173,8 @@ set modelines=0
 set nrformats-=octal " no octal input
 set number
 set ruler
-set sessionoptions=blank,curdir,folds,help,winpos,winsize
-set shortmess+=I " disable welcome screen
+set sessionoptions=blank,curdir,help,winpos,winsize
+set shortmess+=c " disable completion messages
 set showcmd " show partial commands at far BR of the screen
 set showfulltag
 set showmatch " highlight matching brackets
@@ -243,25 +251,38 @@ set wildignore+=*.DS_Store " OSX files
 let mapleader = ","
 let maplocalleader = "\\"
 
-" Quit all windows
-noremap Q :qa<CR>
-
-" Close current buffer (unless it's open in another window)
-nnoremap <c-q> :BD<CR>
-
-" Close all hidden buffers (leave only active buffers open)
-nnoremap <Leader>bo :Wipeout<CR>
-
 " U to redo (better than c-r)
 nnoremap U :redo<CR>
 
+" Ex mode = nope
+noremap Q <nop>
+
+" Quit all windows
+noremap QQ :qa<CR>
+noremap Q! :qa!<CR>
+
+" Quit current window
+noremap <C-q><C-w> :q<CR>
+
+" Close current buffer (unless it's open in another window)
+nnoremap <C-q><C-q> :BD<CR>
+
+" Close hidden buffers (leave only active buffers open)
+nnoremap <C-q><C-o> :Wipeout<CR>
+
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
-nnoremap <silent> <F2> :VimFilerExplorer -force-hide<CR>
+nnoremap <silent> <F2> :VimFilerExplorer -force-quit<CR>
 nnoremap <silent> <F3> :UndotreeToggle<CR>
 noremap  <silent> <F4> :TagbarToggle<CR>
 inoremap <silent> <F4> <ESC>:TagbarToggle<CR>a
-nnoremap <silent> <F5> :SClose<CR>
+" nnoremap <silent> <F5> :SClose<CR>
+
+" Write buffer (save)
+nnoremap <Leader>w :w<CR>
+
+" CD to current file's dir
+nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
 
 " Live preview (Markdown)
 nnoremap <silent> <Leader>p :PrevimOpen<CR>
@@ -296,7 +317,7 @@ nnoremap <c-\> :split<CR>
 nnoremap <c-a> <c-^>
 
 " Jump to another window (visual selection)
-nmap  -  <Plug>(choosewin)
+nmap - <Plug>(choosewin)
 
 " Move cursor between windows (directionally)
 nnoremap <c-h> <c-w>h
@@ -454,11 +475,6 @@ augroup END
 let g:BufKillOverrideCtrlCaret = 1
 let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'cancel'
 
-" Clang Completion (marching) --------{{{2
-
-let g:marching_enable_neocomplete = 1
-let g:marching_clang_command_option = "-std=c++11 -stdlib=libc++"
-
 " Clang Format -----------------------{{{2
 
 let g:clang_format#auto_formatexpr = 1
@@ -487,76 +503,6 @@ let g:indent_guides_start_level = 2
 
 let g:vim_markdown_no_default_key_mappings=1
 let g:vim_markdown_frontmatter=1
-
-" NeoComplete ------------------------{{{2
-
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_auto_select = 1
-
-let g:neocomplete#data_directory=s:get_cache_dir('neocomplete')
-
-" Complete using <TAB> and cancel using C-E
-inoremap <expr><C-e> neocomplete#cancel_popup()
-
-" <CR> cancels popup and inserts <CR>
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplete#cancel_popup() . "\<CR>"
-endfunction
-
-" C-J/K selects entries from the popup menu
-inoremap <C-j> <C-n>
-inoremap <C-k> <C-p>
-
-" C-H undoes the completion; C-L completes the common substring
-inoremap <expr><C-h> neocomplete#undo_completion()
-inoremap <expr><C-l> neocomplete#complete_common_string()
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.c =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
-let g:neocomplete#sources#omni#input_patterns.cpp =
-      \ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-" NeoMRU -----------------------------{{{2
-
-let g:neomru#file_mru_limit = 100
-let g:neomru#file_mru_path = s:get_cache_dir('neomru/file')
-let g:neomru#directory_mru_path = s:get_cache_dir('neomru/directory')
-
-" NeoSnippet -------------------------{{{2
-
-let g:neosnippet#disable_runtime_snippets = { '_' : 1 } " disable neosnippet-snippets
-let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets,~/.vim/snippets'
-let g:neosnippet#data_directory=s:get_cache_dir('neosnippet')
-
-" Expand snippets using <TAB>
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: pumvisible() ? neocomplete#close_popup() : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)"
-      \: "\<TAB>"
-
-" Trigger a snippet on a visual selection
-xmap <TAB> <Plug>(neosnippet_expand_target)
-
-" Conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
 
 " Sneak ------------------------------{{{2
 
@@ -676,11 +622,11 @@ nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=files buffer file_mru bookma
 " Search registers
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
-" Search buffers and recent files (switch...)
-nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files buffer file_mru<CR>
+" Search buffers and recent files (alternative files)
+nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=files buffer file_mru<CR>
 
-" Search the yank history
-nnoremap <silent> [unite]y :<C-u>Unite -buffer-name=yanks history/yank<CR>
+" Search snippets for insertion
+nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=ultisnips ultisnips<CR>
 
 " Search the outline
 nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
@@ -726,6 +672,24 @@ function! s:unite_settings()
 
 endfunction
 
+let g:neomru#file_mru_limit = 100
+let g:neomru#file_mru_path = s:get_cache_dir('neomru/file')
+let g:neomru#directory_mru_path = s:get_cache_dir('neomru/directory')
+
+" UltiSnips --------------------------{{{2
+
+let g:UltiSnipsEditSplit = 'vertical'
+let g:UltiSnipsSnippetsDir = $HOME.'/.vim/snips'
+let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
+let g:UltiSnipsEnableSnipMate = 0
+
+let g:UltiSnipsExpandTrigger = '<C-L>'
+let g:UltiSnipsJumpForwardTrigger = '<C-L>'
+let g:UltiSnipsJumpBackwardTrigger = '<C-H>'
+
+" Edit snippets
+nnoremap <Leader>s :UltiSnipsEdit<CR>
+
 " VimFiler ---------------------------{{{2
 
 let g:vimfiler_as_default_explorer = 1
@@ -735,6 +699,15 @@ let g:vimfiler_tree_leaf_icon = ' '
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_marked_file_icon = '*'
+
+" YouCompleteMe ----------------------{{{2
+
+let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
+
+let g:ycm_key_detailed_diagnostics = '<LocalLeader>d'
+
+nnoremap gt :YcmCompleter GoTo<CR>
 
 " Theme ------------------------------------------------------------{{{1
 
