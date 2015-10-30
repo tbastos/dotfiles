@@ -1,3 +1,3 @@
-" Write the original file inplace
-set backupcopy=yes
+" overwrite the original file
+setlocal backupcopy=yes
 

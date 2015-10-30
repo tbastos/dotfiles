@@ -2,156 +2,72 @@
 " Author: Thiago Bastos <tbastos@tbastos.com>
 " Source: https://github.com/tbastos/dotfiles/blob/master/vim/vimrc
 
-" Bundles ----------------------------------------------------------{{{1
+" Initialization -------------------------------------------------------------
 
-" NeoBundle Begin {{{2
+" Skip initialization for vim-tiny or vim-small.
+if 0 | endif
+
+let mapleader = ","
+let maplocalleader = "\\"
+
+" Minimal GUI
+if has('gui_running')
+  set guioptions=c
+  set relativenumber
+  if has("gui_macvim")
+    let macvim_skip_colorscheme = 1
+    let macvim_skip_cmd_opt_movement = 1
+  endif
+endif
+
+" Disable GetLatestVimPlugin.vim
+if !&verbose
+  let g:loaded_getscriptPlugin = 1
+endif
+
+" Disable default plugins
+let g:loaded_netrwPlugin = 1
+let g:loaded_matchparen = 1
+let g:loaded_2html_plugin = 1
+let g:loaded_vimballPlugin = 1
 
 if has('vim_starting')
   if &compatible
-    set nocompatible
+    set nocompatible " be iMproved
   endif
+  " Enable NeoBundle
   set runtimepath+=~/.vim/bundle/neobundle.vim/
+  " Default start directory
+  if !argc() | cd ~/Work | endif
+  let g:start_dir = getcwd()
 endif
 
-call neobundle#begin(expand('~/.vim/bundle'))
+" Used in plugins.vim
+function! GetCacheDir(suffix)
+  return '~/.vim/.cache/' . a:suffix
+endfunction
 
-" Let NeoBundle manage NeoBundle (required)
-NeoBundleFetch 'Shougo/neobundle.vim'
+" Bundles --------------------------------------------------------------------
 
-" Use vimproc for async command execution
-NeoBundle 'Shougo/vimproc.vim', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'linux' : 'make',
-      \     'unix' : 'gmake',
-      \    },
-      \ }
+" Increase time limit for bundle installs
+let g:neobundle#install_process_timeout = 900 " 15 minutes
 
-" Increase time limit for installs
-let g:neobundle#install_process_timeout = 1500
-
-"}}}
-
-" General
-NeoBundle 'mhinz/vim-startify'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-abolish' " :Subvert
-NeoBundle 'tpope/vim-eunuch' " UNIX helper commands
-NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'artnez/vim-wipeout'
-NeoBundle 'bufkill.vim'
-NeoBundle 'matchit.zip'
-
-" Shell
-NeoBundle 'Shougo/vimfiler.vim'
-NeoBundle 'tpope/vim-dispatch'
-NeoBundle 'tyru/open-browser.vim'
-"NeoBundle 'mattn/webapi-vim'
-
-" UI
-NeoBundle 'bling/vim-airline'
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 't9md/vim-choosewin' " visual window selection
-NeoBundle 'regedarek/ZoomWin' " zoom in/out a split with <c-w>-o
-NeoBundle 'mbbill/undotree'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'junegunn/goyo.vim' " distraction free editing
-NeoBundle 'junegunn/limelight.vim' " focused writing
-
-" Colors
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'reedes/vim-colors-pencil'
-NeoBundle 'kergoth/vim-hilinks' " :HLT! for debugging syntax highlighting
-
-" Search and Motion
-NeoBundle 'justinmk/vim-sneak'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/unite-help'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'rking/ag.vim'
-
-" Text Objects
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'kana/vim-textobj-line' " al  il
-NeoBundle 'kana/vim-textobj-entire' " ae  ie
-NeoBundle 'saaguero/vim-textobj-pastedtext' " gb
-NeoBundle 'kana/vim-textobj-lastpat' " a/  i/  a?  i?
-NeoBundle 'kana/vim-textobj-indent' " ai  ii  aI  iI
-NeoBundle 'thinca/vim-textobj-between' " af{char}  if{char}  (region between {char}s)
-NeoBundle 'beloglazov/vim-textobj-quotes' " aq  iq
-NeoBundle 'rhysd/vim-textobj-anyblock' " ab  ib  (quotes, (), {}, [] and <>)
-NeoBundle 'kana/vim-textobj-function' " aF  iF
-NeoBundle 'sgur/vim-textobj-parameter' " a,  i,
-NeoBundle 'glts/vim-textobj-comment' " ac  ic
-NeoBundle 'Julian/vim-textobj-variable-segment' " av  iv  (word_in_identifier; camelCaseToo)
-NeoBundle 'whatyouhide/vim-textobj-xmlattr' " ax  ix
-
-" Editing and Formatting
-NeoBundle 'kana/vim-operator-user'
-NeoBundle 'kana/vim-operator-replace'
-NeoBundle 'rhysd/vim-operator-surround'
-NeoBundle 'tpope/vim-endwise'
-NeoBundle 'tpope/vim-commentary.git'
-NeoBundle 'tommcdo/vim-exchange'
-NeoBundle 'godlygeek/tabular'
-NeoBundle 'Chiel92/vim-autoformat'
-NeoBundle 'junegunn/vim-easy-align'
-NeoBundle 'terryma/vim-expand-region'
-NeoBundle 'terryma/vim-multiple-cursors'
-
-" Code Completion and Snippets
-NeoBundle 'Raimondi/delimitMate' " auto-closes quotes, parens, brackets, etc.
-NeoBundle 'Valloric/YouCompleteMe', {'build': {'unix': './install.py --clang-completer --system-libclang --system-boost'}} " brew install boost-python
-" NeoBundle 'rdnetto/YCM-Generator' " provides :YcmGenerateConfig and :CCGenerateConfig
-NeoBundle 'SirVer/ultisnips'
-
-" Git
-NeoBundle 'airblade/vim-gitgutter'
-NeoBundle 'tpope/vim-fugitive'
-
-" Testing
-NeoBundle 'janko-m/vim-test'
-
-" Code Analysis
-NeoBundle 'scrooloose/syntastic'
-
-" C, C++ and Objective C
-NeoBundle 'rhysd/vim-clang-format'
-NeoBundleLazy 'jeaye/color_coded', {
-      \ 'build': {'unix': 'cmake . && make && make install'},
-      \ 'autoload': { 'filetypes' : ['c', 'cpp', 'objc', 'objcpp'] },
-      \ 'build_commands' : ['cmake', 'make']
-      \}
-
-" JavaScript
-NeoBundleLazy 'pangloss/vim-javascript', {'autoload':{'filetypes':['javascript']}}
-NeoBundleLazy 'marijnh/tern_for_vim', {'autoload':{'filetypes':['javascript']}, 'build': 'npm install'}
-NeoBundleLazy 'othree/javascript-libraries-syntax.vim', {'autoload':{'filetypes':['javascript']}}
-NeoBundleLazy 'elzr/vim-json', {'autoload':{'filetypes':['javascript','json']}}
-
-" Lua
-NeoBundle 'tbastos/vim-lua'
-
-" Text
-NeoBundleLazy 'rcmdnk/vim-markdown', {'autoload':{'filetypes':['markdown']}}
-NeoBundleLazy 'kannokanno/previm', {'autoload':{'filetypes':['markdown']}}
-
-" Web
-NeoBundleLazy 'othree/html5.vim', {'autoload':{'filetypes':['html']}}
-NeoBundleLazy 'ap/vim-css-color', {'autoload':{'filetypes':['css','scss','sass','less']}}
-NeoBundleLazy 'hail2u/vim-css3-syntax', {'autoload':{'filetypes':['css','scss','sass']}}
-NeoBundleLazy 'mxw/vim-jsx', {'autoload':{'filetypes':['javascript']}}
-
-" NeoBundle End {{{2
+call neobundle#begin()
+if neobundle#load_cache()
+  call neobundle#load_toml(expand('~/.vim/NeoBundle.toml'))
+  call neobundle#load_toml(expand('~/.vim/NeoBundleLazy.toml'), {'lazy': 1, 'verbose': 0})
+  NeoBundleSaveCache
+endif
+source ~/.vim/plugins.vim
 call neobundle#end()
-filetype plugin indent on
-NeoBundleCheck
-"}}}
 
-" Base Options -----------------------------------------------------{{{1
+filetype plugin indent on
+
+if !has('vim_starting')
+  NeoBundleCheck
+endif
+
+" Base Options ---------------------------------------------------------------
 
 syntax enable
 
@@ -210,18 +126,6 @@ set tabstop=8 " a real tab is displayed as eight spaces
 set textwidth=79
 set wrap " wrap lines by default
 
-" Cache Dir --------------------------{{{2
-
-function! s:get_cache_dir(suffix)
-  return '~/.vim/.cache/' . a:suffix
-endfunction
-
-function! EnsureExists(path)
-  if !isdirectory(expand(a:path))
-    call mkdir(expand(a:path))
-  endif
-endfunction
-
 " Undo and Swap Files ----------------{{{2
 
 set undofile
@@ -229,6 +133,11 @@ set undoreload=10000
 set undodir=~/.vim/.cache/undo//
 set directory=~/.vim/.cache/swap//
 
+function! EnsureExists(path)
+  if !isdirectory(expand(a:path))
+    call mkdir(expand(a:path))
+  endif
+endfunction
 call EnsureExists(&undodir)
 call EnsureExists(&directory)
 
@@ -245,11 +154,19 @@ set wildignore+=*.zip,*.gz,*.bz2,*.xz " archive files
 set wildignore+=*.swp,*~,._* " temp and backup files
 set wildignore+=*.DS_Store " OSX files
 
-" Convenience Mappings ---------------------------------------------{{{1
+" Convenience Mappings -------------------------------------------------------
 
-" Leader keys
-let mapleader = ","
-let maplocalleader = "\\"
+" Edit .vimrc
+nnoremap <LocalLeader>v :e $MYVIMRC<CR>
+
+" Edit plugins.vim
+nnoremap <LocalLeader>p :e ~/.vim/plugins.vim<CR>
+
+" Reload .vimrc
+nnoremap <LocalLeader>r :source $MYVIMRC<CR>
+
+" Update bundles
+nnoremap <LocalLeader>u :Unite neobundle/update -log -wrap -no-start-insert<CR>
 
 " U to redo (better than c-r)
 nnoremap U :redo<CR>
@@ -259,27 +176,20 @@ noremap Q <nop>
 
 " Quit all windows
 noremap QQ :qa<CR>
-noremap Q! :qa!<CR>
+noremap Q!! :qa!<CR>
 
 " Quit current window
-noremap <C-q><C-w> :q<CR>
+noremap <Leader>Q :q<CR>
 
 " Close current buffer (unless it's open in another window)
-nnoremap <C-q><C-q> :BD<CR>
-
-" Close hidden buffers (leave only active buffers open)
-nnoremap <C-q><C-o> :Wipeout<CR>
-
-" FN keys
-nnoremap <silent> <F1> :Startify<CR>
-nnoremap <silent> <F2> :VimFilerExplorer -force-quit<CR>
-nnoremap <silent> <F3> :UndotreeToggle<CR>
-noremap  <silent> <F4> :TagbarToggle<CR>
-inoremap <silent> <F4> <ESC>:TagbarToggle<CR>a
-" nnoremap <silent> <F5> :SClose<CR>
+nnoremap <Leader>q :BD<CR>
 
 " Write buffer (save)
 nnoremap <Leader>w :w<CR>
+
+" FN keys
+nnoremap <silent> <F1> :Startify<CR>
+nnoremap <silent> <F2> :VimFilerExplorer -force-hide<CR>
 
 " CD to current file's dir
 nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
@@ -298,8 +208,8 @@ nnoremap <Leader>m :Make!<Space>
 nnoremap <Leader>d :Dispatch!<Space>
 
 " Close/Open the quickfix window
-nnoremap <silent> <Leader>q :cclose<CR>
-nnoremap <silent> <Leader>Q :Copen<CR>
+nnoremap <silent> <LocalLeader>q :cclose<CR>
+nnoremap <silent> <LocalLeader>Q :Copen<CR>
 
 " Navigate the quickfix list
 nnoremap <left>  :cprev<CR>zvzz
@@ -316,9 +226,6 @@ nnoremap <c-\> :split<CR>
 " Switch to alternate file
 nnoremap <c-a> <c-^>
 
-" Jump to another window (visual selection)
-nmap - <Plug>(choosewin)
-
 " Move cursor between windows (directionally)
 nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
@@ -331,24 +238,10 @@ nnoremap <c-w>j <c-w>J
 nnoremap <c-w>k <c-w>K
 nnoremap <c-w>l <c-w>L
 
-" Fugitive
-nnoremap <Leader>ga :Git add %:p<CR><CR>
-nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gc :Gcommit -v -q<CR>
-nnoremap <Leader>gt :Gcommit -v -q %:p<CR>
-nnoremap <Leader>gd :Gdiff<CR>
-nnoremap <Leader>ge :Gedit<CR>
-nnoremap <Leader>gr :Gread<CR>
-nnoremap <Leader>gw :Gwrite<CR><CR>
-nnoremap <Leader>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <Leader>gg :Ggrep<Space>
-nnoremap <Leader>gm :Gmove<Space>
-nnoremap <Leader>gb :Git branch<Space>
-nnoremap <Leader>go :Git checkout<Space>
-nnoremap <Leader>gp :Gpush<CR>
-nnoremap <Leader>gP :Gpull<CR>
+" Help (by default, open in a vertical split)
+cabbrev h vert h
 
-" Search and Movement ----------------------------------------------{{{1
+" Search and Movement --------------------------------------------------------
 
 set hlsearch   " highlight matches
 set incsearch  " incremental searching
@@ -385,17 +278,7 @@ nnoremap vv ^vg_
 vnoremap <silent> * :call VisualSelection('f', '')<CR>
 vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
-" 2-character Sneak (default)
-nmap s <Plug>Sneak_s
-nmap S <Plug>Sneak_S
-" visual-mode
-xmap s <Plug>Sneak_s
-xmap S <Plug>Sneak_S
-" operator-pending-mode
-omap s <Plug>Sneak_s
-omap S <Plug>Sneak_S
-
-" Editing ----------------------------------------------------------{{{1
+" Editing --------------------------------------------------------------------
 
 " Use <Space>[] to add spaces in normal mode (complements vim-unimpaired)
 nnoremap <Space>[ i<Space><ESC>
@@ -404,312 +287,22 @@ nnoremap <Space>] a<Space><ESC>
 " Join inverted (move current line to the end of the next line)
 nmap <Leader>j ]ekJ
 
-" Shortcut for operations on the nearest pair of quotes (cq, dq, etc)
-xmap q iq
-omap q iq
-
-" Paste over a text-obj (register 0)
-map <C-p> "0<Plug>(operator-replace)
-
-" Surround operators
-map <silent><C-s>a <Plug>(operator-surround-append)
-map <silent><C-s>d <Plug>(operator-surround-delete)
-map <silent><C-s>c <Plug>(operator-surround-replace)
-
-" Inner-most surround (among quotes, (), {}, [], <>, etc.)
-nmap <silent><C-s><C-d> <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
-nmap <silent><C-s><C-s> <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
-
-" Surround between a char
-nmap <silent><C-s>db <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
-nmap <silent><C-s>cb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
-
-" Start EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <Enter> <Plug>(EasyAlign)
-
-" Start EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 " Reselect visual block after indent
 vnoremap < <gv
 vnoremap > >gv
 
-" Filetype-specific Configurations ---------------------------------{{{1
+" File Handling --------------------------------------------------------------
 
-augroup ft_all
+" Remember last location in files (except for git commit messages)
+augroup restore_cursor
   au!
-  " Remember last location in file, but not for commit messages
-  au BufReadPost * if &filetype !~ '^git\c' && line("'\"") > 0 &&
-        \ line("'\"") <= line("$") | exe "normal! g`\"" | endif
+  au BufReadPost *
+        \ if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 augroup END
 
-" Assembly {{{2
-augroup ft_asm
-  au!
-  au FileType asm setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
-augroup END
-
-" C {{{2
-augroup ft_c
-  au!
-  au FileType c setlocal foldmethod=marker foldmarker={,}
-augroup END
-
-" Lua {{{2
-augroup ft_lua
-  au!
-  au FileType lua setlocal foldmethod=syntax
-augroup END
-
-" Vim {{{2
-augroup ft_vim
-  au!
-  au FileType vim setlocal foldmethod=marker
-  au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
-augroup END
-
-" Plugin-specific Configurations -----------------------------------{{{1
-
-" BufKill ----------------------------{{{2
-
-let g:BufKillOverrideCtrlCaret = 1
-let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'cancel'
-
-" Clang Format -----------------------{{{2
-
-let g:clang_format#auto_formatexpr = 1
-let g:clang_format#auto_format_on_insert_leave = 1
-
-let g:clang_format#code_style = "LLVM"
-let g:clang_format#style_options = {
-      \ "Language" : "Cpp",
-      \ "Standard" : "Cpp11",
-      \ "TabWidth" : 2,
-      \ "DerivePointerBinding" : "false",
-      \ "PointerBindsToType" : "true",
-      \ }
-
-augroup ClangFormatSettings
-  au!
-  au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
-augroup END
-
-" Indent Guides (<Leader>ig)----------{{{2
-
-let g:indent_guides_start_level = 2
-" let g:indent_guides_guide_size = 1
-
-" Markdown ---------------------------{{{2
-
-let g:vim_markdown_no_default_key_mappings=1
-let g:vim_markdown_frontmatter=1
-
-" Sneak ------------------------------{{{2
-
-let g:sneak#s_next = 1
-let g:sneak#textobject_z = 0
-let g:sneak#use_ic_scs = 0
-let g:sneak#prompt = 'sneak>'
-
-" Startify ---------------------------{{{2
-
-let g:startify_enable_special         = 0
-let g:startify_files_number           = 15
-let g:startify_relative_path          = 1
-let g:startify_change_to_vcs_root     = 1
-let g:startify_session_persistence    = 1
-let g:startify_session_delete_buffers = 1
-
-let g:startify_session_dir = '~/.vim/.session'
-let g:startify_bookmarks = [ '~/.dotfiles/vim/vimrc' ]
-
-let g:startify_list_order = [
-      \ ['  Bookmarks:'],
-      \ 'bookmarks',
-      \ ['  Sessions:'],
-      \ 'sessions',
-      \ ['  Recent files:'],
-      \ 'files',
-      \ ]
-
-let g:startify_custom_indices =
-      \ map(range(0,9), 'string(v:val)') +
-      \ map(range(char2nr('A'),char2nr('Z')), 'nr2char(v:val)')
-
-let g:startify_custom_header =
-      \ map(split(system('figlet Welcome'), '\n'), '"   ". v:val') + ['','']
-
-" Syntastic --------------------------{{{2
-
-let g:syntastic_check_on_open = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_aggregate_errors = 1
-
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_style_error_symbol = '✠'
-let g:syntastic_warning_symbol = '∆'
-let g:syntastic_style_warning_symbol = '≈'
-
-" C++
-let g:syntastic_cpp_compiler = 'clang'
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
-
-" Lua
-let g:syntastic_lua_checkers = ["luac", "luacheck"]
-let g:syntastic_lua_luacheck_args = "--no-unused-args"
-
-" Test -------------------------------{{{2
-
-nmap <silent> <Leader>t :TestNearest<CR>
-nmap <silent> <Leader>T :TestFile<CR>
-nmap <silent> <Leader>a :TestSuite<CR>
-nmap <silent> <Leader>l :TestLast<CR>
-nmap <silent> <Leader>v :TestVisit<CR>
-
-let test#strategy = "dispatch"
-
-let test#lua#busted#options = '--output=plainterminal --suppress-pending'
-
-" Unite ------------------------------{{{2
-
-" Fuzzy match by default
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-call unite#filters#sorter_default#use(['sorter_rank'])
-
-" Fuzzy matching for plugins not using matcher_default as filter
-call unite#custom#source('outline,line,grep', 'matchers', ['matcher_fuzzy'])
-call unite#custom#source('outline,line,grep', 'sorters', ['sorter_rank'])
-
-" Prettier prompt
-call unite#custom#profile('default', 'context', {
-      \   'start_insert': 1,
-      \   'direction': 'botright',
-      \   'prompt': '» ',
-      \   'prompt_direction': 'top',
-      \ })
-
-" Better time formats
-let g:unite_source_buffer_time_format = "%Y-%m-%d  %H:%M:%S "
-
-let g:unite_data_directory=s:get_cache_dir('unite')
-let g:unite_source_history_yank_enable=1
-let g:unite_source_rec_max_cache_files=5000
-
-if executable('ag')
-  let g:unite_source_grep_command = 'ag'
-  let g:unite_source_grep_default_opts = '--line-numbers --nocolor --nogroup'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_rec_async_command =
-        \ ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', '']
-
-elseif executable('ack')
-  let g:unite_source_grep_command = 'ack'
-  let g:unite_source_grep_default_opts = '--no-heading --no-color -a -w'
-  let g:unite_source_grep_recursive_opt = ''
-  let g:unite_source_rec_async_command = ['ack', '-f', '--nofilter']
-endif
-
-" Map space to the prefix for Unite
-nnoremap [unite] <Nop>
-nmap <space> [unite]
-
-" Resume the last Unite view (in normal mode, to preserve selection)
-nnoremap <silent> [unite]<space> :<C-u>UniteResume -no-start-insert<CR>
-
-" Search everything (in terms of files)
-nnoremap <silent> [unite]e :<C-u>Unite -buffer-name=files buffer file_mru bookmark file_rec/async<CR>
-
-" Search registers
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
-
-" Search buffers and recent files (alternative files)
-nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=files buffer file_mru<CR>
-
-" Search snippets for insertion
-nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=ultisnips ultisnips<CR>
-
-" Search the outline
-nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
-
-" Search a directory to change to
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
-
-" Search files
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=files file_rec/async<CR>
-
-" Grep (using Ag) from the cwd
-nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=grep grep:.<CR>
-
-" Search all help files
-nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
-
-" Search lines in the current buffer to jump to
-nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
-
-" Search bookmarks
-nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
-
-" Search commands
-nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=command -default-action=edit command<CR>
-
-" Search all Unite sources
-nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=sources source<CR>
-
-" Custom mappings unite buffers
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-
-  " Esc to exit at any time
-  nmap <buffer> <ESC> <Plug>(unite_exit)
-  imap <buffer> <ESC> <Plug>(unite_exit)
-
-  " Navigate options with Ctrl-J/K
-  imap <buffer> <C-j> <C-n>
-  imap <buffer> <C-k> <C-p>
-
-  " Clear cache / redraw
-  imap <buffer> <C-a> <Plug>(unite_redraw)
-
-endfunction
-
-let g:neomru#file_mru_limit = 100
-let g:neomru#file_mru_path = s:get_cache_dir('neomru/file')
-let g:neomru#directory_mru_path = s:get_cache_dir('neomru/directory')
-
-" UltiSnips --------------------------{{{2
-
-let g:UltiSnipsEditSplit = 'vertical'
-let g:UltiSnipsSnippetsDir = $HOME.'/.vim/snips'
-let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
-let g:UltiSnipsEnableSnipMate = 0
-
-let g:UltiSnipsExpandTrigger = '<C-L>'
-let g:UltiSnipsJumpForwardTrigger = '<C-L>'
-let g:UltiSnipsJumpBackwardTrigger = '<C-H>'
-
-" Edit snippets
-nnoremap <Leader>s :UltiSnipsEdit<CR>
-
-" VimFiler ---------------------------{{{2
-
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_data_directory = s:get_cache_dir('vimfiler')
-let g:vimfiler_time_format = "%Y-%m-%d  %H:%M:%S"
-let g:vimfiler_tree_leaf_icon = ' '
-let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_marked_file_icon = '*'
-
-" YouCompleteMe ----------------------{{{2
-
-let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
-
-let g:ycm_key_detailed_diagnostics = '<LocalLeader>d'
-
-nnoremap gt :YcmCompleter GoTo<CR>
-
-" Theme ------------------------------------------------------------{{{1
+" Theme ----------------------------------------------------------------------
 
 let g:theme_default = {
       \  'typeface': 'Anonymice Powerline',
@@ -742,54 +335,3 @@ augroup CursorLine
   autocmd WinLeave,InsertEnter * set nocursorline
   autocmd WinEnter,InsertLeave * set cursorline
 augroup END
-
-" Airline
-" let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts=1
-
-" GitGutter
-
-let g:gitgutter_max_signs = 2048
-" let g:gitgutter_sign_column_always = 1
-
-" GUI Options ------------------------{{{2
-
-if has("gui_running")
-  set relativenumber
-  set guioptions= " minimalist gui
-  if has("gui_macvim")
-    let macvim_skip_colorscheme = 1
-    let macvim_skip_cmd_opt_movement = 1
-
-    " change default startup dir
-    autocmd VimEnter *  if !argc() | cd ~/Work | endif
-
-    " go back to iTerm2 when the last window closes
-    autocmd VimLeave * :!open -a iTerm2
-  endif
-end
-"}}}
-
-" Distraction-Free Text Editing ------{{{2
-
-nmap <LocalLeader>g :Goyo<CR>
-nmap <LocalLeader>l :Limelight!!<CR>
-nmap <LocalLeader>t :call SetTheme(g:theme_pencil)<CR>:Goyo<CR>
-
-" let g:limelight_default_coefficient = 0.3
-
-function! s:goyo_enter()
-  Limelight
-endfunction
-
-function! s:goyo_leave()
-  Limelight!
-  call SetTheme(g:theme_default)
-endfunction
-
-autocmd! User GoyoEnter
-autocmd  User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave
-autocmd  User GoyoLeave nested call <SID>goyo_leave()
-"}}}
-

@@ -1,0 +1,20 @@
+[[plugins]]
+repository = 'Shougo/neobundle.vim'
+depends = 'Shougo/vimproc.vim'
+fetch = 1
+
+[[plugins]]
+repository = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repository = 'mhinz/vim-startify'
+
+[[plugins]]
+repository = 'bling/vim-airline'
+
+[[plugins]]
+repository = 'altercation/vim-colors-solarized'
+
+[[plugins]]
+repository = 'reedes/vim-colors-pencil'
