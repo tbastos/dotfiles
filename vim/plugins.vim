@@ -14,19 +14,8 @@ if neobundle#tap('vim-airline')
   call neobundle#untap()
 endif
 
-" BufKill
-if neobundle#tap('bufkill.vim')
-  function! neobundle#hooks.on_source(bundle)
-    let g:BufKillOverrideCtrlCaret = 1
-    let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'cancel'
-  endfunction
-  call neobundle#untap()
-endif
-
 " ChooseWin - jump to another window (with visual selection)
 if neobundle#tap('vim-choosewin')
-  function! neobundle#hooks.on_source(bundle)
-  endfunction
   nmap - <Plug>(choosewin)
   call neobundle#untap()
 endif
@@ -45,29 +34,30 @@ if neobundle#tap('vim-clang-format')
           \ "DerivePointerBinding" : "false",
           \ "PointerBindsToType" : "true",
           \ }
-
-    augroup ClangFormatSettings
-      au!
-      au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
-    augroup END
   endfunction
+  augroup ClangFormat
+    au!
+    au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
+  augroup END
   call neobundle#untap()
 endif
 
 " EasyAlign
 if neobundle#tap('vim-easy-align')
-  function! neobundle#hooks.on_source(bundle)
-  endfunction
   vmap <Enter> <Plug>(EasyAlign)
   nmap ga <Plug>(EasyAlign)
   call neobundle#untap()
 endif
 
 " Fugitive
-if neobundle#tap('')
-  function! neobundle#hooks.on_source(bundle)
+if neobundle#tap('vim-fugitive')
+  function! neobundle#hooks.on_post_source(bundle)
+    doautoall fugitive BufNewFile
+    if exists('*lightline#update')
+      call lightline#update()
+    endif
   endfunction
-  nnoremap <Leader>ga :Git add %:p<CR><CR>
+  nnoremap <Leader>ga :Git add %:p<CR>
   nnoremap <Leader>gs :Gstatus<CR>
   nnoremap <Leader>gc :Gcommit -v -q<CR>
   nnoremap <Leader>gt :Gcommit -v -q %:p<CR>
@@ -91,6 +81,8 @@ if neobundle#tap('vim-gitgutter')
     let g:gitgutter_enabled = 0
     let g:gitgutter_max_signs = 2048
     let g:gitgutter_sign_column_always = 1
+    nmap ]h <Plug>GitGutterNextHunk
+    nmap [h <Plug>GitGutterPrevHunk
   endfunction
   nnoremap <LocalLeader>g :GitGutterToggle<CR>
   call neobundle#untap()
@@ -123,6 +115,12 @@ if neobundle#tap('goyo.vim')
   call neobundle#untap()
 endif
 
+" Lightline
+if neobundle#tap('lightline.vim')
+  let neobundle#hooks.on_source = '~/.vim/lightline.vim'
+  call neobundle#untap()
+endif
+
 " Markdown
 if neobundle#tap('vim-markdown')
   function! neobundle#hooks.on_source(bundle)
@@ -134,8 +132,6 @@ endif
 
 " Replace
 if neobundle#tap('vim-operator-replace')
-  function! neobundle#hooks.on_source(bundle)
-  endfunction
   " Paste over a text-obj (register 0)
   map <C-p> "0<Plug>(operator-replace)
   call neobundle#untap()
@@ -144,20 +140,34 @@ endif
 " Sneak
 if neobundle#tap('vim-sneak')
   function! neobundle#hooks.on_source(bundle)
+    let g:sneak#f_reset = 1
+    let g:sneak#t_reset = 1
     let g:sneak#s_next = 1
     let g:sneak#textobject_z = 0
     let g:sneak#use_ic_scs = 0
     let g:sneak#prompt = 'sneak>'
   endfunction
-  " 2-character Sneak (default)
+  " 2-character Sneak
   nmap s <Plug>Sneak_s
   nmap S <Plug>Sneak_S
-  " visual-mode
   xmap s <Plug>Sneak_s
   xmap S <Plug>Sneak_S
-  " operator-pending-mode
   omap s <Plug>Sneak_s
   omap S <Plug>Sneak_S
+  " 1-character enhanced f (renders ; unnecessary)
+  nmap f <Plug>Sneak_f
+  nmap F <Plug>Sneak_F
+  xmap f <Plug>Sneak_f
+  xmap F <Plug>Sneak_F
+  omap f <Plug>Sneak_f
+  omap F <Plug>Sneak_F
+  " 1-character enhanced t (renders ; unnecessary)
+  nmap t <Plug>Sneak_t
+  nmap T <Plug>Sneak_T
+  xmap t <Plug>Sneak_t
+  xmap T <Plug>Sneak_T
+  omap t <Plug>Sneak_t
+  omap T <Plug>Sneak_T
   call neobundle#untap()
 endif
 
@@ -195,40 +205,42 @@ endif
 
 " Surround
 if neobundle#tap('vim-operator-surround')
-  function! neobundle#hooks.on_source(bundle)
-  endfunction
   " Surround operators
-  map <silent><C-s>a <Plug>(operator-surround-append)
-  map <silent><C-s>d <Plug>(operator-surround-delete)
-  map <silent><C-s>c <Plug>(operator-surround-replace)
-  " Inner-most surround (among quotes, (), {}, [], <>, etc.)
-  nmap <silent><C-s><C-d> <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
+  map <silent><C-s><C-a> <Plug>(operator-surround-append)
+  map <silent><C-s><C-d> <Plug>(operator-surround-delete)
+  map <silent><C-s><C-c> <Plug>(operator-surround-replace)
+  " Delete/Change inner-most surround (among quotes, (), {}, [], <>, etc.)
+  nmap <silent><C-s><C-d><C-d> <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
   nmap <silent><C-s><C-s> <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
-  " Surround between a char
-  nmap <silent><C-s>db <Plug>(operator-surround-delete)<Plug>(textobj-between-a)
-  nmap <silent><C-s>cb <Plug>(operator-surround-replace)<Plug>(textobj-between-a)
   call neobundle#untap()
 endif
 
 " Syntastic
 if neobundle#tap('syntastic')
   function! neobundle#hooks.on_source(bundle)
-    let g:syntastic_check_on_open = 1
-    " let g:syntastic_auto_loc_list = 1
-    " let g:syntastic_aggregate_errors = 1
+    let g:syntastic_mode_map = {'mode': 'passive'} " we'll call syntastic
+    let g:syntastic_check_on_open = 0 " checks are always on write
 
     let g:syntastic_error_symbol = '✗'
     let g:syntastic_style_error_symbol = '✠'
-    let g:syntastic_warning_symbol = '∆'
+    let g:syntastic_warning_symbol = '⚠'
     let g:syntastic_style_warning_symbol = '≈'
 
-    " C++
+    " C++ (currently not used; handled by YCM)
     let g:syntastic_cpp_compiler = 'clang'
     let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
 
     " Lua
     let g:syntastic_lua_checkers = ["luac", "luacheck"]
     let g:syntastic_lua_luacheck_args = "--no-unused-args"
+  endfunction
+  augroup AutoSyntastic
+    au!
+    au BufWritePost *.lua call s:syntastic()
+  augroup END
+  function! s:syntastic()
+    SyntasticCheck
+    call lightline#update()
   endfunction
   call neobundle#untap()
 endif
@@ -251,7 +263,7 @@ endif
 if neobundle#tap('ultisnips')
   function! neobundle#hooks.on_source(bundle)
     let g:UltiSnipsEditSplit = 'vertical'
-    let g:UltiSnipsSnippetsDir = $HOME.'/.vim/snips'
+    let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
     let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
     let g:UltiSnipsEnableSnipMate = 0
 
@@ -259,7 +271,7 @@ if neobundle#tap('ultisnips')
     let g:UltiSnipsJumpForwardTrigger = '<C-L>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-H>'
   endfunction
-  nnoremap <Leader>s :UltiSnipsEdit<CR>
+  nnoremap <LocalLeader>s :UltiSnipsEdit<CR>
   call neobundle#untap()
 endif
 
@@ -280,7 +292,7 @@ if neobundle#tap('unite.vim')
           \   'direction': 'botright',
           \   'prompt': '» ',
           \   'prompt_direction': 'top',
-          \   'auto_resize': 1,
+          \   'auto_resize': 0,
           \ })
 
     " Better time formats
@@ -306,10 +318,7 @@ if neobundle#tap('unite.vim')
     " Custom mappings unite buffers
     autocmd FileType unite call s:unite_settings()
     function! s:unite_settings()
-      " Esc to exit at any time
-      nmap <buffer> <ESC> <Plug>(unite_exit)
-      imap <buffer> <ESC> <Plug>(unite_exit)
-      " Navigate options with Ctrl-J/K
+      " Use Ctrl-J/K to select row in insert mode
       imap <buffer> <C-j> <C-n>
       imap <buffer> <C-k> <C-p>
       " Clear cache / redraw
@@ -319,7 +328,6 @@ if neobundle#tap('unite.vim')
     let g:neomru#file_mru_limit = 100
     let g:neomru#file_mru_path = GetCacheDir('neomru/file')
     let g:neomru#directory_mru_path = GetCacheDir('neomru/directory')
-
   endfunction
 
   " Map space to the prefix for Unite
@@ -335,14 +343,17 @@ if neobundle#tap('unite.vim')
   " Search registers
   nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
 
-  " Search alternative files (buffers, recent files)
-  nnoremap <silent> [unite]a :<C-u>Unite -buffer-name=files buffer file_mru<CR>
+  " Search files to Switch to (buffers, recent files)
+  nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files buffer file_mru<CR>
 
   " Search snippets for insertion
-  nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=ultisnips ultisnips<CR>
+  nnoremap <silent> [unite]i :<C-u>Unite -buffer-name=ultisnips ultisnips<CR>
 
   " Search the outline
-  nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical outline<CR>
+  nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outline -vertical -no-auto-resize outline<CR>
+
+  " Search tags
+  nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=tags tag<CR>
 
   " Search a directory to change to
   nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=change-cwd -default-action=cd directory_mru directory_rec/async<CR>
@@ -356,8 +367,8 @@ if neobundle#tap('unite.vim')
   " Search help contents
   nnoremap <silent> [unite]h :<C-u>Unite -buffer-name=help help<CR>
 
-  " Search lines in the current buffer to jump to
-  nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
+  " Search current buffer for a line to jump to
+  nnoremap <silent> [unite]j :<C-u>Unite -buffer-name=lines line<CR>
 
   " Search bookmarks
   nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=bookmarks bookmark<CR>
@@ -366,15 +377,14 @@ if neobundle#tap('unite.vim')
   nnoremap <silent> [unite]c :<C-u>Unite -buffer-name=command -default-action=edit command<CR>
 
   " Search lazy plugins to be loaded
-  nnoremap <silent> [unite]p :<C-u>Unite -buffer-name=plugins neobundle/lazy<CR>
+  nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=plugins neobundle/lazy<CR>
 
   " Search all Unite sources
   nnoremap <silent> [unite]u :<C-u>Unite -buffer-name=sources source<CR>
-
 endif
 
 " VimFiler
-if neobundle#tap('')
+if neobundle#tap('vimfiler.vim')
   function! neobundle#hooks.on_source(bundle)
     let g:vimfiler_as_default_explorer = 1
     let g:vimfiler_data_directory = GetCacheDir('vimfiler')
@@ -390,11 +400,17 @@ endif
 " YouCompleteMe
 if neobundle#tap('YouCompleteMe')
   function! neobundle#hooks.on_source(bundle)
+    let g:ycm_allow_changing_updatetime = 0
     let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
     let g:ycm_key_detailed_diagnostics = '<LocalLeader>d'
   endfunction
-  nnoremap gt :YcmCompleter GoTo<CR>
+  " Jump to definition or declaration of symbol under cursor
+  nnoremap <silent> <Leader>j :YcmCompleter GoTo<CR>
+  " Inspect type of var under cursor
+  nnoremap <silent> <Leader>i :YcmCompleter GetType<CR>
+  " Display help about the identifier under the cursor
+  nnoremap <silent> <Leader>h :YcmCompleter GetDoc<CR>
   call neobundle#untap()
 endif
 

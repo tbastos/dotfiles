@@ -2,7 +2,7 @@
 
 On OSX:
 ```zsh
-brew install cmake cscope ctags git hub lua luarocks the_silver_searcher tmux
+brew install boost-python cmake cscope ctags git lua the_silver_searcher 
 brew install macvim --custom-icons --override-system-vim --with-lua --with-cscope --HEAD
 ```
 

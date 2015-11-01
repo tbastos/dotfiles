@@ -6,20 +6,18 @@ repository = 'tpope/vim-repeat'
 
 [[plugins]]
 repository = 'tpope/vim-unimpaired'
-
-[[plugins]]
-repository = 'bufkill.vim'
-commands = ['BD']
+mappings = [['nox', '[', ']', 'co']]
 
 [[plugins]]
 repository = 'matchit.zip'
+mappings = [['nox', '%', 'g%']]
 
 
 ##############################################################################
 # Shell
 
 [[plugins]]
-repository = 'Shougo/vimfiler'
+repository = 'Shougo/vimfiler.vim'
 depends = 'Shougo/unite.vim'
 mappings = '<Plug>'
 explorer = 1
@@ -45,8 +43,8 @@ repository = 't9md/vim-choosewin' # visual window selection
 mappings = '<Plug>'
 
 [[plugins]]
-repository = 'regedarek/ZoomWin' # zoom in/out a split with <c-w>-o
-mappings = ['<C-w>o']
+repository = 'regedarek/ZoomWin' # zoom in/out a split
+mappings = [['nox', '<C-w>o']]
 
 [[plugins]]
 repository = 'junegunn/goyo.vim' # distraction free editing
@@ -63,12 +61,12 @@ commands = ['HLT', 'HLT!']
 
 
 ##############################################################################
-# Search and Motion
+# Search and Navigation
 
 [[plugins]]
 repository = 'justinmk/vim-sneak'
 depends = 'tpope/vim-repeat'
-mappings = ['s', 'S']
+mappings = [['nox', '<Plug>Sneak']]
 
 [[plugins]]
 repository = 'Shougo/unite.vim'
@@ -86,21 +84,16 @@ repository = 'Shougo/unite.vim'
 
 [[plugins]]
 repository = 'Shougo/unite-help'
-depends = 'Shougo/unite.vim'
-unite_sources = ['help']
 
 [[plugins]]
 repository = 'Shougo/unite-outline'
-depends = 'Shougo/unite.vim'
-unite_sources = ['outline']
+
+[[plugins]]
+repository = 'tsukkee/unite-tag'
 
 [[plugins]]
 repository = 'Shougo/neomru.vim'
-depends = 'Shougo/unite.vim'
-unite_sources = [
-  'neomru/file', 'file_mru',
-  'neomru/directory', 'directory_mru'
-]
+unite_sources = ['file_mru', 'directory_mru']
 
 ##############################################################################
 # Text Objects
@@ -109,62 +102,83 @@ unite_sources = [
 repository = 'kana/vim-textobj-user'
 
 [[plugins]]
-repository = 'kana/vim-textobj-line' # al  il
+repository = 'kana/vim-textobj-line' # line
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'al', 'il']]
 
 [[plugins]]
-repository = 'kana/vim-textobj-entire' # ae  ie
+repository = 'kana/vim-textobj-entire' # whole buffer
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'ae', 'ie']]
 
 [[plugins]]
-repository = 'saaguero/vim-textobj-pastedtext' # gb
+repository = 'saaguero/vim-textobj-pastedtext' # last pasted text
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'gb']]
 
 [[plugins]]
-repository = 'kana/vim-textobj-lastpat' # a/  i/  a?  i?
+repository = 'kana/vim-textobj-lastpat' # last search pattern (fwd/backwars)
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'a/', 'i/', 'a?', 'i?']]
 
 [[plugins]]
-repository = 'kana/vim-textobj-indent' # ai  ii  aI  iI
+repository = 'kana/vim-textobj-indent' # contiguous lines with indent >= cur line
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'ai', 'ii', 'aI', 'iI']]
 
 [[plugins]]
-repository = 'thinca/vim-textobj-between' # af{char}  if{char}  (region between {char}s)
-
-[[plugins]]
-repository = 'beloglazov/vim-textobj-quotes' # aq  iq
+repository = 'beloglazov/vim-textobj-quotes' # region between nearest quotes (any kind)
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'aq', 'iq']]
 
 [[plugins]]
 repository = 'rhysd/vim-textobj-anyblock' # ab  ib  (quotes, (), {}, [] and <>)
+mappings = [['ox', 'ab', 'ib', '<Plug>(textobj-anyblock']]
 
 [[plugins]]
-repository = 'kana/vim-textobj-function' # aF  iF
+repository = 'kana/vim-textobj-function' # function (C, Java, VimL, JS)
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'af', 'if']]
+on_source = ['vim-textobj-function-javascript']
 
 [[plugins]]
-repository = 'sgur/vim-textobj-parameter' # a,  i,
+repository = 'thinca/vim-textobj-function-javascript'
 
 [[plugins]]
-repository = 'glts/vim-textobj-comment' # ac  ic
+repository = 'sgur/vim-textobj-parameter' # parameter (in comma-delimited lists)
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'a,', 'i,']]
 
 [[plugins]]
-repository = 'Julian/vim-textobj-variable-segment' # av  iv  (word_in_identifier; camelCaseToo)
+repository = 'glts/vim-textobj-comment' # comment
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'ac', 'ic']]
 
 [[plugins]]
-repository = 'whatyouhide/vim-textobj-xmlattr' # ax  ix
-
+repository = 'Julian/vim-textobj-variable-segment' # a_segment_of anyVarName
+depends = 'kana/vim-textobj-user'
+mappings = [['ox', 'av', 'iv']]
 
 ##############################################################################
 # Editing and Formatting
 
 [[plugins]]
 repository = 'godlygeek/tabular'
+commands = ['Tabularize']
 
 [[plugins]]
 repository = 'tpope/vim-endwise' # auto-closes control blocks in insert mode
+insert = 1
+focus = 1
 
 [[plugins]]
 repository = 'Raimondi/delimitMate' # auto-closes quotes, parens, etc. in insert mode
+insert = 1
+focus = 1
 
 [[plugins]]
 repository = 'tpope/vim-commentary.git' # toggle comments with gc{textobj}
-
-[[plugins]]
-repository = 'tommcdo/vim-exchange' # swap text objects using cx{textobj} two times
+mappings = [['nx', 'gc']]
 
 [[plugins]]
 repository = 'tpope/vim-abolish'
@@ -178,7 +192,7 @@ repository = 'kana/vim-operator-user'
 [[plugins]]
 repository = 'kana/vim-operator-replace' # <C-p> pastes over textobjs
 depends = 'kana/vim-operator-user'
-mappings = ['<C-p>', '<Plug>']
+mappings = [['nx', '<Plug>(operator-replace)']]
 
 [[plugins]]
 repository = 'rhysd/vim-operator-surround'
@@ -187,6 +201,7 @@ mappings = '<Plug>'
 
 [[plugins]]
 repository = 'terryma/vim-multiple-cursors' # <C-n> creates multiple cursors in normal mode
+mappings = [['nx', '<C-n>']]
 
 [[plugins]]
 repository = 'junegunn/vim-easy-align'
@@ -201,14 +216,12 @@ disabled = 1
 # Code Completion and Snippets
 
 [[plugins]]
-repository = 'SirVer/ultisnips'
-unite_sources = ['ultisnips']
-insert = 1
-
-[[plugins]]
 repository = 'Valloric/YouCompleteMe'
-build = './install.py --clang-completer --system-libclang --system-boost' # On OSX: brew install boost-python
+build = './install.py --clang-completer --system-libclang --system-boost'
+augroup = 'youcompletemeStart'
+filetypes = ['c', 'cpp', 'objc', 'objcpp']
 insert = 1
+focus = 1
 
 [[plugins]]
 repository = 'rdnetto/YCM-Generator'
@@ -228,6 +241,7 @@ commands = [
   'Gpedit!', 'Gread', 'Gread!', 'Gwrite', 'Gwrite', 'Gwq', 'Gwq!', 'Gdiff',
   'Gsdiff', 'Gvdiff', 'Gmove', 'Gremove', 'Gblame',
 ]
+focus = 1
 
 [[plugins]]
 repository = 'airblade/vim-gitgutter'
@@ -247,7 +261,10 @@ commands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 [[plugins]]
 repository = 'scrooloose/syntastic'
-insert = 1
+commands = [
+  'SyntasticCheck', 'SyntasticStatuslineFlag',
+  'SyntasticToggleMode', 'SyntasticInfo'
+]
 
 ##############################################################################
 # C, C++ and Objective C
@@ -255,6 +272,7 @@ insert = 1
 [[plugins]]
 repository = 'rhysd/vim-clang-format'
 depends = 'kana/vim-operator-user'
+filetypes = ['c', 'cpp', 'objc', 'objcpp']
 commands = ['ClangFormat', 'ClangFormatAutoToggle']
 mappings = '<Plug>(operator-clang-format)'
 
@@ -262,11 +280,8 @@ mappings = '<Plug>(operator-clang-format)'
 repository = 'jeaye/color_coded'
 filetypes = ['c', 'cpp', 'objc', 'objcpp']
 build_commands = ['cmake', 'make']
-vim_version = '7.4.330'
-disabled = """
-!has('lua') || (exists('g:disable_color_coded') && g:disable_color_coded)"""
-gui = 1
 build = 'cmake . && make && make install'
+gui = 1
 
 
 ##############################################################################
@@ -312,6 +327,7 @@ filetypes = 'toml'
 
 [[plugins]]
 repository = 'rcmdnk/vim-markdown'
+depends = 'godlygeek/tabular'
 filetypes = 'markdown'
 
 [[plugins]]

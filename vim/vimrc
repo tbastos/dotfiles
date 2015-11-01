@@ -55,7 +55,7 @@ let g:neobundle#install_process_timeout = 900 " 15 minutes
 call neobundle#begin()
 if neobundle#load_cache()
   call neobundle#load_toml(expand('~/.vim/NeoBundle.toml'))
-  call neobundle#load_toml(expand('~/.vim/NeoBundleLazy.toml'), {'lazy': 1, 'verbose': 0})
+  call neobundle#load_toml(expand('~/.vim/NeoBundleLazy.toml'), {'lazy': 1, 'verbose': 1})
   NeoBundleSaveCache
 endif
 source ~/.vim/plugins.vim
@@ -72,6 +72,7 @@ endif
 syntax enable
 
 set autoread " auto reload changed files (unless vim contains changes)
+set cmdheight=1 " increase to see more messages
 set complete-=i " autocomplete should not scan included files (slow)
 set completeopt=longest,menuone,preview
 " set conceallevel=2
@@ -89,11 +90,13 @@ set modelines=0
 set nrformats-=octal " no octal input
 set number
 set ruler
-set sessionoptions=blank,curdir,help,winpos,winsize
+set sessionoptions=curdir,winsize
 set shortmess+=c " disable completion messages
 set showcmd " show partial commands at far BR of the screen
 set showfulltag
 set showmatch " highlight matching brackets
+set noshowmode " already shown by statusline plugins
+set showtabline=2 " always show tabline
 set splitbelow
 set splitright
 set synmaxcol=800 " don't try to highlight lines longer than 800 chars
@@ -162,6 +165,12 @@ nnoremap <LocalLeader>v :e $MYVIMRC<CR>
 " Edit plugins.vim
 nnoremap <LocalLeader>p :e ~/.vim/plugins.vim<CR>
 
+" Edit NeoBundleLazy.toml
+nnoremap <LocalLeader>b :e ~/.vim/NeoBundleLazy.toml<CR>
+
+" Clear NeoBundleCache
+nnoremap <LocalLeader>c :NeoBundleClearCache<CR>
+
 " Reload .vimrc
 nnoremap <LocalLeader>r :source $MYVIMRC<CR>
 
@@ -179,12 +188,9 @@ noremap QQ :qa<CR>
 noremap Q!! :qa!<CR>
 
 " Quit current window
-noremap <Leader>Q :q<CR>
+noremap <Leader>q :q<CR>
 
-" Close current buffer (unless it's open in another window)
-nnoremap <Leader>q :BD<CR>
-
-" Write buffer (save)
+" Write current buffer (save)
 nnoremap <Leader>w :w<CR>
 
 " FN keys
@@ -220,8 +226,8 @@ nnoremap <up>    :lprev<CR>zvzz
 nnoremap <down>  :lnext<CR>zvzz
 
 " Quick splits
+nnoremap _ :split<CR>
 nnoremap <bar> :vsplit<CR>
-nnoremap <c-\> :split<CR>
 
 " Switch to alternate file
 nnoremap <c-a> <c-^>
@@ -285,7 +291,7 @@ nnoremap <Space>[ i<Space><ESC>
 nnoremap <Space>] a<Space><ESC>
 
 " Join inverted (move current line to the end of the next line)
-nmap <Leader>j ]ekJ
+nmap <Leader>J ]ekJ
 
 " Reselect visual block after indent
 vnoremap < <gv
@@ -305,16 +311,16 @@ augroup END
 " Theme ----------------------------------------------------------------------
 
 let g:theme_default = {
-      \  'typeface': 'Anonymice Powerline',
-      \  'font_size': 13,
+      \  'typeface': 'Source Code Pro Light',
+      \  'font_size': 12,
       \  'linespace': 1,
       \  'background': 'dark',
       \  'colorscheme': 'solarized',
       \ }
 
 let g:theme_pencil = {
-      \  'typeface': 'Anonymice Powerline',
-      \  'font_size': 15,
+      \  'typeface': 'Source Code Pro',
+      \  'font_size': 14,
       \  'linespace': 3,
       \  'background': 'light',
       \  'colorscheme': 'pencil',

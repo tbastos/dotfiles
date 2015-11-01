@@ -1,6 +1,5 @@
 [[plugins]]
 repository = 'Shougo/neobundle.vim'
-depends = 'Shougo/vimproc.vim'
 fetch = 1
 
 [[plugins]]
@@ -10,11 +9,21 @@ build = 'make'
 [[plugins]]
 repository = 'mhinz/vim-startify'
 
-[[plugins]]
-repository = 'bling/vim-airline'
+##############################################################################
+# UI
 
 [[plugins]]
-repository = 'altercation/vim-colors-solarized'
+repository = 'itchyny/lightline.vim'
+
+[[plugins]]
+repository = 'jwhitley/vim-colors-solarized' # solarized fork that fixes sign column bg
 
 [[plugins]]
 repository = 'reedes/vim-colors-pencil'
+
+##############################################################################
+# Bundles that don't support lazy loading
+
+[[plugins]]
+repository = 'SirVer/ultisnips'
+
