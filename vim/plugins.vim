@@ -416,6 +416,16 @@ if neobundle#tap('YouCompleteMe')
     let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
     let g:ycm_key_detailed_diagnostics = '<LocalLeader>y'
+    let g:ycm_filetype_blacklist = {
+          \ 'infolog' : 1,
+          \ 'mail' : 1,
+          \ 'notes' : 1,
+          \ 'pandoc' : 1,
+          \ 'qf' : 1,
+          \ 'tagbar' : 1,
+          \ 'unite' : 1,
+          \ 'vimwiki' : 1,
+          \}
   endfunction
   " Jump to definition or declaration of symbol under cursor
   nnoremap <silent> <Leader>j :YcmCompleter GoTo<CR>

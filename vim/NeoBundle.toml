@@ -1,3 +1,6 @@
+##############################################################################
+# Core Bundles
+
 [[plugins]]
 repository = 'Shougo/neobundle.vim'
 fetch = 1
@@ -6,11 +9,11 @@ fetch = 1
 repository = 'Shougo/vimproc.vim'
 build = 'make'
 
+##############################################################################
+# Bundles needed at startup
+
 [[plugins]]
 repository = 'mhinz/vim-startify'
-
-##############################################################################
-# UI
 
 [[plugins]]
 repository = 'itchyny/lightline.vim'

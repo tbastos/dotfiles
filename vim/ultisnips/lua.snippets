@@ -2,10 +2,11 @@
 
 snippet #! "Lua Shebang" b
 #!/usr/bin/env lua
+
 $0
 endsnippet
 
-snippet !fun(ction)?! "New function" br
+snippet fun "function()" b
 function ${1:new_function}(${2:args})
 	${0:${VISUAL:-- body}}
 end

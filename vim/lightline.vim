@@ -9,12 +9,12 @@ let g:lightline = {
   \     'right': [ ['cursor'], ['percent'], ['filetype', 'branch'] ]
   \   },
   \   'tabline': {
-  \     'left': [ ['session', 'curdir'], ['curfile'], ['fileencoding', 'fileformat'] ],
+  \     'left': [ ['session', 'cd'], ['curfile'], ['fileencoding', 'fileformat'] ],
   \     'right': [ ['date'], ['spell'], ['alternate'] ]
   \   },
   \   'component': {
-  \     'alternate': "%{expand('#:p:.')}",
-  \     'curdir': "%{fnamemodify(getcwd(), ':~')}",
+  \     'alternate': "%{bufname(0)?'# '.expand('#:p:.'):'no alternate'}",
+  \     'cd': "%{'cd '.fnamemodify(getcwd(), ':~')}",
   \     'date': "%{strftime('%a %d %b %H:%M')}",
   \   },
   \   'component_function': {
@@ -74,7 +74,7 @@ endfunction
 
 function! LLCurrentFile()
   let s = get(s:special_filetypes, &ft, '')
-  return s == '' ? expand('%:p:.') : s
+  return s == '' ? '% '.expand('%:p:.') : s
 endfunction
 
 function! LLBufferCursor()
