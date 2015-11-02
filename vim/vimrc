@@ -300,12 +300,20 @@ vnoremap > >gv
 " File Handling --------------------------------------------------------------
 
 " Remember last location in files (except for git commit messages)
-augroup restore_cursor
+augroup RestoreCursor
   au!
   au BufReadPost *
         \ if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$") |
         \   exe "normal! g`\"" |
         \ endif
+augroup END
+
+" Edit crontab files inplace
+augroup EditingCrontab
+  au!
+  au FileType crontab setlocal backupcopy=yes
+  " Caveat: on OS X the file has no ft, so we must use a pattern
+  au BufEnter /private/tmp/crontab.* setlocal backupcopy=yes
 augroup END
 
 " Theme ----------------------------------------------------------------------
