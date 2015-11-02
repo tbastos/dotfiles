@@ -42,6 +42,14 @@ if neobundle#tap('vim-clang-format')
   call neobundle#untap()
 endif
 
+" DelimitMate
+if neobundle#tap('delimitMate')
+  function! neobundle#hooks.on_source(bundle)
+    let delimitMate_balance_matchpairs = 1
+  endfunction
+  call neobundle#untap()
+endif
+
 " EasyAlign
 if neobundle#tap('vim-easy-align')
   vmap <Enter> <Plug>(EasyAlign)
@@ -94,11 +102,11 @@ if neobundle#tap('goyo.vim')
     " let g:limelight_default_coefficient = 0.3
 
     function! s:goyo_enter()
-      Limelight
+      " Limelight
     endfunction
 
     function! s:goyo_leave()
-      Limelight!
+      " Limelight!
       call SetTheme(g:theme_default)
     endfunction
 
@@ -251,11 +259,11 @@ if neobundle#tap('vim-test')
     let test#strategy = "dispatch"
     let test#lua#busted#options = '--output=plainterminal --suppress-pending'
   endfunction
-  nmap <silent> <Leader>t :TestNearest<CR>
-  nmap <silent> <Leader>T :TestFile<CR>
-  nmap <silent> <Leader>a :TestSuite<CR>
+  nmap <silent> <Leader>tn :TestNearest<CR>
+  nmap <silent> <Leader>tf :TestFile<CR>
+  nmap <silent> <Leader>tt :TestSuite<CR>
   nmap <silent> <Leader>l :TestLast<CR>
-  nmap <silent> <Leader>v :TestVisit<CR>
+  nmap <silent> <Leader>te :TestVisit<CR>
   call neobundle#untap()
 endif
 
@@ -263,13 +271,13 @@ endif
 if neobundle#tap('ultisnips')
   function! neobundle#hooks.on_source(bundle)
     let g:UltiSnipsEditSplit = 'vertical'
-    let g:UltiSnipsSnippetsDir = '~/.vim/snippets'
+    let g:UltiSnipsSnippetsDir = $HOME.'/.vim/ultisnips'
     let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
     let g:UltiSnipsEnableSnipMate = 0
 
-    let g:UltiSnipsExpandTrigger = '<C-L>'
-    let g:UltiSnipsJumpForwardTrigger = '<C-L>'
-    let g:UltiSnipsJumpBackwardTrigger = '<C-H>'
+    let g:UltiSnipsExpandTrigger = '<C-l>'
+    let g:UltiSnipsJumpForwardTrigger = '<C-l>'
+    let g:UltiSnipsJumpBackwardTrigger = '<C-h>'
   endfunction
   nnoremap <LocalLeader>s :UltiSnipsEdit<CR>
   call neobundle#untap()
@@ -321,8 +329,11 @@ if neobundle#tap('unite.vim')
       " Use Ctrl-J/K to select row in insert mode
       imap <buffer> <C-j> <C-n>
       imap <buffer> <C-k> <C-p>
+      nmap <buffer> <C-j> <C-n>
+      nmap <buffer> <C-k> <C-p>
       " Clear cache / redraw
       imap <buffer> <C-a> <Plug>(unite_redraw)
+      nmap <buffer> <C-a> <Plug>(unite_redraw)
     endfunction
 
     let g:neomru#file_mru_limit = 100
@@ -394,6 +405,7 @@ if neobundle#tap('vimfiler.vim')
     let g:vimfiler_tree_closed_icon = '▸'
     let g:vimfiler_marked_file_icon = '*'
   endfunction
+  nnoremap <silent> <S-Tab> :VimFilerExplorer -no-toggle<CR>
   call neobundle#untap()
 endif
 
@@ -403,7 +415,7 @@ if neobundle#tap('YouCompleteMe')
     let g:ycm_allow_changing_updatetime = 0
     let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
-    let g:ycm_key_detailed_diagnostics = '<LocalLeader>d'
+    let g:ycm_key_detailed_diagnostics = '<LocalLeader>y'
   endfunction
   " Jump to definition or declaration of symbol under cursor
   nnoremap <silent> <Leader>j :YcmCompleter GoTo<CR>

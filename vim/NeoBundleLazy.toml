@@ -218,6 +218,7 @@ disabled = 1
 [[plugins]]
 repository = 'Valloric/YouCompleteMe'
 build = './install.py --clang-completer --system-libclang --system-boost'
+depends = 'SirVer/ultisnips'
 augroup = 'youcompletemeStart'
 filetypes = ['c', 'cpp', 'objc', 'objcpp']
 insert = 1

@@ -2,29 +2,34 @@ let g:lightline = {
   \   'colorscheme': 'wombat',
   \   'active': {
   \     'left': [ ['mode', 'paste'], ['filename'], ['modified'] ],
-  \     'right': [ ['syntastic', 'cursor'], ['percent'], ['fugitive'], ['filetype'] ]
+  \     'right': [ ['syntastic', 'cursor'], ['percent'], ['filetype', 'branch'] ]
   \   },
   \   'inactive': {
   \     'left': [ ['bufnum', 'filename'], ['modified'] ],
-  \     'right': [ ['cursor'], ['percent'], ['fugitive'], ['filetype'] ]
+  \     'right': [ ['cursor'], ['percent'], ['filetype', 'branch'] ]
   \   },
   \   'tabline': {
-  \     'left': [ ['cd'], ['relativepath'], ['fileencoding', 'fileformat'] ],
-  \     'right': [ ['date'], ['spell'] ]
+  \     'left': [ ['session', 'curdir'], ['curfile'], ['fileencoding', 'fileformat'] ],
+  \     'right': [ ['date'], ['spell'], ['alternate'] ]
+  \   },
+  \   'component': {
+  \     'alternate': "%{expand('#:p:.')}",
+  \     'curdir': "%{fnamemodify(getcwd(), ':~')}",
+  \     'date': "%{strftime('%a %d %b %H:%M')}",
   \   },
   \   'component_function': {
-  \     'cd': 'LLCurrentDir',
+  \     'branch': 'LLBranch',
+  \     'curfile': 'LLCurrentFile',
   \     'cursor': 'LLBufferCursor',
-  \     'date': 'LLDate',
   \     'fileencoding': 'LLFileEncoding',
   \     'fileformat': 'LLFileFormat',
   \     'filename': 'LLFileName',
   \     'filetype': 'LLFileType',
-  \     'fugitive': 'LLFugitive',
   \     'mode': 'LLBufferMode',
   \     'modified': 'LLBufferModified',
   \     'percent': 'LLBufferPercent',
   \     'readonly': 'LLFileReadOnly',
+  \     'session': 'LLSession',
   \   },
   \   'component_expand': {
   \     'syntastic': 'SyntasticStatuslineFlag',
@@ -32,8 +37,8 @@ let g:lightline = {
   \   'component_type': {
   \     'syntastic': 'error',
   \   },
-  \   'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-  \   'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
+  \   'separator': { 'left': '', 'right': '' },
+  \   'subseparator': { 'left': '', 'right': '' },
   \ }
 
 let g:lightline.mode_map = {
@@ -58,12 +63,18 @@ let s:special_filetypes = {
   \   'vimfiler': 'VimFiler',
   \ }
 
-function! LLCurrentDir()
-  return fnamemodify(getcwd(), ":~")
+function! LLBranch()
+  let s = get(s:special_filetypes, &ft, '')
+  if (s == '' || s == 'Git') && exists("*fugitive#head")
+    let _ = fugitive#head()
+    return strlen(_) ? ' '._ : ''
+  endif
+  return ''
 endfunction
 
-function! LLDate()
-  return strftime("%a %d %b %H:%M")
+function! LLCurrentFile()
+  let s = get(s:special_filetypes, &ft, '')
+  return s == '' ? expand('%:p:.') : s
 endfunction
 
 function! LLBufferCursor()
@@ -77,7 +88,7 @@ function! LLBufferMode()
 endfunction
 
 function! LLBufferModified()
-  return &ft =~ 'help\|unite\|vimfiler' ? '' : &modified ? "\u25CF" : ''
+  return &ft =~ 'help\|unite\|vimfiler' ? '' : &modified ? '●' : ''
 endfunction
 
 function! LLBufferPercent()
@@ -106,7 +117,7 @@ function! LLFileName()
 endfunction
 
 function! LLFileReadOnly()
-  return &readonly ? "\ue0a2 " : ''
+  return &readonly ? ' '  : ''
 endfunction
 
 function! LLFileType()
@@ -114,13 +125,8 @@ function! LLFileType()
   return is_special == '' ? (&ft == '' ? 'no ft' : &ft) : ''
 endfunction
 
-function! LLFugitive()
-  let s = get(s:special_filetypes, &ft, '')
-  if (s == '' || s == 'Git') && exists("*fugitive#head")
-    let _ = fugitive#head()
-    return strlen(_) ? _." \ue0a0" : ''
-  endif
-  return ''
+function! LLSession()
+  return fnamemodify(v:this_session, ':t:r')
 endfunction
 
 let g:unite_force_overwrite_statusline = 0

@@ -22,8 +22,9 @@ repository = 'jwhitley/vim-colors-solarized' # solarized fork that fixes sign co
 repository = 'reedes/vim-colors-pencil'
 
 ##############################################################################
-# Bundles that don't support lazy loading
+# Bundles that break on lazy loading
 
 [[plugins]]
 repository = 'SirVer/ultisnips'
+unite_sources = ['ultisnips']
 

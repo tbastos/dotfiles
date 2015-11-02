@@ -226,7 +226,7 @@ nnoremap <up>    :lprev<CR>zvzz
 nnoremap <down>  :lnext<CR>zvzz
 
 " Quick splits
-nnoremap _ :split<CR>
+nnoremap \\ :split<CR>
 nnoremap <bar> :vsplit<CR>
 
 " Switch to alternate file
