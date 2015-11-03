@@ -44,7 +44,7 @@ endif
 
 " Used in plugins.vim
 function! GetCacheDir(suffix)
-  return '~/.vim/.cache/' . a:suffix
+  return '~/.cache/vim/' . a:suffix
 endfunction
 
 " Bundles --------------------------------------------------------------------
@@ -133,8 +133,8 @@ set wrap " wrap lines by default
 
 set undofile
 set undoreload=10000
-set undodir=~/.vim/.cache/undo//
-set directory=~/.vim/.cache/swap//
+set undodir=~/.cache/vim/undo//
+set directory=~/.cache/vim/swap//
 
 function! EnsureExists(path)
   if !isdirectory(expand(a:path))
@@ -193,12 +193,15 @@ noremap <Leader>q :q<CR>
 " Write current buffer (save)
 nnoremap <Leader>w :w<CR>
 
+" Close (delete) current buffer, unless it's open in another window
+nnoremap <Leader>c :BD<CR>
+
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
 nnoremap <silent> <F2> :VimFilerExplorer -force-hide<CR>
 
 " CD to current file's dir
-nnoremap <Leader>cd :cd %:p:h<CR>:pwd<CR>
+nnoremap <Leader>C :cd %:p:h<CR>:pwd<CR>
 
 " Live preview (Markdown)
 nnoremap <silent> <Leader>p :PrevimOpen<CR>

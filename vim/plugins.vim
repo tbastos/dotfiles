@@ -14,6 +14,15 @@ if neobundle#tap('vim-airline')
   call neobundle#untap()
 endif
 
+" BufKill
+if neobundle#tap('bufkill.vim')
+  function! neobundle#hooks.on_source(bundle)
+    let g:BufKillOverrideCtrlCaret = 1
+    let g:BufKillActionWhenBufferDisplayedInAnotherWindow = 'cancel'
+  endfunction
+  call neobundle#untap()
+endif
+
 " ChooseWin - jump to another window (with visual selection)
 if neobundle#tap('vim-choosewin')
   nmap - <Plug>(choosewin)
@@ -80,6 +89,7 @@ if neobundle#tap('vim-fugitive')
   nnoremap <Leader>go :Git checkout<Space>
   nnoremap <Leader>gp :Gpush<CR>
   nnoremap <Leader>gP :Gpull<CR>
+  nnoremap <Leader>gh :Gbrowse<CR>
   call neobundle#untap()
 endif
 
@@ -189,7 +199,7 @@ if neobundle#tap('vim-startify')
     let g:startify_session_persistence    = 1
     let g:startify_session_delete_buffers = 1
 
-    let g:startify_session_dir = '~/.vim/.session'
+    let g:startify_session_dir = '~/.local/share/vim/session'
     let g:startify_bookmarks = [ '~/.dotfiles/vim/vimrc' ]
 
     let g:startify_list_order = [
@@ -337,8 +347,8 @@ if neobundle#tap('unite.vim')
     endfunction
 
     let g:neomru#file_mru_limit = 100
-    let g:neomru#file_mru_path = GetCacheDir('neomru/file')
-    let g:neomru#directory_mru_path = GetCacheDir('neomru/directory')
+    let g:neomru#file_mru_path = GetCacheDir('mru_files')
+    let g:neomru#directory_mru_path = GetCacheDir('mru_dirs')
   endfunction
 
   " Map space to the prefix for Unite

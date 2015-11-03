@@ -26,15 +26,11 @@ ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
 ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
 
 # Git
-ln -s ~/.dotfiles/git/config ~/.gitconfig
+ln -s ~/.dotfiles/git/config ~/.config/git/config
 
 # Vim
 ln -s ~/.dotfiles/vim ~/.vim
 ln -s ~/.dotfiles/vim/vimrc ~/.vimrc
-ln -s ~/.dotfiles/vim/gvimrc ~/.gvimrc
-
-# Ruby
-ln -s ~/.dotfiles/gemrc ~/.gemrc
 
 # Karabiner (OSX)
 ln -s ~/.dotfiles/osx/karabiner.xml ~/Library/Application\ Support/Karabiner/private.xml

@@ -16,6 +16,9 @@ build = 'make'
 repository = 'mhinz/vim-startify'
 
 [[plugins]]
+repository = 'qpkorr/vim-bufkill'
+
+[[plugins]]
 repository = 'itchyny/lightline.vim'
 
 [[plugins]]
