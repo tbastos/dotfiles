@@ -19,6 +19,7 @@ let g:lightline = {
   \   },
   \   'component_function': {
   \     'branch': 'LLBranch',
+  \     'bufnum': 'LLBufferNumber',
   \     'curfile': 'LLCurrentFile',
   \     'cursor': 'LLBufferCursor',
   \     'fileencoding': 'LLFileEncoding',
@@ -58,6 +59,7 @@ let g:lightline.mode_map = {
 let s:special_filetypes = {
   \   'gitcommit': 'Git',
   \   'help': 'Help',
+  \   'qf': 'QuickFix',
   \   'startify': 'Startify',
   \   'unite': 'Unite',
   \   'vimfiler': 'VimFiler',
@@ -89,6 +91,11 @@ endfunction
 
 function! LLBufferModified()
   return &ft =~ 'help\|unite\|vimfiler' ? '' : &modified ? '●' : ''
+endfunction
+
+function! LLBufferNumber()
+  let s = get(s:special_filetypes, &ft, '')
+  return s == '' ? bufnr('%') : s
 endfunction
 
 function! LLBufferPercent()

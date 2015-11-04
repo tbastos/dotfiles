@@ -258,6 +258,7 @@ commands = ['GitGutterToggle']
 
 [[plugins]]
 repository = 'janko-m/vim-test'
+depends = 'tpope/vim-dispatch'
 commands = ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']
 
 

@@ -193,8 +193,10 @@ endif
 if neobundle#tap('vim-startify')
   function! neobundle#hooks.on_source(bundle)
     let g:startify_enable_special         = 0
+    let g:startify_enable_unsafe          = 1
     let g:startify_files_number           = 15
     let g:startify_relative_path          = 1
+    let g:startify_change_to_dir          = 1
     let g:startify_change_to_vcs_root     = 1
     let g:startify_session_persistence    = 1
     let g:startify_session_delete_buffers = 1
@@ -265,9 +267,9 @@ endif
 
 " Test
 if neobundle#tap('vim-test')
-  function! neobundle#hooks.on_source(bundle)
-    let test#strategy = "dispatch"
-    let test#lua#busted#options = '--output=plainterminal --suppress-pending'
+  function! neobundle#hooks.on_post_source(bundle)
+    let g:test#strategy = "dispatch"
+    let g:test#lua#busted#options = '--output=plainterminal --suppress-pending'
   endfunction
   nmap <silent> <Leader>tn :TestNearest<CR>
   nmap <silent> <Leader>tf :TestFile<CR>
