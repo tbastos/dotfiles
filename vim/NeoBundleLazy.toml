@@ -6,7 +6,7 @@ repository = 'tpope/vim-repeat'
 
 [[plugins]]
 repository = 'tpope/vim-unimpaired'
-mappings = [['nox', '[', ']', 'co']]
+mappings = [['n', '[', ']', 'co']]
 
 [[plugins]]
 repository = 'ciaranm/securemodelines'
@@ -188,7 +188,7 @@ mappings = [['nx', 'gc']]
 repository = 'tpope/vim-abolish'
 depends = 'tpope/vim-repeat'
 commands = ['Abolish', 'Subvert', 'S'] # :Subvert is a powerful search/replace command
-mappings = 'cr' # crs to_snake, crm ToMixed, crc toCamel, cru TO_UPPERCASE
+mappings = [['n', 'cr']] # crs to_snake, crm ToMixed, crc toCamel, cru TO_UPPERCASE
 
 [[plugins]]
 repository = 'kana/vim-operator-user'

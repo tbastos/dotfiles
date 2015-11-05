@@ -10,10 +10,9 @@ let g:lightline = {
   \   },
   \   'tabline': {
   \     'left': [ ['session', 'cd'], ['curfile'], ['fileencoding', 'fileformat'] ],
-  \     'right': [ ['date'], ['spell'], ['alternate'] ]
+  \     'right': [ ['date'], ['spell'] ]
   \   },
   \   'component': {
-  \     'alternate': "%{bufname(0)?'# '.expand('#:p:.'):'no alternate'}",
   \     'cd': "%{'cd '.fnamemodify(getcwd(), ':~')}",
   \     'date': "%{strftime('%a %d %b %H:%M')}",
   \   },
