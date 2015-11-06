@@ -240,7 +240,10 @@ if neobundle#tap('syntastic')
   function! neobundle#hooks.on_source(bundle)
     let g:syntastic_mode_map = {'mode': 'passive'} " we'll call syntastic
     let g:syntastic_check_on_open = 0 " checks are always on write
+    let g:syntastic_auto_loc_list = 0
+    let g:syntastic_always_populate_loc_list = 1
 
+    let g:syntastic_stl_format = '%E{Error(%e)  %fe}%B{, }%W{Warning(%w)  %fw}'
     let g:syntastic_error_symbol = '✗'
     let g:syntastic_style_error_symbol = '✠'
     let g:syntastic_warning_symbol = '⚠'

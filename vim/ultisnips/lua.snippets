@@ -14,7 +14,7 @@ snippet #! "Lua Shebang" b
 $0
 endsnippet
 
-snippet fun "function()" b
+snippet fun "function()"
 function ${1:new_function}(${2:args})
 	${0:${VISUAL:-- body}}
 end
@@ -38,7 +38,7 @@ for ${1:i},${2:v} in ipairs(${3:table_name}) do
 end
 endsnippet
 
-snippet local "local x = nil"
+snippet local "local x = nil" b
 local ${1:x} = ${0:nil}
 endsnippet
 
