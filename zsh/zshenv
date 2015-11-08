@@ -45,8 +45,8 @@ alias mv='mv -i'
 ########################################################################
 
 cdpath=(
-  $HOME/Projects
-  $HOME/Dropbox
+  $HOME/CloudDocs
+  $HOME/Work
   $HOME
 )
 
@@ -69,24 +69,4 @@ source $ZDOTDIR/modules/z/z.sh
 # automatically list directory contents on 'cd'
 auto-ls () { ls; }
 chpwd_functions=( auto-ls $chpwd_functions )
-
-########################################################################
-# Git
-########################################################################
-
-hub_path=$(which hub)
-if (( $+commands[hub] )); then
-  alias git=$hub_path
-fi
-
-alias gu='git pull --prune'
-alias gl='git log --oneline --decorate'
-alias gp='git push origin HEAD'
-alias gd='git diff --word-diff'
-alias gc='git commit'
-alias gca='git commit -a'
-alias gco='git checkout'
-alias gcb='git copy-branch-name'
-alias gb='git branch'
-alias gs='git status -sb'
 

@@ -23,6 +23,9 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # History Substring Search (must come after highlighting)
 source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-search.zsh
 
+# Git Integration
+eval "$(scmpuff init -s)"
+
 ########################################################################
 # Zaw widgets
 ########################################################################
