@@ -3,7 +3,7 @@
 On OSX:
 ```zsh
 brew install boost-python cmake cscope ctags git hub lua scmpuff the_silver_searcher
-brew install macvim --custom-icons --override-system-vim --with-lua --with-cscope --HEAD
+brew install macvim --with-custom-icons --with-override-system-vim --with-lua --with-cscope --HEAD
 ```
 
 ### Installation
