@@ -7,6 +7,8 @@
 " Skip initialization for vim-tiny or vim-small.
 if 0 | endif
 
+scriptencoding utf-8
+
 let mapleader = ","
 let maplocalleader = "\\"
 
@@ -118,8 +120,7 @@ set formatoptions=cqrn1j
 set linebreak
 set linespace=1
 set list " show invisible chars
-set listchars=tab:▸\ ,trail:.,extends:❯,precedes:❮,nbsp:⌴
-"set listchars+=eol:¬
+set listchars=tab:↹\ ,trail:.,nbsp:‿,extends:→,precedes:←
 set shiftround " round indent to multiple of shiftwidth
 set shiftwidth=2 " an autoindent is two spaces
 let &showbreak='↪ '

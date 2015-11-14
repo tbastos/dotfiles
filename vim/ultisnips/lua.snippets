@@ -14,10 +14,18 @@ snippet #! "Lua Shebang" b
 $0
 endsnippet
 
-snippet fun "function()"
+snippet fun "named function()" w
 function ${1:new_function}(${2:args})
 	${0:${VISUAL:-- body}}
 end
+endsnippet
+
+snippet lf "local function() block" b
+local fun$0
+endsnippet
+
+snippet f "empty anon function()" w
+function() ${1:${VISUAL}} end$0
 endsnippet
 
 snippet for "for i = first, last do" b
@@ -44,14 +52,14 @@ endsnippet
 
 # Busted Snippets
 
-snippet describe "describe(message, func)" b
-describe(${1:#:message}, function()
+snippet desc "describe(message, func)" b
+describe("${1:Noun}", function()
 	${0:${VISUAL:-- body}}
 end)
 endsnippet
 
 snippet it "it(message, func)" b
-it(${1:#:message}, function()
+it("${1:Verb}", function()
 	${0:${VISUAL:-- body}}
 end)
 endsnippet
@@ -74,8 +82,8 @@ setup(function()
 end)
 endsnippet
 
-snippet tear_down "tear_down(func)" b
-tear_down(function()
+snippet teardown "teardown(func)" b
+teardown(function()
 	${0:${VISUAL:-- body}}
 end)
 endsnippet
