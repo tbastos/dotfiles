@@ -29,19 +29,19 @@ function() ${1:${VISUAL}} end$0
 endsnippet
 
 snippet for "for i = first, last do" b
-for ${1:i} = ${2:first},${3:last}${4/^..*/(?0:,:)/}${4:step} do
+for ${1:i} = ${2:first}, ${3:last}${4/^..*/(?0:,:)/}${4:step} do
 	${0:${VISUAL:-- body}}
 end
 endsnippet
 
-snippet forkv "for k, v in pair() do" b
+snippet forkv "for k, v in pairs() do" b
 for ${1:k}, ${2:v} in pairs(${3:table_name}) do
 	${0:${VISUAL:-- body}}
 end
 endsnippet
 
-snippet foriv "for i, v in ipair() do" b
-for ${1:i},${2:v} in ipairs(${3:table_name}) do
+snippet foriv "for i, v in ipairs() do" b
+for ${1:i}, ${2:v} in ipairs(${3:table_name}) do
 	${0:${VISUAL:-- body}}
 end
 endsnippet
@@ -89,8 +89,6 @@ end)
 endsnippet
 
 snippet finally "finally(func)" b
-finally(function()
-	${0:${VISUAL:-- body}}
-end)
+finally(function() $0 end)
 endsnippet
 

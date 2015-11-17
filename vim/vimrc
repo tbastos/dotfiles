@@ -186,15 +186,22 @@ noremap Q <nop>
 
 " Quit all windows
 noremap QQ :qa<CR>
-noremap Q!! :qa!<CR>
+noremap Q! :qa!<CR>
 
 " Quit special windows (preview, help, quickfix, unite)
-nnoremap <silent> QS :call <SID>close_windows(['&pvw'], ['help', 'qf', 'unite'])<CR>
+nnoremap <silent> <C-w><C-q> :call <SID>close_special_windows()<CR>
+inoremap <silent> <C-w><C-q> <C-o>:call <SID>close_special_windows()<CR>
+function! s:close_special_windows()
+  call s:close_windows(['&pvw'], ['help', 'qf', 'unite'])
+endfunction
 function! s:close_windows(options, filetypes)
   let save_winnr = winnr()
   let closable_winnrs = []
   windo if !(index(map(a:options, 'eval(v:val)'), 1)==-1 && index(a:filetypes, &ft)==-1) |
         \ call add(closable_winnrs, winnr()) | endif
+  if index(closable_winnrs, save_winnr) != -1
+    let save_winnr = -1
+  end
   for winnr in reverse(closable_winnrs)
     if winnr < save_winnr
       let save_winnr -= 1
@@ -202,7 +209,9 @@ function! s:close_windows(options, filetypes)
     exe winnr.'wincmd w'
     hide
   endfor
-  exe save_winnr.'wincmd w'
+  if save_winnr >= 0
+    exe save_winnr.'wincmd w'
+  end
 endfunction
 
 " Quit current window
