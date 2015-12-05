@@ -309,6 +309,9 @@ vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
 " Editing --------------------------------------------------------------------
 
+" Paste last edited/yanked text in insert mode.
+inoremap <C-p> <C-r>"
+
 " Use <Space>[] to add spaces in normal mode (complements vim-unimpaired)
 nnoremap <Space>[ i<Space><ESC>
 nnoremap <Space>] a<Space><ESC>

@@ -36,8 +36,8 @@
   </vkopenurldef>
 
   <vkopenurldef>
-    <name>KeyCode::VK_OPEN_URL_APP_PomoDone</name>
-    <url type="file">/Applications/PomoDone.app</url>
+    <name>KeyCode::VK_OPEN_URL_APP_Pomodoro</name>
+    <url type="file">/Applications/Pomodoro Time.app</url>
   </vkopenurldef>
 
   <vkopenurldef>
@@ -54,27 +54,17 @@
 
   <item>
     <name>Use Fn to open common applications</name>
-    <appendix>Fn+Z opens Web Browser</appendix>
-    <appendix>Fn+X opens Vim</appendix>
-    <appendix>Fn+C opens iTerm</appendix>
-    <appendix>Fn+A opens iTunes</appendix>
-    <appendix>Fn+S opens Spotify</appendix>
-    <appendix>Fn+D opens Dictionary</appendix>
-    <appendix>Fn+F opens Finder</appendix>
-    <appendix>Fn+W opens Todoist (for What to do)</appendix>
-    <appendix>Fn+Q opens PomoDone</appendix>
-    <appendix>Fn+E opens Tweetbot</appendix>
     <identifier>private.fn_shortcuts</identifier>
-    <autogen>__KeyToKey__ KeyCode::Z, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Web</autogen>
-    <autogen>__KeyToKey__ KeyCode::X, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Vim</autogen>
+    <autogen>__KeyToKey__ KeyCode::W, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Web</autogen>
+    <autogen>__KeyToKey__ KeyCode::E, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Vim</autogen>
     <autogen>__KeyToKey__ KeyCode::C, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_iTerm</autogen>
     <autogen>__KeyToKey__ KeyCode::A, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_iTunes</autogen>
     <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Spotify</autogen>
     <autogen>__KeyToKey__ KeyCode::D, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Dictionary</autogen>
     <autogen>__KeyToKey__ KeyCode::F, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Finder</autogen>
-    <autogen>__KeyToKey__ KeyCode::W, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Todoist</autogen>
-    <autogen>__KeyToKey__ KeyCode::Q, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_PomoDone</autogen>
-    <autogen>__KeyToKey__ KeyCode::E, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Tweetbot</autogen>
+    <autogen>__KeyToKey__ KeyCode::X, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Todoist</autogen>
+    <autogen>__KeyToKey__ KeyCode::P, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Pomodoro</autogen>
+    <autogen>__KeyToKey__ KeyCode::Q, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Tweetbot</autogen>
   </item>
 
   <item>
