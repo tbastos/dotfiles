@@ -294,6 +294,10 @@ if neobundle#tap('ultisnips')
     let g:UltiSnipsJumpForwardTrigger = '<C-l>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-h>'
   endfunction
+  augroup UltiSnipsFileType
+    au!
+    au FileType * call UltiSnips#FileTypeChanged()
+  augroup END
   nnoremap <LocalLeader>s :UltiSnipsEdit<CR>
   call neobundle#untap()
 endif

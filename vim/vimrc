@@ -91,6 +91,7 @@ set lazyredraw " don't redraw while executing macros (for speed)
 set modelines=0
 set nrformats-=octal " no octal input
 set number
+set regexpengine=1 " old, faster re engine
 set ruler
 set sessionoptions=curdir,winsize
 set shortmess+=c " disable completion messages
@@ -370,8 +371,8 @@ endfunction
 call SetTheme(g:theme_default)
 
 " Show cursorline only in the current window
-augroup CursorLine
-  autocmd!
-  autocmd WinLeave,InsertEnter * set nocursorline
-  autocmd WinEnter,InsertLeave * set cursorline
-augroup END
+" augroup CursorLine
+"   autocmd!
+"   autocmd WinLeave,InsertEnter * set nocursorline
+"   autocmd WinEnter,InsertLeave * set cursorline
+" augroup END
