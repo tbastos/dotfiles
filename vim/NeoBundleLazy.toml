@@ -32,7 +32,7 @@ explorer = 1
 
 [[plugins]]
 repository = 'tpope/vim-dispatch'
-commands = ['Dispatch', 'Dispatch!', 'Make', 'Make!']
+commands = ['Dispatch', 'Dispatch!', 'Make', 'Make!', 'Start', 'Start!']
 
 [[plugins]]
 repository = 'tyru/open-browser.vim'

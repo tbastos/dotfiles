@@ -345,6 +345,8 @@ if neobundle#tap('unite.vim')
     " Custom mappings unite buffers
     autocmd FileType unite call s:unite_settings()
     function! s:unite_settings()
+      " Backspace also closes in normal mode
+      nmap <buffer> <BS> q
       " Use Ctrl-J/K to select row in insert mode
       imap <buffer> <C-j> <C-n>
       imap <buffer> <C-k> <C-p>
