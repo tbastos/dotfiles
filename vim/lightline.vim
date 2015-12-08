@@ -10,10 +10,10 @@ let g:lightline = {
   \   },
   \   'tabline': {
   \     'left': [ ['session', 'cd'], ['curfile']],
-  \     'right': [ ['date'], ['spell'], ['fileencoding', 'fileformat'] ]
+  \     'right': [ ['date'], ['filetype', 'fileencoding', 'fileformat'] ]
   \   },
   \   'component': {
-  \     'cd': "%{'cd '.fnamemodify(getcwd(), ':~').'/'}",
+  \     'cd': "%{fnamemodify(getcwd(), ':~').'/'}",
   \     'date': "%{strftime('%a %d %b %H:%M')}",
   \   },
   \   'component_function': {
@@ -24,6 +24,7 @@ let g:lightline = {
   \     'fileencoding': 'LLFileEncoding',
   \     'fileformat': 'LLFileFormat',
   \     'filename': 'LLFileName',
+  \     'filetype': 'LLFileType',
   \     'mode': 'LLBufferMode',
   \     'modified': 'LLBufferModified',
   \     'percent': 'LLBufferPercent',
@@ -75,7 +76,7 @@ endfunction
 
 function! LLCurrentFile()
   let s = get(s:special_filetypes, &ft, '')
-  return s == '' ? expand('%:p:.').' ['.&ft.']' : s
+  return s == '' ? expand('%:p:.') : s
 endfunction
 
 function! LLBufferCursor()
@@ -124,6 +125,11 @@ endfunction
 
 function! LLFileReadOnly()
   return &readonly ? ' '  : ''
+endfunction
+
+function! LLFileType()
+  let is_special = get(s:special_filetypes, &ft, '')
+  return is_special == '' ? (&ft == '' ? 'no ft' : &ft) : ''
 endfunction
 
 function! LLSession()
@@ -177,6 +183,7 @@ function! PomodoroToggle()
   else
     call PomodoroStop()
   end
+  redraw!
 endfunction
 
 function! LLPomodoro()
@@ -187,7 +194,7 @@ function! LLPomodoro()
     if elapsed > s:pomodoro_work_secs
       let left = s:pomodoro_total_secs - elapsed
     else
-      let icon = '❤ '
+      let icon = '❤'
       let left = s:pomodoro_work_secs - elapsed
     endif
   endif
