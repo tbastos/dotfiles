@@ -201,4 +201,4 @@ function! LLPomodoro()
   return printf("%s %.2d:%.2d", icon, left/60, left%60)
 endfunction
 
-command Pomodoro call PomodoroToggle()
+command! Pomodoro call PomodoroToggle()

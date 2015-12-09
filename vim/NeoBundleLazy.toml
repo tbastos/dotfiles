@@ -47,8 +47,12 @@ repository = 't9md/vim-choosewin' # visual window selection
 mappings = '<Plug>'
 
 [[plugins]]
-repository = 'regedarek/ZoomWin' # zoom in/out a split
-mappings = [['nox', '<C-w>o']]
+repository = 'mbbill/undotree'
+commands = ['UndotreeToggle']
+
+[[plugins]]
+repository = 'regedarek/zoomwin' # zoom in/out a split
+mappings = [['nox', '<c-w>o']]
 
 [[plugins]]
 repository = 'junegunn/goyo.vim' # distraction free editing

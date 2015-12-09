@@ -302,6 +302,13 @@ if neobundle#tap('ultisnips')
   call neobundle#untap()
 endif
 
+" Undo Tree (:UndotreeToggle)
+if neobundle#tap('mbbill/undotree')
+  function! neobundle#hooks.on_source(bundle)
+  endfunction
+  call neobundle#untap()
+endif
+
 " Unite
 if neobundle#tap('unite.vim')
   function! neobundle#hooks.on_source(bundle)
