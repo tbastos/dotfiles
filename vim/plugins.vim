@@ -32,21 +32,26 @@ endif
 " ClangFormat
 if neobundle#tap('vim-clang-format')
   function! neobundle#hooks.on_source(bundle)
+    let g:clang_format#auto_format = 1
     let g:clang_format#auto_formatexpr = 1
-    let g:clang_format#auto_format_on_insert_leave = 1
+    let g:clang_format#auto_format_on_insert_leave = 0 " interferes with indenting of {<CR>
 
     let g:clang_format#code_style = "LLVM"
     let g:clang_format#style_options = {
-          \ "Language" : "Cpp",
-          \ "Standard" : "Cpp11",
-          \ "TabWidth" : 2,
+          \ "AlwaysBreakTemplateDeclarations" : "true",
+          \ "AllowShortFunctionsOnASingleLine": "Inline",
           \ "DerivePointerBinding" : "false",
+          \ "Language" : "Cpp",
           \ "PointerBindsToType" : "true",
+          \ "Standard" : "C++11",
+          \ "TabWidth" : 2,
           \ }
   endfunction
   augroup ClangFormat
     au!
-    au FileType c,cpp,objc map <buffer><Leader>cf <Plug>(operator-clang-format)
+    au FileType c,cpp,objc
+          \ setlocal textwidth=0 |
+          \ map <buffer><Leader>cf <Plug>(operator-clang-format)
   augroup END
   call neobundle#untap()
 endif
@@ -54,7 +59,8 @@ endif
 " DelimitMate
 if neobundle#tap('delimitMate')
   function! neobundle#hooks.on_source(bundle)
-    let delimitMate_balance_matchpairs = 1
+    let g:delimitMate_balance_matchpairs = 1
+    let g:delimitMate_expand_cr = 1
   endfunction
   call neobundle#untap()
 endif
@@ -293,6 +299,13 @@ if neobundle#tap('ultisnips')
     let g:UltiSnipsExpandTrigger = '<C-l>'
     let g:UltiSnipsJumpForwardTrigger = '<C-l>'
     let g:UltiSnipsJumpBackwardTrigger = '<C-h>'
+
+    " Helper functions for snippets
+    function! CurrentLuaClass()
+      let pattern = '^local \zs\i*\ze ='
+      let line = search(pattern, 'bnW')
+      return line == 0 ? '' : matchstr(getline(line), pattern).':'
+    endfunction
   endfunction
   augroup UltiSnipsFileType
     au!
@@ -338,7 +351,7 @@ if neobundle#tap('unite.vim')
 
     if executable('ag')
       let g:unite_source_grep_command = 'ag'
-      let g:unite_source_grep_default_opts = '--line-numbers --nocolor --nogroup'
+      let g:unite_source_grep_default_opts = '--line-numbers --nocolor --nogroup --hidden'
       let g:unite_source_grep_recursive_opt = ''
       let g:unite_source_rec_async_command =
             \ ['ag', '--follow', '--nocolor', '--nogroup', '--hidden', '-g', '']
@@ -441,6 +454,7 @@ endif
 if neobundle#tap('YouCompleteMe')
   function! neobundle#hooks.on_source(bundle)
     let g:ycm_allow_changing_updatetime = 0
+    let g:ycm_global_ycm_extra_conf = '~/Work/.ycm_extra_conf.py'
     let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
     let g:ycm_key_detailed_diagnostics = '<LocalLeader>y'

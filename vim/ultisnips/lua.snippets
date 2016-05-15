@@ -14,18 +14,20 @@ snippet #! "Lua Shebang" b
 $0
 endsnippet
 
-snippet fun "named function()" w
-function ${1:new_function}(${2:args})
+snippet f "empty anonymous function()" w
+function() ${1:${VISUAL}} end$0
+endsnippet
+
+snippet lf "local function() block" b
+local function ${1:name}(${2:args})
 	${0:${VISUAL:-- body}}
 end
 endsnippet
 
-snippet lf "local function() block" b
-local fun$0
-endsnippet
-
-snippet f "empty anon function()" w
-function() ${1:${VISUAL}} end$0
+snippet m "function Class:method()" w
+function `!v CurrentLuaClass()`${1:name}(${2:args})
+	${0:${VISUAL:-- body}}
+end
 endsnippet
 
 snippet for "for i = first, last do" b

@@ -222,7 +222,7 @@ noremap <Leader>q :q<CR>
 nnoremap <Leader>w :w<CR>
 
 " Close (delete) current buffer, unless it's open in another window
-nnoremap <Leader>c :BD<CR>
+nnoremap <Leader>c :Bdelete<CR>
 
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
@@ -235,10 +235,10 @@ nnoremap <Leader>C :cd %:p:h<CR>:pwd<CR>
 nnoremap <silent> <Leader>p :PrevimOpen<CR>
 
 " Default Make (usually builds the project)
-nnoremap M :Make!<CR>
+nnoremap M :Make<CR>
 
 " Default Dispatch (usually runs the project)
-nnoremap K :Dispatch!<CR>
+nnoremap K :Dispatch<CR>
 
 " Custom Make/Dispatch (prompts for arguments)
 nnoremap <Leader>m :Make!<Space>
@@ -310,8 +310,8 @@ vnoremap <silent> # :call VisualSelection('b', '')<CR>
 
 " Editing --------------------------------------------------------------------
 
-" Paste last edited/yanked text in insert mode.
-inoremap <C-p> <C-r>"
+" Paste last yanked text in insert mode.
+inoremap <C-p> <C-r><C-o>"
 
 " Use <Space>[] to add spaces in normal mode (complements vim-unimpaired)
 nnoremap <Space>[ i<Space><ESC>

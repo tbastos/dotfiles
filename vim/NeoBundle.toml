@@ -2,35 +2,31 @@
 # Core Bundles
 
 [[plugins]]
-repository = 'Shougo/neobundle.vim'
+repo = 'Shougo/neobundle.vim'
 fetch = 1
 
 [[plugins]]
-repository = 'Shougo/vimproc.vim'
+repo = 'Shougo/vimproc.vim'
 build = 'make'
 
 ##############################################################################
 # Bundles needed at startup
 
 [[plugins]]
-repository = 'mhinz/vim-startify'
+repo = 'mhinz/vim-startify'
 
 [[plugins]]
-repository = 'qpkorr/vim-bufkill'
+repo = 'itchyny/lightline.vim'
 
 [[plugins]]
-repository = 'itchyny/lightline.vim'
+repo = 'jwhitley/vim-colors-solarized' # solarized fork that fixes sign column bg
 
 [[plugins]]
-repository = 'jwhitley/vim-colors-solarized' # solarized fork that fixes sign column bg
-
-[[plugins]]
-repository = 'reedes/vim-colors-pencil'
+repo = 'reedes/vim-colors-pencil'
 
 ##############################################################################
 # Bundles that break on lazy loading
 
 [[plugins]]
-repository = 'SirVer/ultisnips'
-unite_sources = ['ultisnips']
+repo = 'SirVer/ultisnips'
 
