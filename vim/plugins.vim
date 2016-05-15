@@ -454,7 +454,7 @@ endif
 if neobundle#tap('YouCompleteMe')
   function! neobundle#hooks.on_source(bundle)
     let g:ycm_allow_changing_updatetime = 0
-    let g:ycm_global_ycm_extra_conf = '~/Work/.ycm_extra_conf.py'
+    let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
     let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
     let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
     let g:ycm_key_detailed_diagnostics = '<LocalLeader>y'
