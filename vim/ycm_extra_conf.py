@@ -37,6 +37,7 @@ import ycm_core
 flags = [
 '-Wall',
 '-Wextra',
+'-Wpedantic',
 '-Werror',
 '-Wno-long-long',
 '-Wno-variadic-macros',
@@ -55,6 +56,8 @@ flags = [
 '-x', 'c++',
 ]
 
+def DirectoryOfThisScript():
+  return os.path.dirname( os.path.abspath( __file__ ) )
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
 # compile_commands.json file to use that instead of 'flags'. See here for
@@ -74,10 +77,6 @@ else:
   database = None
 
 SOURCE_EXTENSIONS = [ '.cpp', '.cxx', '.cc', '.c', '.m', '.mm' ]
-
-def DirectoryOfThisScript():
-  return os.path.dirname( os.path.abspath( __file__ ) )
-
 
 def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
   if not working_directory:
@@ -142,14 +141,6 @@ def FlagsForFile( filename, **kwargs ):
     final_flags = MakeRelativePathsInFlagsAbsolute(
       compilation_info.compiler_flags_,
       compilation_info.compiler_working_dir_ )
-
-    # NOTE: This is just for YouCompleteMe; it's highly likely that your project
-    # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR
-    # ycm_extra_conf IF YOU'RE NOT 100% SURE YOU NEED IT.
-    try:
-      final_flags.remove( '-stdlib=libc++' )
-    except ValueError:
-      pass
   else:
     relative_to = DirectoryOfThisScript()
     final_flags = MakeRelativePathsInFlagsAbsolute( flags, relative_to )

@@ -37,8 +37,6 @@ if has('vim_starting')
   if &compatible
     set nocompatible " be iMproved
   endif
-  " Enable NeoBundle
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
   " Default start directory
   if !argc() | cd ~/Work | endif
   let g:start_dir = getcwd()
@@ -49,25 +47,15 @@ function! GetCacheDir(suffix)
   return '~/.cache/vim/' . a:suffix
 endfunction
 
-" Bundles --------------------------------------------------------------------
+" Plugins --------------------------------------------------------------------
 
-" Increase time limit for bundle installs
-let g:neobundle#install_process_timeout = 900 " 15 minutes
+let g:plug_timeout = 120
 
-call neobundle#begin()
-if neobundle#load_cache()
-  call neobundle#load_toml(expand('~/.vim/NeoBundle.toml'))
-  call neobundle#load_toml(expand('~/.vim/NeoBundleLazy.toml'), {'lazy': 1, 'verbose': 0})
-  NeoBundleSaveCache
-endif
+call plug#begin('~/.vim/bundle')
 source ~/.vim/plugins.vim
-call neobundle#end()
+call plug#end()
 
 filetype plugin indent on
-
-if !has('vim_starting')
-  NeoBundleCheck
-endif
 
 " Base Options ---------------------------------------------------------------
 
@@ -261,6 +249,9 @@ nnoremap <c-h> <c-w>h
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
+
+" Jump to another window (with visual selection)
+nmap - <Plug>(choosewin)
 
 " Change the window layout by moving the current window
 nnoremap <c-w>h <c-w>H
