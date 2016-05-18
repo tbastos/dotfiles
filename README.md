@@ -2,8 +2,14 @@
 
 On OSX:
 ```zsh
-brew install boost-python cmake cscope ctags git hub lua scmpuff the_silver_searcher
+# Tools
+brew install boost-python cmake cscope ctags fzf git hub lua scmpuff the_silver_searcher
+
+# MacVim
 brew install macvim --with-custom-icons --with-override-system-vim --with-lua --with-cscope --HEAD
+
+# NeoVim
+brew install neovim/neovim/neovim --HEAD
 ```
 
 ### Install
@@ -23,7 +29,8 @@ ln -s ~/.dotfiles/vim ~/.vim
 ln -s ~/.dotfiles/vim/vimrc ~/.vimrc
 
 # NeoVim
-ln -s ~/.dotfiles/nvim ~/.config/nvim
+ln -s ~/.dotfiles/vim ~/.config/nvim
+ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
 
 # Karabiner (OSX)
 ln -s ~/.dotfiles/osx/karabiner.xml ~/Library/Application\ Support/Karabiner/private.xml

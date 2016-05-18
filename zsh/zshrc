@@ -27,6 +27,26 @@ source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-searc
 eval "$(scmpuff init -s)"
 
 ########################################################################
+# FZF Integration - https://github.com/junegunn/fzf
+########################################################################
+
+# Setup fzf
+if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+  export PATH="$PATH:/usr/local/opt/fzf/bin"
+fi
+
+# Man path
+if [[ ! "$MANPATH" == */usr/local/opt/fzf/man* && -d "/usr/local/opt/fzf/man" ]]; then
+  export MANPATH="$MANPATH:/usr/local/opt/fzf/man"
+fi
+
+# Auto-completion
+[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+# Key bindings
+source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+
+########################################################################
 # Zaw widgets
 ########################################################################
 
@@ -36,8 +56,8 @@ source $ZDOTDIR/modules/zaw/zaw.zsh
 bindkey '^R' zaw-history
 bindkey -M filterselect '^R' down-line-or-history
 bindkey -M filterselect '^E' accept-search
-bindkey -M filterselect '^P' up-line-or-history
-bindkey -M filterselect '^N' down-line-or-history
+bindkey -M filterselect '^K' up-line-or-history
+bindkey -M filterselect '^J' down-line-or-history
 bindkey -M filterselect '^[' send-break
 
 zstyle ':filter-select:highlight' matched fg=green
