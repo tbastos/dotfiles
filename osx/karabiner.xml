@@ -10,10 +10,10 @@
     <url type="file">/Applications/Safari.app</url>
   </vkopenurldef>
 
-  <vkopenurldef>
-    <name>KeyCode::VK_OPEN_URL_APP_Vim</name>
-    <url type="file">/Applications/MacVim.app</url>
-  </vkopenurldef>
+  <!-- <vkopenurldef> -->
+  <!--   <name>KeyCode::VK_OPEN_URL_APP_Vim</name> -->
+  <!--   <url type="file">/Applications/MacVim.app</url> -->
+  <!-- </vkopenurldef> -->
 
   <vkopenurldef>
     <name>KeyCode::VK_OPEN_URL_APP_iTunes</name>
@@ -56,7 +56,7 @@
     <name>Use Fn to open common applications</name>
     <identifier>private.fn_shortcuts</identifier>
     <autogen>__KeyToKey__ KeyCode::W, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Web</autogen>
-    <autogen>__KeyToKey__ KeyCode::E, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Vim</autogen>
+    <!-- <autogen>__KeyToKey__ KeyCode::E, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Vim</autogen> -->
     <autogen>__KeyToKey__ KeyCode::C, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_iTerm</autogen>
     <autogen>__KeyToKey__ KeyCode::A, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_iTunes</autogen>
     <autogen>__KeyToKey__ KeyCode::S, ModifierFlag::FN, KeyCode::VK_OPEN_URL_APP_Spotify</autogen>

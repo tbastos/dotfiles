@@ -78,7 +78,7 @@ Plug 'kergoth/vim-hilinks', {'on': 'HLT'} " debug syntax highlighting
 set rtp+=/usr/local/opt/fzf " use the system's fzf
 "Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-sneak', {'on': '<Plug>Sneak'}
+Plug 'justinmk/vim-sneak'
 Plug 'matchit.zip'
 
 " Text Objects
@@ -127,6 +127,7 @@ Plug 'Valloric/YouCompleteMe', {'for': ['c', 'cpp'],
 autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
 if has('nvim')
   Plug 'critiqjo/lldb.nvim'
+  Plug 'octol/vim-cpp-enhanced-highlight'
 else
   Plug 'jeaye/color_coded', {'for': ['c', 'cpp'],
         \ 'do': 'cmake . && make'}
@@ -143,12 +144,11 @@ Plug 'elzr/vim-json', {'for': ['javascript', 'json']}
 Plug 'tbastos/vim-lua', {'for': 'lua', 'frozen': 1}
 
 " OpenGL
-Plug 'tikhomirov/vim-glsl', {'for': 'glsl'}
+Plug 'tikhomirov/vim-glsl', {'for': ['glsl', 'vert', 'frag', 'geom', 'tesc', 'tese']}
 
 " Text / Markup / Web
 Plug 'rcmdnk/vim-markdown', {'for': 'markdown'}
 Plug 'cespare/vim-toml', {'for': 'toml'}
-Plug 'kannokanno/previm', {'on': 'PrevimOpen'}
 Plug 'othree/html5.vim', {'for': 'html'}
 Plug 'ap/vim-css-color', {'for': ['css','scss','sass','less']}
 Plug 'hail2u/vim-css3-syntax', {'for': ['css','scss','sass']}
@@ -162,6 +162,11 @@ source ~/.vim/lightline.vim
 "
 " Plugin settings, in alphabetical order
 "
+
+" C++ Enhanced Highlight
+" let g:cpp_class_scope_highlight = 1
+" let g:cpp_experimental_template_highlight = 1
+" let c_no_curly_error=1
 
 " ClangFormat
 let g:clang_format#auto_format = 1
@@ -188,6 +193,25 @@ augroup END
 let g:delimitMate_balance_matchpairs = 1
 let g:delimitMate_expand_cr = 1
 
+" Dirvish
+nnoremap <silent> <space>d :<C-u>Dirvish<CR>
+let g:dirvish_relative_paths = 1
+augroup my_dirvish_events
+  autocmd!
+
+  " Enable :Gstatus and friends.
+  autocmd FileType dirvish call fugitive#detect(@%)
+
+  " Map CTRL-R to reload the Dirvish buffer.
+  autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
+
+  " Map `gh` to hide dot-prefixed files.
+  " To "toggle" this, just press `R` to reload.
+  autocmd FileType dirvish nnoremap <buffer>
+        \ gh :keeppatterns g@\v/\.[^\/]+/?$@d<cr>
+augroup END
+
+
 " Fugitive
 doautoall fugitive BufNewFile
 if exists('*lightline#update')
@@ -211,20 +235,17 @@ nnoremap <Leader>gP :Gpull<CR>
 nnoremap <Leader>gh :Gbrowse<CR>
 
 " FZF -- fuzzy find everything
-" Map space to the prefix for FZF
-nnoremap [fzf] <Nop>
-nmap <space> [fzf]
-nnoremap <silent> [fzf]f :<C-u>Files<CR>
-nnoremap <silent> [fzf]r :<C-u>History<CR>
-nnoremap <silent> [fzf]a :<C-u>Ag<CR>
-nnoremap <silent> [fzf]l :<C-u>Lines<CR>
-nnoremap <silent> [fzf]b :<C-u>BLines<CR>
-nnoremap <silent> [fzf]t :<C-u>Tags<CR>
-nnoremap <silent> [fzf]: :<C-u>History:<CR>
-nnoremap <silent> [fzf]/ :<C-u>History/<CR>
-nnoremap <silent> [fzf]c :<C-u>Commands<CR>
-nnoremap <silent> [fzf]s :<C-u>Snippets<CR>
-nnoremap <silent> [fzf]h :<C-u>Helptags<CR>
+nnoremap <silent> <space>f :<C-u>Files<CR>
+nnoremap <silent> <space>r :<C-u>History<CR>
+nnoremap <silent> <space>a :<C-u>Ag<CR>
+nnoremap <silent> <space>l :<C-u>Lines<CR>
+nnoremap <silent> <space>b :<C-u>BLines<CR>
+nnoremap <silent> <space>t :<C-u>Tags<CR>
+nnoremap <silent> <space>: :<C-u>History:<CR>
+nnoremap <silent> <space>/ :<C-u>History/<CR>
+nnoremap <silent> <space>c :<C-u>Commands<CR>
+nnoremap <silent> <space>s :<C-u>Snippets<CR>
+nnoremap <silent> <space>h :<C-u>Helptags<CR>
 
 " GitGutter
 let g:gitgutter_enabled = 0
@@ -309,6 +330,7 @@ let g:syntastic_check_on_open = 0 " checks are always on write
 let g:syntastic_auto_loc_list = 0
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_stl_format = '%E{Error(%e)  %fe}%B{, }%W{Warning(%w)  %fw}'
+let g:syntastic_enable_signs = 1
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_style_error_symbol = '✠'
 let g:syntastic_warning_symbol = '⚠'
@@ -355,6 +377,8 @@ endfunction
 nnoremap <LocalLeader>s :UltiSnipsEdit<CR>
 
 " YouCompleteMe
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
 let g:ycm_extra_conf_globlist = ['~/Work/*']
@@ -368,13 +392,16 @@ let g:ycm_filetype_blacklist = {
       \ 'pandoc' : 1,
       \ 'qf' : 1,
       \ 'tagbar' : 1,
-      \ 'unite' : 1,
       \ 'vimwiki' : 1,
       \}
 " Jump to definition or declaration of symbol under cursor
 nnoremap <silent> <Leader>j :YcmCompleter GoTo<CR>
 " Inspect type of var under cursor
 nnoremap <silent> <Leader>i :YcmCompleter GetType<CR>
+" Echoes the semantic parent of the point under the cursor
+nnoremap <silent> <Leader>p :YcmCompleter GetParent<CR>
+" Attempts to correct the diagnostic closest to the cursor
+nnoremap <silent> <Leader>f :YcmCompleter FixIt<CR>
 " Display help about the identifier under the cursor
 nnoremap <silent> <Leader>h :YcmCompleter GetDoc<CR>
 
@@ -401,6 +428,7 @@ set lazyredraw " don't redraw while executing macros (for speed)
 set modelines=0
 set nrformats-=octal " no octal input
 set number
+set pastetoggle=<F2>
 set regexpengine=1 " old, faster re engine
 set ruler
 set sessionoptions=curdir,winsize
@@ -486,7 +514,7 @@ noremap Q <nop>
 " Window quit = nope
 noremap <c-w><c-q> <nop>
 
-" Quit all windows (saving changes)
+" Quit all windows
 noremap QW :qa<CR>
 
 " Quit all windows (discarding changes)
@@ -495,9 +523,7 @@ noremap Q! :qa!<CR>
 " Quit special windows (preview, help, quickfix, unite)
 noremap <silent> QQ :call <SID>close_special_windows()<CR>
 function! s:close_special_windows()
-  if has('nvim')
-    Tclose
-  endif
+  if has('nvim') | :silent! Tclose | endif
   call s:close_windows(['&pvw'], ['qf'])
 endfunction
 function! s:close_windows(options, filetypes)
@@ -531,13 +557,13 @@ nnoremap <Leader>c :Bdelete<CR>
 
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
-nnoremap <silent> <F2> :VimFilerExplorer -force-hide<CR>
+nnoremap <silent> <F2> :set invpaste paste?<CR>
+nmap <F3> <Plug>(choosewin)
+nnoremap <silent> <F4> :TagbarToggle<CR>
+nnoremap <silent> <F6> ::UndotreeToggle<CR>
 
 " CD to current file's dir
 nnoremap <Leader>C :cd %:p:h<CR>:pwd<CR>
-
-" Live preview (Markdown)
-nnoremap <silent> <Leader>p :PrevimOpen<CR>
 
 " Call make (default target)
 nnoremap M :Make<CR>
@@ -655,10 +681,16 @@ omap T <Plug>Sneak_T
 " Editing --------------------------------------------------------------------
 
 " Paste register 0 over a text object (replacing it)
-noremap <C-p> "0<Plug>(operator-replace)
+map <C-p> "0<Plug>(operator-replace)
+
+" Paste the OS clipboard over a text object (replacing it)
+map <C-p><C-p> "*<Plug>(operator-replace)
 
 " Paste last yanked text in insert mode.
 inoremap <C-p> <C-r><C-o>"
+
+" Yank selection to the OS clipboard
+vnoremap <C-y> "*y
 
 " Use <Space>[] to add spaces in normal mode (complements vim-unimpaired)
 nnoremap <Space>[ i<Space><ESC>

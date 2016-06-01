@@ -4,10 +4,12 @@ ZDOTDIR=$DOTDIR/zsh
 export PATH=$DOTDIR/bin:$PATH
 fpath=($ZDOTDIR/functions $fpath)
 
-# Editor settings
-export EDITOR=vim
-alias e='vim -g --remote-silent'
 bindkey -e
+
+# Editor settings
+export EDITOR=nvim
+alias e=$EDITOR
+alias vi=e
 
 # Quick access to vimrc, zshrc and karabiner's private.xml
 alias vimrc='e $DOTDIR/vim/vimrc'
@@ -28,7 +30,6 @@ alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
 alias -g L="| less"
-alias -g M="| most"
 
 alias fd='find . -type d -name'
 alias ff='find . -type f -name'
