@@ -3,13 +3,14 @@
 On OSX:
 ```zsh
 # Tools
-brew install boost-python cmake cscope ctags fzf git hub lua scmpuff the_silver_searcher
+brew install boost-python cmake cscope ctags figlet fzf git hub lua scmpuff the_silver_searcher
 
 # MacVim
 brew install macvim --with-custom-icons --with-lua --with-cscope
 
 # NeoVim
 brew install neovim/neovim/neovim --HEAD
+sudo easy_install neovim
 ```
 
 ### Install

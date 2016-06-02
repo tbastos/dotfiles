@@ -2,9 +2,6 @@
   name = Thiago Bastos
   email = tbastos@users.noreply.github.com
 
-[branch]
-  autosetuprebase = always
-
 [color]
   diff = auto
   status = auto
@@ -25,6 +22,3 @@
 
 [mergetool "vimdiff3"]
   cmd = vim -g -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
-
-[push]
-	default = simple
