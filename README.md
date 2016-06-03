@@ -11,6 +11,9 @@ brew install macvim --with-custom-icons --with-lua --with-cscope
 # NeoVim
 brew install neovim/neovim/neovim --HEAD
 sudo easy_install neovim
+# Fix for <C-h> mapping in NeoVim
+infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
+tic $TERM.ti
 ```
 
 ### Install

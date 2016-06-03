@@ -1,4 +1,8 @@
 *~
+.build
+.dist
+.pkg
+.version.cpp
 *.py[cod]
 *.egg-info
 .DS_Store

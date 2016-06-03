@@ -228,8 +228,9 @@ nnoremap <Leader>gw :Gwrite<CR><CR>
 nnoremap <Leader>gl :silent! Glog<CR>:bot copen<CR>
 nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gm :Gmove<Space>
-nnoremap <Leader>gb :Git branch<Space>
-nnoremap <Leader>go :Git checkout<Space>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gB :Git branch<Space>
+nnoremap <Leader>gC :Git checkout<Space>
 nnoremap <Leader>gp :Gpush<CR>
 nnoremap <Leader>gP :Gpull<CR>
 nnoremap <Leader>gh :Gbrowse<CR>
