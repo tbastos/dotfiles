@@ -3,7 +3,7 @@
 On OSX:
 ```zsh
 # Tools
-brew install boost-python cmake cscope ctags figlet fzf git hub lua scmpuff the_silver_searcher
+brew install boost-python clang-format cmake cscope ctags figlet fzf git hub lua scmpuff the_silver_searcher
 
 # MacVim
 brew install macvim --with-custom-icons --with-lua --with-cscope

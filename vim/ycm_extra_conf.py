@@ -89,8 +89,9 @@ def MakeRelativePathsInFlagsAbsolute( flags, working_directory ):
 
     if make_next_absolute:
       make_next_absolute = False
-      if not flag.startswith( '/' ):
-        new_flag = os.path.join( working_directory, flag )
+      new_flag = os.path.expanduser( flag )
+      if not new_flag.startswith( '/' ):
+        new_flag = os.path.join( working_directory, new_flag )
 
     for path_flag in path_flags:
       if flag == path_flag:

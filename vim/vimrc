@@ -32,7 +32,7 @@ let g:loaded_2html_plugin = 1
 let g:loaded_vimballPlugin = 1
 
 if has('vim_starting')
-  let g:start_dir = '~/Work'
+  let g:start_dir = '~/dev'
   if !argc() && isdirectory(g:start_dir) | cd g:start_dir | endif
   let g:start_dir = getcwd()
 endif
@@ -133,6 +133,10 @@ else
         \ 'do': 'cmake . && make'}
 endif
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
+Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp']}
+
+" CMake
+Plug 'nickhutchinson/vim-cmake-syntax', {'for': ['cmake']}
 
 " JavaScript
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
@@ -168,10 +172,12 @@ source ~/.vim/lightline.vim
 " let g:cpp_experimental_template_highlight = 1
 " let c_no_curly_error=1
 
-" ClangFormat
+" clang-format
 let g:clang_format#auto_format = 1
 let g:clang_format#auto_formatexpr = 1
 let g:clang_format#auto_format_on_insert_leave = 0 " interferes with indenting of {<CR>
+let g:clang_format#detect_style_file = 1
+" default code style:
 let g:clang_format#code_style = "LLVM"
 let g:clang_format#style_options = {
       \ "AlwaysBreakTemplateDeclarations" : "true",
@@ -187,6 +193,7 @@ augroup ClangFormat
   au FileType c,cpp
         \ setlocal textwidth=0 |
         \ map <buffer><Leader>F <Plug>(operator-clang-format)
+  map <LocalLeader>C :<C-U>ClangFormatAutoToggle<CR>
 augroup END
 
 " DelimitMate
@@ -211,6 +218,8 @@ augroup my_dirvish_events
         \ gh :keeppatterns g@\v/\.[^\/]+/?$@d<cr>
 augroup END
 
+" FSwitch
+nnoremap <silent> <space><space> :<C-u>FSHere<CR>
 
 " Fugitive
 doautoall fugitive BufNewFile
@@ -230,7 +239,7 @@ nnoremap <Leader>gg :Ggrep<Space>
 nnoremap <Leader>gm :Gmove<Space>
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>gB :Git branch<Space>
-nnoremap <Leader>gC :Git checkout<Space>
+nnoremap <Leader>go :Git checkout<Space>
 nnoremap <Leader>gp :Gpush<CR>
 nnoremap <Leader>gP :Gpull<CR>
 nnoremap <Leader>gh :Gbrowse<CR>
@@ -382,7 +391,7 @@ let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_allow_changing_updatetime = 0
 let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
-let g:ycm_extra_conf_globlist = ['~/Work/*']
+let g:ycm_extra_conf_globlist = ['~/dev/*']
 let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
 let g:ycm_key_detailed_diagnostics = '<LocalLeader>y'
@@ -395,6 +404,7 @@ let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
       \ 'vimwiki' : 1,
       \}
+let g:ycm_python_binary_path = '/usr/local/bin/python3'
 " Jump to definition or declaration of symbol under cursor
 nnoremap <silent> <Leader>j :YcmCompleter GoTo<CR>
 " Inspect type of var under cursor
@@ -429,7 +439,7 @@ set lazyredraw " don't redraw while executing macros (for speed)
 set modelines=0
 set nrformats-=octal " no octal input
 set number
-set pastetoggle=<F2>
+" set pastetoggle=<F2>
 set regexpengine=1 " old, faster re engine
 set ruler
 set sessionoptions=curdir,winsize
@@ -460,15 +470,15 @@ set formatoptions=cqrn1j
 set linebreak
 set linespace=1
 set list " show invisible chars
-set listchars=tab:↹\ ,trail:.,nbsp:‿,extends:→,precedes:←
+set listchars=tab:▸\ ,trail:.,nbsp:‿,extends:→,precedes:←
 set shiftround " round indent to multiple of shiftwidth
 set shiftwidth=2 " an autoindent is two spaces
 let &showbreak='↪ '
 set smartindent " indent based on syntax
 set softtabstop=2 " a tab adds two spaces while editing
-set tabstop=8 " a real tab is displayed as eight spaces
+set tabstop=2 " a real tab is displayed as two spaces
 set textwidth=79
-set wrap " wrap lines by default
+set nowrap
 
 " Undo and Swap Files ----------------{{{2
 
@@ -558,9 +568,8 @@ nnoremap <Leader>c :Bdelete<CR>
 
 " FN keys
 nnoremap <silent> <F1> :Startify<CR>
-nnoremap <silent> <F2> :set invpaste paste?<CR>
+nnoremap <silent> <F2> :TagbarToggle<CR>
 nmap <F3> <Plug>(choosewin)
-nnoremap <silent> <F4> :TagbarToggle<CR>
 nnoremap <silent> <F6> ::UndotreeToggle<CR>
 
 " CD to current file's dir
@@ -727,14 +736,23 @@ augroup EditingCrontab
   au BufEnter /private/tmp/crontab.* setlocal backupcopy=yes
 augroup END
 
+" Force Python tabstop=2
+augroup EditingPython
+  au!
+  au FileType python setlocal tabstop=2
+augroup END
+
 " Theme ----------------------------------------------------------------------
+
+let g:solarized_visibility = "low"
+let g:solarized_term_italics = 1
 
 let g:theme_default = {
       \  'typeface': 'Source Code Pro Light',
       \  'font_size': 12,
       \  'linespace': 1,
       \  'background': 'dark',
-      \  'colorscheme': 'solarized8_dark',
+      \  'colorscheme': 'solarized8_dark_high',
       \ }
 
 let g:theme_pencil = {

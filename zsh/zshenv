@@ -1,7 +1,7 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:/usr/local/rmg/buildenv
+export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:/usr/local/rmg/buildenv
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
@@ -15,7 +15,20 @@ alias vim=e
 # Quick access to vimrc, zshrc and karabiner's private.xml
 alias vimrc='e $DOTDIR/vim/vimrc'
 alias zshrc='e $DOTDIR/zsh/zshrc'
+alias zshenv='e $DOTDIR/zsh/zshenv'
 alias karxml='e $DOTDIR/osx/karabiner.xml'
+
+########################################################################
+# Development Environment Aliases
+########################################################################
+
+export COMPILEHOST=vm
+
+alias vm-build='~/dev/ppro/rmg-testenv/tools/vb-remotebuild'
+alias vm-install='~/dev/ppro/rmg-testenv/tools/vm-make-install'
+alias vm-jail='~/dev/ppro/rmg-testenv/tools/jailbash.sh'
+alias vm-ssh='~/dev/ppro/rmg-testenv/tools/ssh-terminal.sh'
+alias vm-cj='vm-jail compile_jail'
 
 ########################################################################
 # General Aliases

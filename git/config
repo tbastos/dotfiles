@@ -1,6 +1,6 @@
 [user]
-  name = Thiago Bastos
-  email = tbastos@users.noreply.github.com
+	name = Thiago Bastos
+	email = tbastos@users.noreply.github.com
 
 [color]
   diff = auto
@@ -22,3 +22,14 @@
 
 [mergetool "vimdiff3"]
   cmd = vim -g -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
+
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+
+[commit]
+	template = /Users/tbastos/.stCommitMsg
