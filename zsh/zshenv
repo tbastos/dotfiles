@@ -15,11 +15,9 @@ alias e=$EDITOR
 alias vi=e
 alias vim=e
 
-# Quick access to vimrc, zshrc and karabiner's private.xml
-alias vimrc='e $DOTDIR/vim/vimrc'
-alias zshrc='e $DOTDIR/zsh/zshrc'
-alias zshenv='e $DOTDIR/zsh/zshenv'
-alias karxml='e $DOTDIR/osx/karabiner.xml'
+# Quick access to .zshrc and .zshenv
+alias zrc='e $DOTDIR/zsh/zshrc'
+alias zenv='e $DOTDIR/zsh/zshenv'
 
 ########################################################################
 # Development Environment
@@ -68,7 +66,7 @@ alias mv='mv -i'
 ########################################################################
 
 cdpath=(
-  $HOME/CloudDocs
+  $HOME/Documents
   $HOME/Work
   $HOME
 )
@@ -84,10 +82,6 @@ alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
-
-# Z directory jumping command
-_Z_DATA=$ZDOTDIR/.z
-source $ZDOTDIR/modules/z/z.sh
 
 # automatically list directory contents on 'cd'
 auto-ls () { ls; }

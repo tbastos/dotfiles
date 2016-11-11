@@ -1,3 +1,36 @@
+########################################################################
+# Plugins
+########################################################################
+
+export ZPLUG_HOME=/usr/local/opt/zplug
+source $ZPLUG_HOME/init.zsh
+
+zplug "b4b4r07/enhancd", use:init.sh
+export ENHANCD_FILTER=fzf
+
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-syntax-highlighting", nice: 10
+zplug "zsh-users/zsh-history-substring-search", nice: 11
+
+# prompt
+zplug "mafredri/zsh-async", on:sindresorhus/pure
+zplug "sindresorhus/pure", , use:pure.zsh
+
+export ZSH_PLUGINS_ALIAS_TIPS_TEXT='💡 '
+
+# Install plugins if there are plugins that have not been installed
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+# Then, source plugins and add commands to $PATH
+zplug load --verbose
+
+eval "$(scmpuff init -s)"
+
 #######################################################################
 # History
 #######################################################################
@@ -7,24 +40,6 @@ HISTSIZE=150                   # lines of history to maintain memory
 SAVEHIST=100                   # lines of history to maintain in history file.
 setopt APPEND_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
-
-########################################################################
-# Interactive Modules
-########################################################################
-
-# Completions
-#fpath=($ZDOTDIR/modules/zsh-completions/src $fpath)
-#autoload -U compinit && compinit
-
-# Highlighting
-#source $ZDOTDIR/modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
-
-# History Substring Search (must come after highlighting)
-#source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-search.zsh
-
-# Git Integration
-eval "$(scmpuff init -s)"
 
 ########################################################################
 # FZF Integration - https://github.com/junegunn/fzf
@@ -65,10 +80,4 @@ bindkey '^[[F' end-of-line             # End
 bindkey '^[[3~' delete-char            # Del
 bindkey '^[[5~' vi-backward-blank-word # Page Up
 bindkey '^[[6~' vi-forward-blank-word  # Page Down
-
-########################################################################
-# Theme
-########################################################################
-
-source $ZDOTDIR/prompt.zsh
 
