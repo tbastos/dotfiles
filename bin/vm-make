@@ -1,0 +1,4 @@
+#!/bin/sh
+
+#export COMPILEHOST=vm
+~/dev/ppro/rmg-testenv/tools/vb-remotebuild test VERBOSETEST=1 $@

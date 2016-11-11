@@ -1,10 +1,13 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:/usr/local/rmg/buildenv
+export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:~/dev/ppro/rmg-buildenv
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
+
+# Enable colors on OSX and FreeBSD
+export CLICOLOR=1
 
 # Editor settings
 export EDITOR=nvim
@@ -19,16 +22,21 @@ alias zshenv='e $DOTDIR/zsh/zshenv'
 alias karxml='e $DOTDIR/osx/karabiner.xml'
 
 ########################################################################
-# Development Environment Aliases
+# Development Environment
 ########################################################################
 
-export COMPILEHOST=vm
+export RMG_REMOTEBUILD_SYNC_ARTIFACTS_BACK=1
 
 alias vm-build='~/dev/ppro/rmg-testenv/tools/vb-remotebuild'
-alias vm-install='~/dev/ppro/rmg-testenv/tools/vm-make-install'
-alias vm-jail='~/dev/ppro/rmg-testenv/tools/jailbash.sh'
-alias vm-ssh='~/dev/ppro/rmg-testenv/tools/ssh-terminal.sh'
 alias vm-cj='vm-jail compile_jail'
+alias vm-install='COMPILEHOST=vm ~/dev/ppro/rmg-testenv/tools/vm-make-install'
+alias vm-jail='~/dev/ppro/rmg-testenv/tools/jailbash.sh'
+alias vm-logs='~/dev/ppro/rmg-testenv/tools/show-all-logs.sh kvm01'
+alias vm-ssh='~/dev/ppro/rmg-testenv/tools/ssh-terminal.sh'
+
+vm-restart-ice() {
+  JAIL=$1 DAEMON_PATH=/var/service/icegridnode ~/dev/ppro/rmg-testenv/tools/restart-daemon
+}
 
 ########################################################################
 # General Aliases

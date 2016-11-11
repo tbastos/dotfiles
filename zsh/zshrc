@@ -13,15 +13,15 @@ setopt HIST_EXPIRE_DUPS_FIRST
 ########################################################################
 
 # Completions
-fpath=($ZDOTDIR/modules/zsh-completions/src $fpath)
-autoload -U compinit && compinit
+#fpath=($ZDOTDIR/modules/zsh-completions/src $fpath)
+#autoload -U compinit && compinit
 
 # Highlighting
-source $ZDOTDIR/modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+#source $ZDOTDIR/modules/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 # History Substring Search (must come after highlighting)
-source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-search.zsh
+#source $ZDOTDIR/modules/zsh-history-substring-search/zsh-history-substring-search.zsh
 
 # Git Integration
 eval "$(scmpuff init -s)"
@@ -45,25 +45,6 @@ fi
 
 # Key bindings
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-
-########################################################################
-# Zaw widgets
-########################################################################
-
-source $ZDOTDIR/modules/zaw/zaw.zsh
-
-# better incremental history search
-bindkey '^R' zaw-history
-bindkey -M filterselect '^R' down-line-or-history
-bindkey -M filterselect '^E' accept-search
-bindkey -M filterselect '^K' up-line-or-history
-bindkey -M filterselect '^J' down-line-or-history
-bindkey -M filterselect '^[' send-break
-
-zstyle ':filter-select:highlight' matched fg=green
-zstyle ':filter-select' max-lines 5
-zstyle ':filter-select' case-insensitive yes # enable case-insensitive
-zstyle ':filter-select' extended-search yes # see below
 
 ########################################################################
 # Key Bindings (like vim, but always in insert mode)
@@ -90,5 +71,4 @@ bindkey '^[[6~' vi-forward-blank-word  # Page Down
 ########################################################################
 
 source $ZDOTDIR/prompt.zsh
-export CLICOLOR=1 # enable colors on OSX
 

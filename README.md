@@ -2,11 +2,7 @@
 
 On OSX:
 ```zsh
-# Tools
-brew install boost-python clang-format cmake cscope ctags figlet fzf git hub lua scmpuff the_silver_searcher
-
-# MacVim
-brew install macvim --with-custom-icons --with-lua --with-cscope
+brew install boost-python clang-format cmake cscope ctags figlet fzf git hub lua scmpuff the_silver_searcher tig wget zplug
 
 # NeoVim
 brew install neovim/neovim/neovim --HEAD
@@ -28,10 +24,6 @@ ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
 # Git
 ln -s ~/.dotfiles/git/config ~/.config/git/config
 
-# Vim
-ln -s ~/.dotfiles/vim ~/.vim
-ln -s ~/.dotfiles/vim/vimrc ~/.vimrc
-
 # NeoVim
 ln -s ~/.dotfiles/vim ~/.config/nvim
 ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
@@ -40,9 +32,10 @@ ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
 ln -s ~/.dotfiles/osx/karabiner.xml ~/Library/Application\ Support/Karabiner/private.xml
 ```
 
-### Update
+### Updates
 
 ```zsh
-git pull && git submodule update --init --recursive
+brew update
+brew upgrade
+zplug update
 ```
-

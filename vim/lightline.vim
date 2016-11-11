@@ -100,7 +100,7 @@ endfunction
 
 function! LLBufferPercent()
   if &ft == 'vimfiler' | return '' | endif
-  return printf('%3.0f%%', line('.') * 100.0 / line('$'))
+  return printf('%3d%%', (line('.') * 100) / line('$'))
 endfunction
 
 function! LLFileEncoding()

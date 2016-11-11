@@ -114,11 +114,11 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter', {'on': ['GitGutterToggle']}
 
 " Building and Testing
-Plug 'tpope/vim-dispatch'
-Plug 'scrooloose/syntastic', {'for': ['lua'], 'on': ['SyntasticCheck', 'SyntasticStatuslineFlag', 'SyntasticToggleMode', 'SyntasticInfo']}
-Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']}
+" Plug 'tpope/vim-dispatch'
+" Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']}
 if has('nvim')
-  Plug 'kassio/neoterm'
+  " Plug 'kassio/neoterm'
+  Plug 'neomake/neomake'
 endif
 
 " C/C++
@@ -149,6 +149,9 @@ Plug 'tbastos/vim-lua', {'for': 'lua', 'frozen': 1}
 
 " OpenGL
 Plug 'tikhomirov/vim-glsl', {'for': ['glsl', 'vert', 'frag', 'geom', 'tesc', 'tese']}
+
+" Python
+Plug 'sophacles/vim-bundle-mako', {'for': ['mako']}
 
 " Text / Markup / Web
 Plug 'rcmdnk/vim-markdown', {'for': 'markdown'}
@@ -192,7 +195,7 @@ augroup ClangFormat
   au!
   au FileType c,cpp
         \ setlocal textwidth=0 |
-        \ map <buffer><Leader>F <Plug>(operator-clang-format)
+        \ map <buffer><Leader>f <Plug>(operator-clang-format)
   map <LocalLeader>C :<C-U>ClangFormatAutoToggle<CR>
 augroup END
 
@@ -310,6 +313,7 @@ let g:startify_change_to_vcs_root     = 1
 let g:startify_session_persistence    = 1
 let g:startify_session_delete_buffers = 1
 let g:startify_session_dir = '~/.local/share/vim/session'
+let g:startify_session_savevars = ['&makeprg']
 let g:startify_bookmarks = [ '~/.dotfiles/vim/vimrc' ]
 let g:startify_list_order = [
       \ ['  Bookmarks:'],
@@ -333,29 +337,6 @@ map <silent><C-s><C-c> <Plug>(operator-surround-replace)
 " delete/change inner-most surround (among quotes, (), {}, [], <>, etc.)
 nmap <silent><C-s><C-d><C-d> <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
 nmap <silent><C-s><C-s> <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
-
-" Syntastic
-let g:syntastic_mode_map = {'mode': 'passive'} " we'll call syntastic
-let g:syntastic_check_on_open = 0 " checks are always on write
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_stl_format = '%E{Error(%e)  %fe}%B{, }%W{Warning(%w)  %fw}'
-let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_style_error_symbol = '✠'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_style_warning_symbol = '≈'
-" Lua
-let g:syntastic_lua_checkers = ["luac", "luacheck"]
-let g:syntastic_lua_luacheck_args = "--no-unused-args"
-augroup AutoSyntastic
-  au!
-  au BufWritePost *.lua call s:syntastic()
-augroup END
-function! s:syntastic()
-  SyntasticCheck
-  call lightline#update()
-endfunction
 
 " Test
 if has('nvim')
@@ -412,7 +393,7 @@ nnoremap <silent> <Leader>i :YcmCompleter GetType<CR>
 " Echoes the semantic parent of the point under the cursor
 nnoremap <silent> <Leader>p :YcmCompleter GetParent<CR>
 " Attempts to correct the diagnostic closest to the cursor
-nnoremap <silent> <Leader>f :YcmCompleter FixIt<CR>
+nnoremap <silent> <Leader>F :YcmCompleter FixIt<CR>
 " Display help about the identifier under the cursor
 nnoremap <silent> <Leader>h :YcmCompleter GetDoc<CR>
 
@@ -516,6 +497,9 @@ nnoremap <LocalLeader>v :e $MYVIMRC<CR>
 " Reload .vimrc
 nnoremap <LocalLeader>R :source $MYVIMRC<CR>
 
+" Say selection in German
+vnoremap <c-g> :'<,'>w !say -v Anna<CR>
+
 " U to redo (better than c-r)
 nnoremap U :redo<CR>
 
@@ -575,21 +559,23 @@ nnoremap <silent> <F6> ::UndotreeToggle<CR>
 " CD to current file's dir
 nnoremap <Leader>C :cd %:p:h<CR>:pwd<CR>
 
-" Call make (default target)
-nnoremap M :Make<CR>
-
-" Call make (type target)
-nnoremap <Leader>m :Make!<Space>
-
-" Dispatch a shell command (async)
-nnoremap <Leader>d :Dispatch!<Space>
-
+" Make
 if has('nvim')
-  nnoremap K :T make run<CR>
-  nnoremap <Leader>d :T<Space>
+  nnoremap M :Neomake!<CR>
+  nnoremap <Leader>m :Neomake<Space>
+else
+  nnoremap M :Make!<CR>
+  nnoremap <Leader>m :Make!<Space>
+endif
+
+" Run command (async)
+if has('nvim')
+  nnoremap K :NeomakeSh run<CR>
+  nnoremap <Leader>d :NeomakeSh<Space>
 else
   let g:dispatch = 'make run'
   nnoremap K :Dispatch!<CR>
+  nnoremap <Leader>d :Dispatch!<Space>
 endif
 
 " Navigate the quickfix list
