@@ -8,9 +8,11 @@ source $ZPLUG_HOME/init.zsh
 zplug "b4b4r07/enhancd", use:init.sh
 export ENHANCD_FILTER=fzf
 
+zplug "zsh-users/zsh-autosuggestions"
+
 zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-syntax-highlighting", nice: 10
-zplug "zsh-users/zsh-history-substring-search", nice: 11
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:2
 
 # prompt
 zplug "mafredri/zsh-async", on:sindresorhus/pure
@@ -28,6 +30,8 @@ fi
 
 # Then, source plugins and add commands to $PATH
 zplug load --verbose
+
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=white'
 
 eval "$(scmpuff init -s)"
 
@@ -62,12 +66,13 @@ fi
 source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
 ########################################################################
-# Key Bindings (like vim, but always in insert mode)
+# Key Bindings
 ########################################################################
 
 bindkey '^W' backward-kill-word
 bindkey '^H' backward-delete-char
 bindkey '^U' backward-kill-line
+bindkey '^L' end-of-line
 
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down

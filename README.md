@@ -29,7 +29,7 @@ ln -s ~/.dotfiles/vim ~/.config/nvim
 ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
 
 # Karabiner (OSX)
-ln -s ~/.dotfiles/osx/karabiner.xml ~/Library/Application\ Support/Karabiner/private.xml
+ln -s ~/.dotfiles/mac ~/.config/karabiner
 ```
 
 ### Updates
