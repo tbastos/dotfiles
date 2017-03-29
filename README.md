@@ -2,14 +2,30 @@
 
 On OSX:
 ```zsh
-brew install boost-python clang-format cmake cscope ctags figlet fzf git hub lua scmpuff the_silver_searcher tig wget zplug
+brew install \
+  boost-python \
+  clang-format \
+  cmake \
+  cscope \
+  ctags \
+  figlet \
+  fzf \
+  git \
+  hub \
+  lua \
+  python3 \
+  scmpuff \
+  the_silver_searcher \
+  tig \
+  wget \
+  zplug
+
+# Arcanist
+brew install homebrew/php/arcanist --HEAD
 
 # NeoVim
 brew install neovim/neovim/neovim --HEAD
-sudo easy_install neovim
-# Fix for <C-h> mapping in NeoVim
-infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
-tic $TERM.ti
+pip3 install neovim
 ```
 
 ### Install
@@ -22,6 +38,7 @@ ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
 ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
 
 # Git
+mkdir ~/.config && mkdir ~/.config/git
 ln -s ~/.dotfiles/git/config ~/.config/git/config
 
 # NeoVim
