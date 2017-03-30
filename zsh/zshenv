@@ -1,7 +1,7 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:~/dev/ppro/rmg-buildenv
+export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:~/Work/ppro/rmg-buildenv
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
@@ -25,15 +25,15 @@ alias zenv='e $DOTDIR/zsh/zshenv'
 
 export RMG_REMOTEBUILD_SYNC_ARTIFACTS_BACK=1
 
-alias vm-build='~/dev/ppro/rmg-testenv/tools/vb-remotebuild'
+alias vm-build='~/Work/ppro/rmg-testenv/tools/vb-remotebuild'
 alias vm-cj='vm-jail compile_jail'
-alias vm-install='COMPILEHOST=vm ~/dev/ppro/rmg-testenv/tools/vm-make-install'
-alias vm-jail='~/dev/ppro/rmg-testenv/tools/jailbash.sh'
-alias vm-logs='~/dev/ppro/rmg-testenv/tools/show-all-logs.sh kvm01'
-alias vm-ssh='~/dev/ppro/rmg-testenv/tools/ssh-terminal.sh'
+alias vm-install='COMPILEHOST=vm ~/Work/ppro/rmg-testenv/tools/vm-make-install'
+alias vm-jail='~/Work/ppro/rmg-testenv/tools/jailbash.sh'
+alias vm-logs='~/Work/ppro/rmg-testenv/tools/show-all-logs.sh kvm01'
+alias vm-ssh='~/Work/ppro/rmg-testenv/tools/ssh-terminal.sh'
 
 vm-restart-ice() {
-  JAIL=$1 DAEMON_PATH=/var/service/icegridnode ~/dev/ppro/rmg-testenv/tools/restart-daemon
+  JAIL=$1 DAEMON_PATH=/var/service/icegridnode ~/Work/ppro/rmg-testenv/tools/restart-daemon
 }
 
 ########################################################################

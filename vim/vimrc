@@ -1,4 +1,4 @@
-" .vimrc and nvim/init.vim
+" nvim/init.vim
 " Author: Thiago Bastos <tbastos@tbastos.com>
 " Source: https://github.com/tbastos/dotfiles/blob/master/vim/vimrc
 
@@ -46,7 +46,7 @@ endfunction
 
 let g:plug_timeout = 120
 
-call plug#begin('~/.vim/bundle')
+call plug#begin('~/.dotfiles/vim/bundle')
 
 " Colors
 Plug 'lifepillar/vim-solarized8'
@@ -164,7 +164,7 @@ call plug#end()
 
 filetype plugin indent on
 
-source ~/.vim/lightline.vim
+source ~/.dotfiles/vim/lightline.vim
 
 "
 " Plugin settings, in alphabetical order
@@ -353,7 +353,7 @@ nmap <silent> <Leader>te :TestVisit<CR>
 
 " UltiSnips
 let g:UltiSnipsEditSplit = 'vertical'
-let g:UltiSnipsSnippetsDir = $HOME.'/.vim/ultisnips'
+let g:UltiSnipsSnippetsDir = $HOME.'/.dotfiles/vim/ultisnips'
 let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
 let g:UltiSnipsEnableSnipMate = 0
 let g:UltiSnipsExpandTrigger = '<C-l>'
@@ -371,7 +371,7 @@ nnoremap <LocalLeader>s :UltiSnipsEdit<CR>
 let g:ycm_add_preview_to_completeopt = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_allow_changing_updatetime = 0
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.dotfiles/vim/ycm_extra_conf.py'
 let g:ycm_extra_conf_globlist = ['~/dev/*']
 let g:ycm_key_list_select_completion   = ['<Tab>', '<C-J>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-Tab>', '<C-K>', '<Up>']
