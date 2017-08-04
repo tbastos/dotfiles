@@ -23,6 +23,7 @@ if has('gui_running')
 else
   " use true colors in terminal (requires NeoVim or recent MacVim)
   set termguicolors
+  set mouse=a
 endif
 
 " Disable default plugins
@@ -79,7 +80,7 @@ set rtp+=/usr/local/opt/fzf " use the system's fzf
 "Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
-Plug 'matchit.zip'
+Plug 'vim-scripts/matchit.zip'
 
 " Text Objects
 Plug 'kana/vim-textobj-user'

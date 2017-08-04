@@ -10,7 +10,7 @@ export ENHANCD_FILTER=fzf
 
 zplug "zsh-users/zsh-autosuggestions"
 
-zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-completions", defer:0
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 
@@ -44,6 +44,12 @@ HISTSIZE=150                   # lines of history to maintain memory
 SAVEHIST=100                   # lines of history to maintain in history file.
 setopt APPEND_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
+
+########################################################################
+# iTerm2 Integration
+########################################################################
+
+source "$ZDOTDIR/iterm2_shell_integration.zsh"
 
 ########################################################################
 # FZF Integration - https://github.com/junegunn/fzf

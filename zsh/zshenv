@@ -1,7 +1,7 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:~/Work/ppro/rmg-buildenv
+export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:~/Work/ppro/rmg-buildenv:~/Work/ppro/rmg-buildenv/git-flow
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
@@ -23,13 +23,15 @@ alias zenv='e $DOTDIR/zsh/zshenv'
 # Development Environment
 ########################################################################
 
-export RMG_REMOTEBUILD_SYNC_ARTIFACTS_BACK=1
+export RMG_BUILDENV_PROJECT_DIRS=$HOME/Work/ppro
 
-alias vm-build='~/Work/ppro/rmg-testenv/tools/vb-remotebuild'
-alias vm-cj='vm-jail compile_jail'
-alias vm-install='COMPILEHOST=vm ~/Work/ppro/rmg-testenv/tools/vm-make-install'
+alias pm='rmg-portmake build'
+alias pkg='rmg-portmake build -p'
+
+alias vm-install='~/Work/ppro/rmg-testenv/tools/vm-portmake-install'
 alias vm-jail='~/Work/ppro/rmg-testenv/tools/jailbash.sh'
-alias vm-logs='~/Work/ppro/rmg-testenv/tools/show-all-logs.sh kvm01'
+alias vm-logs='~/Work/ppro/rmg-testenv/tools/show-all-logs.sh'
+alias vm-clear-logs='~/Work/ppro/rmg-testenv/tools/clear-all-logs.sh'
 alias vm-ssh='~/Work/ppro/rmg-testenv/tools/ssh-terminal.sh'
 
 vm-restart-ice() {
