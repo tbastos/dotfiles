@@ -24,6 +24,7 @@ alias zenv='e $DOTDIR/zsh/zshenv'
 ########################################################################
 
 export RMG_BUILDENV_PROJECT_DIRS=$HOME/Work/ppro
+export RMG_REMOTEBUILD_SYNC_ARTIFACTS_BACK=1
 
 alias pm='rmg-portmake build'
 alias pkg='rmg-portmake build -p'

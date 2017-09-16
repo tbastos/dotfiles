@@ -12,19 +12,11 @@ scriptencoding utf-8
 let mapleader = ","
 let maplocalleader = "\\"
 
-if has('gui_running')
-  " minimal GUI
-  set guioptions=c
-  set relativenumber
-  if has("gui_macvim")
-    let macvim_skip_colorscheme = 1
-    let macvim_skip_cmd_opt_movement = 1
-  endif
-else
-  " use true colors in terminal (requires NeoVim or recent MacVim)
+if has("termguicolors")
   set termguicolors
-  set mouse=a
 endif
+set relativenumber
+set mouse=a
 
 " Disable default plugins
 let g:loaded_netrwPlugin = 1
@@ -33,7 +25,7 @@ let g:loaded_2html_plugin = 1
 let g:loaded_vimballPlugin = 1
 
 if has('vim_starting')
-  let g:start_dir = '~/dev'
+  let g:start_dir = '~/Work'
   if !argc() && isdirectory(g:start_dir) | cd g:start_dir | endif
   let g:start_dir = getcwd()
 endif
@@ -51,7 +43,7 @@ call plug#begin('~/.dotfiles/vim/bundle')
 
 " Colors
 Plug 'lifepillar/vim-solarized8'
-Plug 'reedes/vim-colors-pencil'
+Plug 'joshdick/onedark.vim'
 
 " General
 Plug 'tpope/vim-repeat'
@@ -68,19 +60,16 @@ Plug 'mhinz/vim-startify'
 Plug 'itchyny/lightline.vim'
 Plug 'moll/vim-bbye', {'on': 'Bdelete'}
 Plug 't9md/vim-choosewin', {'on': '<Plug>(choosewin)'}
-Plug 'majutsushi/tagbar', {'on': 'TagbarToggle'}
 Plug 'mbbill/undotree', {'on': 'UndotreeToggle'}
 Plug 'regedarek/ZoomWin' " zoom in/out a split with <C-w>o
-Plug 'junegunn/goyo.vim', {'on': 'Goyo'} " distraction-free editing
-Plug 'junegunn/limelight.vim', {'on': 'Limelight'} " focused writing
 Plug 'kergoth/vim-hilinks', {'on': 'HLT'} " debug syntax highlighting
 
 " Search and Navigation
 set rtp+=/usr/local/opt/fzf " use the system's fzf
-"Plug 'junegunn/fzf', { 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'vim-scripts/matchit.zip'
+Plug 'brooth/far.vim' " find and replace text through multiple files
 
 " Text Objects
 Plug 'kana/vim-textobj-user'
@@ -115,51 +104,19 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter', {'on': ['GitGutterToggle']}
 
 " Building and Testing
-" Plug 'tpope/vim-dispatch'
-" Plug 'janko-m/vim-test', {'on': ['TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit']}
-if has('nvim')
-  " Plug 'kassio/neoterm'
-  Plug 'neomake/neomake'
-endif
+Plug 'neomake/neomake'
 
 " C/C++
-Plug 'Valloric/YouCompleteMe', {'for': ['c', 'cpp'],
-      \ 'do': './install.py --clang-completer --system-boost'}
+Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --system-boost'}
 autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
-if has('nvim')
-  Plug 'critiqjo/lldb.nvim'
-  Plug 'octol/vim-cpp-enhanced-highlight'
-else
-  Plug 'jeaye/color_coded', {'for': ['c', 'cpp'],
-        \ 'do': 'cmake . && make'}
-endif
+Plug 'critiqjo/lldb.nvim'
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp']}
 
-" CMake
-Plug 'nickhutchinson/vim-cmake-syntax', {'for': ['cmake']}
-
-" JavaScript
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'marijnh/tern_for_vim', {'for': 'javascript', 'do': 'npm install'}
-Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
-Plug 'elzr/vim-json', {'for': ['javascript', 'json']}
-
-" Lua
+" Language packs
+Plug 'sheerun/vim-polyglot'
 Plug 'tbastos/vim-lua', {'for': 'lua', 'frozen': 1}
-
-" OpenGL
-Plug 'tikhomirov/vim-glsl', {'for': ['glsl', 'vert', 'frag', 'geom', 'tesc', 'tese']}
-
-" Python
-Plug 'sophacles/vim-bundle-mako', {'for': ['mako']}
-
-" Text / Markup / Web
-Plug 'rcmdnk/vim-markdown', {'for': 'markdown'}
-Plug 'cespare/vim-toml', {'for': 'toml'}
-Plug 'othree/html5.vim', {'for': 'html'}
-Plug 'ap/vim-css-color', {'for': ['css','scss','sass','less']}
-Plug 'hail2u/vim-css3-syntax', {'for': ['css','scss','sass']}
+Plug 'nickhutchinson/vim-cmake-syntax', {'for': ['cmake']}
 
 call plug#end()
 
@@ -269,24 +226,6 @@ nmap ]h <Plug>GitGutterNextHunk
 nmap [h <Plug>GitGutterPrevHunk
 nnoremap <LocalLeader>g :GitGutterToggle<CR>
 
-" Goyo
-function! s:goyo_enter()
-  " Limelight
-endfunction
-function! s:goyo_leave()
-  " Limelight!
-  call SetTheme(g:theme_default)
-endfunction
-autocmd! User GoyoEnter
-autocmd  User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave
-autocmd  User GoyoLeave nested call <SID>goyo_leave()
-nmap <LocalLeader>f :Goyo<CR>
-nmap <LocalLeader>t :call SetTheme(g:theme_pencil)<CR>:Goyo<CR>
-
-" Limelight
-nmap <LocalLeader>l :Limelight!!<CR>
-
 " LLDB
 nmap <LocalLeader>b <Plug>LLBreakSwitch
 vmap <LocalLeader>i <Plug>LLStdInSelected
@@ -296,13 +235,6 @@ nnoremap <LocalLeader>r :LL continue<CR>
 nnoremap <LocalLeader>k :LL process kill<CR>
 nnoremap <LocalLeader>p :LL print <C-R>=expand('<cword>')<CR>
 vnoremap <LocalLeader>p :<C-U>LL print <C-R>=lldb#util#get_selection()<CR><CR>
-
-" Markdown
-let g:vim_markdown_no_default_key_mappings=1
-let g:vim_markdown_frontmatter=1
-
-" Neoterm
-let g:neoterm_size = 9
 
 " Startify
 let g:startify_enable_special         = 0
@@ -338,19 +270,6 @@ map <silent><C-s><C-c> <Plug>(operator-surround-replace)
 " delete/change inner-most surround (among quotes, (), {}, [], <>, etc.)
 nmap <silent><C-s><C-d><C-d> <Plug>(operator-surround-delete)<Plug>(textobj-anyblock-a)
 nmap <silent><C-s><C-s> <Plug>(operator-surround-replace)<Plug>(textobj-anyblock-a)
-
-" Test
-if has('nvim')
-  let g:test#strategy = "neoterm"
-else
-  let g:test#strategy = "dispatch"
-endif
-let g:test#lua#busted#options = '--output=plainterminal --suppress-pending'
-nmap <silent> <Leader>tn :TestNearest<CR>
-nmap <silent> <Leader>tf :TestFile<CR>
-nmap <silent> <Leader>tt :TestSuite<CR>
-nmap <silent> <Leader>l :TestLast<CR>
-nmap <silent> <Leader>te :TestVisit<CR>
 
 " UltiSnips
 let g:UltiSnipsEditSplit = 'vertical'
@@ -734,27 +653,5 @@ augroup END
 let g:solarized_visibility = "low"
 let g:solarized_term_italics = 1
 
-let g:theme_default = {
-      \  'typeface': 'Source Code Pro Light',
-      \  'font_size': 12,
-      \  'linespace': 1,
-      \  'background': 'dark',
-      \  'colorscheme': 'solarized8_dark_high',
-      \ }
-
-let g:theme_pencil = {
-      \  'typeface': 'Source Code Pro',
-      \  'font_size': 14,
-      \  'linespace': 3,
-      \  'background': 'light',
-      \  'colorscheme': 'pencil',
-      \ }
-
-function! SetTheme(t)
-  let &guifont = a:t.typeface . ':h' . a:t.font_size
-  let &linespace = a:t.linespace
-  let &background = a:t.background
-  execute 'colorscheme ' . a:t.colorscheme
-endfunction
-
-call SetTheme(g:theme_default)
+set background=dark
+colorscheme onedark
