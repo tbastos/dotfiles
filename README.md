@@ -1,58 +1,59 @@
-### Dependencies
+### Install
 
-On OSX:
 ```zsh
+# On macOS:
 brew install \
+  ansible \
+  homebrew/php/arcanist --HEAD \
   boost-python \
   clang-format \
   cmake \
-  cscope \
-  ctags \
   figlet \
   fzf \
   git \
+  graphviz \
   hub \
   lua \
+  node \
+  protobuf \
   python3 \
   scmpuff \
   the_silver_searcher \
   tig \
+  tmux \
   wget \
-  zplug
+  yarn
 
-# Arcanist
-brew install homebrew/php/arcanist --HEAD
-
-# NeoVim
-brew install neovim/neovim/neovim --HEAD
-pip3 install neovim
-```
-
-### Install
-
-```zsh
 git clone --recursive https://github.com/tbastos/dotfiles.git ~/.dotfiles
-
-# Zsh
-ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
-ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
 
 # Git
 mkdir ~/.config && mkdir ~/.config/git
 ln -s ~/.dotfiles/git/config ~/.config/git/config
 
+# Zsh
+ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
+ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
+
 # NeoVim
+brew install neovim/neovim/neovim --HEAD
+pip3 install neovim
 ln -s ~/.dotfiles/vim ~/.config/nvim
 ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
 
-# Karabiner (OSX)
+# Sphinx
+pip3 install sphinx hieroglyph sphinx_rtd_theme
+
+# Karabiner-Elements
 ln -s ~/.dotfiles/mac ~/.config/karabiner
 ```
 
-### Updates
+### Update
 
 ```zsh
+git submodule update --init --recursive
+zplug update
+
+# On macOS:
 brew update
 brew upgrade
-zplug update
 ```

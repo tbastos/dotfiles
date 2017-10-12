@@ -117,6 +117,7 @@ Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp']}
 Plug 'sheerun/vim-polyglot'
 Plug 'tbastos/vim-lua', {'for': 'lua', 'frozen': 1}
 Plug 'nickhutchinson/vim-cmake-syntax', {'for': ['cmake']}
+Plug 'Rykka/riv.vim', {'for': 'rst'}
 
 call plug#end()
 

@@ -2,14 +2,10 @@
 # Plugins
 ########################################################################
 
-export ZPLUG_HOME=/usr/local/opt/zplug
+export ZPLUG_HOME=$DOTDIR/zsh/zplug
 source $ZPLUG_HOME/init.zsh
 
-zplug "b4b4r07/enhancd", use:init.sh
-export ENHANCD_FILTER=fzf
-
 zplug "zsh-users/zsh-autosuggestions"
-
 zplug "zsh-users/zsh-completions", defer:0
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
@@ -33,7 +29,11 @@ zplug load --verbose
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=white'
 
-eval "$(scmpuff init -s)"
+if (( $+commands[scmpuff] )); then
+  eval "$(scmpuff init -s)"
+else
+  echo "warning: scmpuff is not available"
+fi
 
 #######################################################################
 # History

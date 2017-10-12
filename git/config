@@ -1,6 +1,6 @@
 [user]
-	name = Thiago Bastos
-	email = thiago.bastos@ppro.com
+  name = Thiago Bastos
+  email = tbastos@tbastos.com
 
 [color]
   diff = auto
@@ -9,11 +9,11 @@
 
 [core]
   autocrlf = input
-	excludesfile = /Users/tbastos/.dotfiles/git/excludes
+  excludesfile = ~/.dotfiles/git/excludes
 
 [diff]
   tool = vimdiff
-	submodule = log
+  submodule = log
 
 [difftool]
   prompt = false
@@ -24,16 +24,15 @@
 [mergetool "vimdiff3"]
   cmd = vim -g -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
 
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [status]
-	submoduleSummary = true
+  submoduleSummary = true
+
 [push]
-	recurseSubmodules = check
+  recurseSubmodules = check
+
 [fetch]
-	recurseSubmodules = on-demand
+  recurseSubmodules = on-demand
+
+; include for repositories inside ~/Work/ppro
+[includeIf "gitdir:~/Work/ppro/"]
+  path = ~/Work/ppro/gitconfig

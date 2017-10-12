@@ -1,7 +1,7 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:/usr/local/sbin:~/Work/ppro/rmg-buildenv:~/Work/ppro/rmg-buildenv/git-flow
+export PATH=$DOTDIR/bin:$PATH:/usr/local/bin:~/Work/ppro/rmg-buildenv:~/Work/ppro/rmg-buildenv/git-flow
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
@@ -10,10 +10,14 @@ bindkey -e
 export CLICOLOR=1
 
 # Editor settings
-export EDITOR=nvim
+if (( $+commands[nvim] )); then
+  export EDITOR=nvim
+elif (( $+commands[vim] )); then
+  export EDITOR=vim
+else
+  export EDITOR=vi
+fi
 alias e=$EDITOR
-alias vi=e
-alias vim=e
 
 # Quick access to .zshrc and .zshenv
 alias zrc='e $DOTDIR/zsh/zshrc'
@@ -71,6 +75,7 @@ alias mv='mv -i'
 cdpath=(
   $HOME/Documents
   $HOME/Work
+  $HOME/Work/ppro
   $HOME
 )
 
