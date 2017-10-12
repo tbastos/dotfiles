@@ -50,6 +50,7 @@ ln -s ~/.dotfiles/mac ~/.config/karabiner
 ### Update
 
 ```zsh
+cd ~/.dotfiles && git pull
 git submodule update --init --recursive
 zplug update
 
