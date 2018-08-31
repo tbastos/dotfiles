@@ -115,6 +115,7 @@ Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp']}
 
 " Language packs
 Plug 'sheerun/vim-polyglot'
+Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
 Plug 'tbastos/vim-lua', {'for': 'lua', 'frozen': 1}
 Plug 'nickhutchinson/vim-cmake-syntax', {'for': ['cmake']}
 Plug 'Rykka/riv.vim', {'for': 'rst'}
@@ -179,6 +180,9 @@ augroup my_dirvish_events
   autocmd FileType dirvish nnoremap <buffer>
         \ gh :keeppatterns g@\v/\.[^\/]+/?$@d<cr>
 augroup END
+
+" Far.vim
+let g:far#source = "agnvim"
 
 " FSwitch
 nnoremap <silent> <space><space> :<C-u>FSHere<CR>
@@ -439,7 +443,7 @@ noremap Q! :qa!<CR>
 " Quit special windows (preview, help, quickfix, unite)
 noremap <silent> QQ :call <SID>close_special_windows()<CR>
 function! s:close_special_windows()
-  if has('nvim') | :silent! Tclose | endif
+  "if has('nvim') | :silent! Tclose | endif
   call s:close_windows(['&pvw'], ['qf'])
 endfunction
 function! s:close_windows(options, filetypes)
@@ -449,7 +453,7 @@ function! s:close_windows(options, filetypes)
         \ call add(closable_winnrs, winnr()) | endif
   if index(closable_winnrs, save_winnr) != -1
     let save_winnr = -1
-  end
+  endif
   for winnr in reverse(closable_winnrs)
     if winnr < save_winnr
       let save_winnr -= 1
@@ -459,7 +463,7 @@ function! s:close_windows(options, filetypes)
   endfor
   if save_winnr >= 0
     exe save_winnr.'wincmd w'
-  end
+  endif
 endfunction
 
 " Quit current window

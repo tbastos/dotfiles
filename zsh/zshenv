@@ -1,7 +1,8 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export PATH=$DOTDIR/bin:$PATH:/usr/local/bin:~/Work/ppro/rmg-buildenv:~/Work/ppro/rmg-buildenv/git-flow
+export GOPATH=~/Work/go
+export PATH=$DOTDIR/bin:$PATH:/usr/local/bin:/usr/local/sbin:/usr/local/opt/python@2/bin:/usr/local/opt/go/libexec/bin:$GOPATH/bin:~/Work/ppro/bin
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
@@ -24,24 +25,12 @@ alias zrc='e $DOTDIR/zsh/zshrc'
 alias zenv='e $DOTDIR/zsh/zshenv'
 
 ########################################################################
-# Development Environment
+# Development Aliases
 ########################################################################
 
-export RMG_BUILDENV_PROJECT_DIRS=$HOME/Work/ppro
-export RMG_REMOTEBUILD_SYNC_ARTIFACTS_BACK=1
-
-alias pm='rmg-portmake build'
-alias pkg='rmg-portmake build -p'
-
-alias vm-install='~/Work/ppro/rmg-testenv/tools/vm-portmake-install'
-alias vm-jail='~/Work/ppro/rmg-testenv/tools/jailbash.sh'
-alias vm-logs='~/Work/ppro/rmg-testenv/tools/show-all-logs.sh'
-alias vm-clear-logs='~/Work/ppro/rmg-testenv/tools/clear-all-logs.sh'
-alias vm-ssh='~/Work/ppro/rmg-testenv/tools/ssh-terminal.sh'
-
-vm-restart-ice() {
-  JAIL=$1 DAEMON_PATH=/var/service/icegridnode ~/Work/ppro/rmg-testenv/tools/restart-daemon
-}
+alias d='docker'
+alias dc='docker-compose'
+function dcc() { docker-compose exec $1 bash }
 
 ########################################################################
 # General Aliases
