@@ -31,10 +31,13 @@ alias zenv='e $DOTDIR/zsh/zshenv'
 alias d='docker'
 alias dc='docker-compose'
 function dcc() { docker-compose exec $1 bash }
+alias k='kubectl'
 
 ########################################################################
 # General Aliases
 ########################################################################
+
+alias gsu='git submodule update --recursive'
 
 alias grep='grep --color'
 alias sgrep='grep -R -n -H -C 5 --exclude-dir={.git,.svn,CVS} '

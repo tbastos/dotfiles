@@ -3,26 +3,15 @@
 ```zsh
 # On macOS:
 brew install \
-  ansible \
-  homebrew/php/arcanist --HEAD \
-  boost-python \
-  clang-format \
-  cmake \
   figlet \
   fzf \
   git \
-  graphviz \
   hub \
-  lua \
-  node \
-  protobuf \
   python3 \
   scmpuff \
   the_silver_searcher \
   tig \
-  tmux \
-  wget \
-  yarn
+  tmux
 
 git clone --recursive https://github.com/tbastos/dotfiles.git ~/.dotfiles
 
@@ -36,15 +25,9 @@ ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
 
 # NeoVim
 brew install neovim/neovim/neovim --HEAD
-pip3 install neovim
+pip install neovim
 ln -s ~/.dotfiles/vim ~/.config/nvim
 ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
-
-# Sphinx
-pip3 install sphinx hieroglyph sphinx_rtd_theme
-
-# Karabiner-Elements
-ln -s ~/.dotfiles/mac ~/.config/karabiner
 ```
 
 ### Update

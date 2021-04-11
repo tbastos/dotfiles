@@ -52,6 +52,7 @@ Plug 'ciaranm/securemodelines'
 
 " Shell
 Plug 'justinmk/vim-dirvish'
+Plug 'kristijanhusak/vim-dirvish-git'
 Plug 'tpope/vim-eunuch'
 Plug 'tyru/open-browser.vim'
 
@@ -87,7 +88,7 @@ Plug 'glts/vim-textobj-comment' " ac, ic (comment)
 Plug 'Julian/vim-textobj-variable-segment' " av, iv (a_segment_of anyVarName)
 
 " Editing and Formatting
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'junegunn/vim-easy-align', {'on': ['<Plug>(EasyAlign)', 'EasyAlign']}
 Plug 'Raimondi/delimitMate' " auto-closes quotes, parens, etc. in insert mode
 Plug 'tpope/vim-endwise' " auto-closes control blocks in insert mode
@@ -107,8 +108,8 @@ Plug 'airblade/vim-gitgutter', {'on': ['GitGutterToggle']}
 Plug 'neomake/neomake'
 
 " C/C++
-Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --system-boost'}
-autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
+"Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer'}
+"autocmd! User YouCompleteMe if !has('vim_starting') | call youcompleteme#Enable() | endif
 Plug 'critiqjo/lldb.nvim'
 Plug 'rhysd/vim-clang-format', {'for': ['c', 'cpp']}
 Plug 'derekwyatt/vim-fswitch', {'for': ['c', 'cpp']}
@@ -165,12 +166,9 @@ let g:delimitMate_expand_cr = 1
 
 " Dirvish
 nnoremap <silent> <space>d :<C-u>Dirvish<CR>
-let g:dirvish_relative_paths = 1
+" let g:dirvish_relative_paths = 1
 augroup my_dirvish_events
   autocmd!
-
-  " Enable :Gstatus and friends.
-  autocmd FileType dirvish call fugitive#detect(@%)
 
   " Map CTRL-R to reload the Dirvish buffer.
   autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>

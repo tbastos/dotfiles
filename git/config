@@ -2,6 +2,9 @@
   name = Thiago Bastos
   email = tbastos@tbastos.com
 
+[init]
+  defaultBranch = main
+
 [color]
   diff = auto
   status = auto
@@ -18,10 +21,6 @@
 [difftool]
   prompt = false
 
-[difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path = 
-
 [filter "lfs"]
   clean = git-lfs clean -- %f
   smudge = git-lfs smudge -- %f
@@ -33,10 +32,6 @@
 
 [mergetool "vimdiff3"]
   cmd = vim -g -f -d -c \"wincmd J\" \"$MERGED\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"
-
-[mergetool "sourcetree"]
-  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
 
 [status]
   submoduleSummary = true
