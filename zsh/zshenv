@@ -1,8 +1,9 @@
 DOTDIR=~/.dotfiles
 ZDOTDIR=$DOTDIR/zsh
 
-export GOPATH=~/Work/go
-export PATH=$DOTDIR/bin:$PATH:/usr/local/bin:/usr/local/sbin:/usr/local/opt/python@2/bin:/usr/local/opt/go/libexec/bin:$GOPATH/bin:~/Work/ppro/bin
+eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH=$DOTDIR/bin:$PATH
+
 fpath=($ZDOTDIR/functions $fpath)
 
 bindkey -e
