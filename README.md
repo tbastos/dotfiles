@@ -1,33 +1,25 @@
-### Install
+### Dependencies
+
+Install preferred [Nerd Font](https://www.nerdfonts.com/font-downloads) (JetBrainsMono Nerd Font).
 
 ```zsh
 # On macOS:
-brew install \
-  figlet \
-  fzf \
-  git \
-  hub \
-  python3 \
-  scmpuff \
-  the_silver_searcher \
-  tig \
-  tmux
+brew install fd fzf git python rcm ripgrep lazygit neovim tmux
 
+# On Debian Linux:
+sudo apt install fd-find fzf git rcm ripgrep tmux
+```
+
+Or fetch the latest binary releases: [lazygit](https://github.com/jesseduffield/lazygit/releases) | [neovim](https://github.com/neovim/neovim/releases)
+
+### Install
+
+Clone this repo (and submodules) to `~/.dotfiles` and use [rcm](https://github.com/thoughtbot/rcm) to link all dotfiles and dirs:
+
+```zsh
 git clone --recursive https://github.com/tbastos/dotfiles.git ~/.dotfiles
-
-# Git
-mkdir ~/.config && mkdir ~/.config/git
-ln -s ~/.dotfiles/git/config ~/.config/git/config
-
-# Zsh
-ln -s ~/.dotfiles/zsh/zshenv ~/.zshenv
-ln -s ~/.dotfiles/zsh/zshrc ~/.dotfiles/zsh/.zshrc
-
-# NeoVim
-brew install neovim/neovim/neovim --HEAD
-pip install neovim
-ln -s ~/.dotfiles/vim ~/.config/nvim
-ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
+lsrc # dry run
+rcup -v
 ```
 
 ### Update
@@ -35,9 +27,4 @@ ln -s ~/.dotfiles/vim/vimrc ~/.config/nvim/init.vim
 ```zsh
 cd ~/.dotfiles && git pull
 git submodule update --init --recursive
-zplug update
-
-# On macOS:
-brew update
-brew upgrade
 ```

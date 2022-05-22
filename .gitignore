@@ -1,4 +1,8 @@
+# ignore generated files
+packer_compiled.lua
+
 # ignore dotfiles
 .*
 !/.gitignore
-vim/init.vim
+!/config/zsh/.p10k.zsh
+!/config/zsh/.zshrc

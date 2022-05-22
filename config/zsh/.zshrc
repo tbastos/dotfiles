@@ -1,41 +1,34 @@
-DOTDIR=~/.dotfiles
-ZDOTDIR=$DOTDIR/zsh
-
-eval "$(/opt/homebrew/bin/brew shellenv)"
-export PATH=$DOTDIR/bin:$PATH
-
-fpath=($ZDOTDIR/functions $fpath)
-
-bindkey -e
-
-# Enable colors on OSX and FreeBSD
-export CLICOLOR=1
-
-# Editor settings
-if (( $+commands[nvim] )); then
-  export EDITOR=nvim
-elif (( $+commands[vim] )); then
-  export EDITOR=vim
-else
-  export EDITOR=vi
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-alias e=$EDITOR
-
-# Quick access to .zshrc and .zshenv
-alias zrc='e $DOTDIR/zsh/zshrc'
-alias zenv='e $DOTDIR/zsh/zshenv'
 
 ########################################################################
-# Development Aliases
+# Powerlevel10 Theme ( https://github.com/romkatv/powerlevel10k )
 ########################################################################
 
-alias d='docker'
-alias dc='docker-compose'
-function dcc() { docker-compose exec $1 bash }
-alias k='kubectl'
+source ~/.dotfiles/vendor/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit $ZDOTDIR/.p10k.zsh.
+[[ ! -f $ZDOTDIR/.p10k.zsh ]] || source $ZDOTDIR/.p10k.zsh
 
 ########################################################################
-# General Aliases
+# Key Bindings
+########################################################################
+
+# custom bindings for things not available in vim's insert mode
+bindkey '^Z' undo
+bindkey '^Y' redo
+bindkey '^[[H' beginning-of-line       # Home
+bindkey '^[[F' end-of-line             # End
+bindkey '^[[3~' delete-char            # Del
+bindkey '^[[5~' vi-backward-blank-word # Page Up
+bindkey '^[[6~' vi-forward-blank-word  # Page Down
+
+########################################################################
+# Aliases
 ########################################################################
 
 alias gsu='git submodule update --recursive'
@@ -61,14 +54,11 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 
-########################################################################
 # Filesystem Navigation
-########################################################################
 
 cdpath=(
   $HOME/Documents
-  $HOME/Work
-  $HOME/Work/ppro
+  $HOME/src
   $HOME
 )
 
@@ -87,4 +77,3 @@ alias .....='cd ../../../../'
 # automatically list directory contents on 'cd'
 auto-ls () { ls; }
 chpwd_functions=( auto-ls $chpwd_functions )
-
