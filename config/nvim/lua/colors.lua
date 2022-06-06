@@ -1,6 +1,6 @@
 -- OneDark Color Scheme
 -- Styles: dark, darker, cool, deep, warm, warmer, light
-local style = 'dark'
+local style = 'darker'
 
 require'onedark'.setup{style = style}
 require'onedark'.load()

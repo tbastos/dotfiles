@@ -1,4 +1,6 @@
-ZDOTDIR=~/.dotfiles/config/zsh
+ZDOTDIR=~/.config/zsh
+
+export PATH=~/.local/bin:$PATH
 
 # OS-specific settings
 case "$OSTYPE" in
@@ -7,7 +9,7 @@ case "$OSTYPE" in
     export CLICOLOR=1
   ;;
   linux*)
-    # ...
+    alias ls='ls --color=auto'
   ;;
   dragonfly*|freebsd*|netbsd*|openbsd*)
     export CLICOLOR=1
@@ -23,3 +25,12 @@ else
   export EDITOR=vi
 fi
 alias e=$EDITOR
+
+########################################################################
+# Extra Configuration Files
+########################################################################
+
+for config_file ($ZDOTDIR/*.zshenv(rN)); do
+  source $config_file
+done
+

@@ -26,8 +26,16 @@ map('', 'H', '^')
 map('', 'L', '$')
 map('v', 'L', 'g_')
 
+-- copy text to the system clipboard from anywhere (using the ANSI OSC52 sequence)
+map('v', '<leader>y', ':OSCYank<cr>')
+map('n', '<leader>y', '<Plug>OSCYank')
+
 -- select contents of current line, excluding indentation
 map('n', 'vv', '^vg_')
+
+-- reselect visual block after indent
+map('v', '<', '<gv')
+map('v', '>', '>gv')
 
 -- quick splits
 map('n', '\\', ':split <cr>')
@@ -44,10 +52,6 @@ map('n', '<c-w>h', '<c-w>H')
 map('n', '<c-w>j', '<c-w>J')
 map('n', '<c-w>k', '<c-w>K')
 map('n', '<c-w>l', '<c-w>L')
-
--- reselect visual block after indent
-map('v', '<', '<gv')
-map('v', '>', '>gv')
 
 -- file explorer
 map('n', '<leader>e', ':NvimTreeToggle <cr>')
@@ -86,3 +90,7 @@ map('n', '[d', ':lua vim.diagnostic.goto_prev() <cr>')
 map('n', ']d', ':lua vim.diagnostic.goto_next() <cr>')
 map('n', '<localleader>l', ':lua vim.diagnostic.setloclist() <cr>')
 map('n', '<localleader>f', ':lua vim.lsp.buf.formatting() <cr>')
+
+-- easy align code
+map('n', 'ga', '<Plug>(EasyAlign)') -- for motion/object (e.g. gaip)
+map('v', 'ga', '<Plug>(EasyAlign)') -- for visual mode (e.g. vipga)

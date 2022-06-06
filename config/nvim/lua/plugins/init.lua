@@ -26,14 +26,12 @@ return require('packer').startup(function(use)
   use {'famiu/bufdelete.nvim'}
   use {'akinsho/bufferline.nvim', requires='icons', config=[[require'plugins.config.bufferline']]}
 
-  -- Terminals
+  -- Terminal Integration
   use {"akinsho/toggleterm.nvim", config=[[require'plugins.config.toggleterm']]}
+  use {"ojroques/vim-oscyank"}
 
   -- Git integration
   use {'lewis6991/gitsigns.nvim', config=[[require'plugins.config.git']]}
-
-  -- Indent lines
-  use {'lukas-reineke/indent-blankline.nvim', config=[[require'plugins.config.indent']]}
 
   -- Color Schemes
   use {'navarasu/onedark.nvim', config=[[require'colors']]}
@@ -44,18 +42,34 @@ return require('packer').startup(function(use)
   -- Statusline
   use {'famiu/feline.nvim', requires='icons', config=[[require'plugins.config.statusline']]}
 
-  -- Syntax highlighting (use :TSInstall to add languages)
+  -- TreeSitter syntax highlighting/plugins (:TSInstall to add languages)
   use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate', config=[[require'plugins.config.treesitter']]}
+  use {'nvim-treesitter/nvim-treesitter-textobjects'}
   use {'p00f/nvim-ts-rainbow'}
 
   -- LSP
   use {'neovim/nvim-lspconfig'}
   use {'jose-elias-alvarez/null-ls.nvim', requires='plenary', config=[[require'plugins.config.lsp']]}
 
-  -- Editing, Completion & Snippets
+  -- Editing 
+  use {'tpope/vim-repeat'}
+  use {'tpope/vim-surround'}
+  use {'tpope/vim-unimpaired'}
+  use {'junegunn/vim-easy-align'}
   use {'andymass/vim-matchup'}
   use {'windwp/nvim-autopairs', config=[[require'nvim-autopairs'.setup()]]}
   use {'numToStr/Comment.nvim', config=[[require'Comment'.setup()]]}
+  use {'lukas-reineke/indent-blankline.nvim', config=[[require'plugins.config.indent']]}
+
+  -- Text Objects (see also: treesitter textobjects!)
+  use {'kana/vim-textobj-user'} -- library
+  use {'kana/vim-textobj-line'} -- al, il (line)
+  use {'kana/vim-textobj-entire'} -- ae, ie (entire buffer)
+  use {'Julian/vim-textobj-variable-segment'} -- av, iv (a_segment_of anyVarName)
+  use {'beloglazov/vim-textobj-quotes'} -- aq, iq (nearest quotes of any kind)
+  use {'glts/vim-textobj-comment'} -- ac, ic (comment)
+
+ -- Completion & Snippets 
   use {'hrsh7th/nvim-cmp', config=[[require'plugins.config.cmp']], requires={
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',

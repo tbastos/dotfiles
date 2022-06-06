@@ -42,7 +42,6 @@ end
 
 local lazygit = Terminal:new{
   cmd = 'lazygit',
-  dir = 'git_dir',
   hidden = true,
   direction = 'float',
   on_open = float_handler,

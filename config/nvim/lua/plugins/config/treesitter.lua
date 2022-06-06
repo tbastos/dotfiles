@@ -26,4 +26,50 @@ require'nvim-treesitter.configs'.setup {
     extended_mode = true, -- also highlight non-bracket delimiters like html tags (bool or table: lang -> bool)
     max_file_lines = nil, -- disable for files with more than n lines (int)
   },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- automatically jump forward to textobj, similar to targets.vim
+      keymaps = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["a,"] = "@parameter.outer",
+        ["i,"] = "@parameter.inner",
+        ["aC"] = "@class.outer",
+        ["iC"] = "@class.inner",
+        ["ab"] = "@block.outer",
+        ["ib"] = "@block.inner",
+        ["a;"] = "@statement.outer",
+      },
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader>a"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["<leader>A"] = "@parameter.inner",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
+  },
 }
