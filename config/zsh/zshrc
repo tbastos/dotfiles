@@ -17,6 +17,7 @@ source ~/.dotfiles/vendor/powerlevel10k/powerlevel10k.zsh-theme
 # custom bindings for things not available in vim's insert mode
 bindkey '^Z' undo
 bindkey '^Y' redo
+bindkey "^R" history-incremental-search-backward
 bindkey '^[[3~' delete-char            # Del
 bindkey '^[[1~' beginning-of-line      # Home
 bindkey '^[[4~' end-of-line            # End
@@ -62,6 +63,18 @@ alias .....='cd ../../../../'
 # automatically list directory contents on 'cd'
 auto-ls () { ls; }
 chpwd_functions=( auto-ls $chpwd_functions )
+
+#######################################################################
+# History
+#######################################################################
+
+HISTFILE="$HOME/.config/zsh/history"
+HISTSIZE=1000
+SAVEHIST=$HISTSIZE
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_FIND_NO_DUPS
 
 ########################################################################
 # Extra Configuration Files
