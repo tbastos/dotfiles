@@ -14,7 +14,6 @@
 [core]
   autocrlf = false
   filemode = false
-  excludesfile = ~/.dotfiles/git/excludes
 
 [diff]
   tool = vimdiff
@@ -50,6 +49,10 @@
 [fetch]
   recurseSubmodules = on-demand
 
-[includeIf "gitdir:~/google/"]
-  path = ~/google/gitconfig
+[credential "https://github.com"]
+  helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+  helper = !/usr/bin/gh auth git-credential
 
+[includeIf "gitdir:~/google/"]
+  path = ~/.config/git/config-google
