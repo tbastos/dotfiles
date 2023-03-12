@@ -26,7 +26,7 @@ greeter.section.buttons.val = {
   button('SPC s', '  Find word'),
   button('SPC m', '  Jump to bookmarks'),
 --  button('s', '  Sessions'),
-  button('c', '漣 Edit dotfiles', '<CMD>e $MYVIMRC<CR>'),
+  button('c', '漣 Edit dotfiles', '<CMD>cd ~/.dotfiles/<CR><CMD>e $MYVIMRC<CR>'),
   button('p', '  Sync plugins', '<CMD>PackerSync<CR>'),
   button('q', '  Quit', '<CMD>qa<CR>'),
 }
