@@ -38,7 +38,7 @@ map('v', '<', '<gv')
 map('v', '>', '>gv')
 
 -- quick splits
-map('n', '\\', ':split <cr>')
+map('n', '\\\\', ':split <cr>')
 map('n', '<bar>', ':vsplit <cr>')
 
 -- move cursor between windows (directionally)
@@ -63,6 +63,7 @@ map('n', '<space>f',  ':Telescope find_files <cr>')
 map('n', '<space>F',  ':Telescope find_files follow=true no_ignore=true hidden=true <cr>')
 map('n', '<space>r',  ':Telescope oldfiles <cr>')
 map('n', '<space>s',  ':Telescope live_grep <cr>')
+map('n', '<space>a',  ':Telescope live_grep <cr>')
 map('n', '<space>m',  ':Telescope marks <cr>')
 map('n', '<space>gc', ':Telescope git_commits <cr>')
 map('n', '<space>gs', ':Telescope git_status <cr>')
