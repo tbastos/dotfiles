@@ -27,7 +27,7 @@ map('', 'L', '$')
 map('v', 'L', 'g_')
 
 -- copy text to the system clipboard from anywhere (using the ANSI OSC52 sequence)
-map('v', '<leader>y', ':OSCYank<cr>')
+map('v', 'Y', ':OSCYankVisual<cr>')
 map('n', '<leader>y', '<Plug>OSCYank')
 
 -- select contents of current line, excluding indentation

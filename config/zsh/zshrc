@@ -42,9 +42,8 @@ alias -g L="| less"
 # Filesystem Navigation
 
 cdpath=(
-  $HOME/Documents
-  $HOME/src
   $HOME
+  $HOME/Documents
 )
 
 # listing
