@@ -10,10 +10,9 @@ end
 
 return require('packer').startup(function(use)
   -- Libraries & Optimizations
-  use {'kyazdani42/nvim-web-devicons', as='icons'}
+  use {'nvim-tree/nvim-web-devicons', as='icons'}
   use {'nvim-lua/plenary.nvim', as='plenary'}
   use {'lewis6991/impatient.nvim'}
-  use {'nathom/filetype.nvim'}
 
   -- File Explorer
   use {'kyazdani42/nvim-tree.lua', requires='icons', config=[[require'plugins.config.tree']]}
@@ -40,7 +39,7 @@ return require('packer').startup(function(use)
   use {'goolord/alpha-nvim', requires='icons', config=[[require'plugins.config.greeter']]}
 
   -- Statusline
-  use {'famiu/feline.nvim', requires='icons', config=[[require'plugins.config.statusline']]}
+  use {'nvim-lualine/lualine.nvim', requires='icons', config=[[require'plugins.config.statusline']]}
 
   -- TreeSitter syntax highlighting/plugins (:TSInstall to add languages)
   use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate', config=[[require'plugins.config.treesitter']]}
@@ -49,7 +48,6 @@ return require('packer').startup(function(use)
 
   -- LSP
   use {'neovim/nvim-lspconfig'}
-  use {'jose-elias-alvarez/null-ls.nvim', requires='plenary', config=[[require'plugins.config.lsp']]}
 
   -- Editing 
   use {'tpope/vim-repeat'}

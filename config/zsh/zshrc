@@ -1,6 +1,7 @@
 ########################################################################
-# Powerlevel10 Theme ( https://github.com/romkatv/powerlevel10k )
+# Integrations
 ########################################################################
+# Powerlevel10 (https://github.com/romkatv/powerlevel10k)
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -9,6 +10,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 source ~/.dotfiles/vendor/powerlevel10k/powerlevel10k.zsh-theme
+
+# iTerm2
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 ########################################################################
 # Key Bindings
@@ -23,6 +27,14 @@ bindkey '^[[1~' beginning-of-line      # Home
 bindkey '^[[4~' end-of-line            # End
 bindkey '^[[5~' vi-backward-blank-word # Page Up
 bindkey '^[[6~' vi-forward-blank-word  # Page Down
+
+# MacBook/OSX specific
+bindkey '\e[H' beginning-of-line       # Home
+bindkey '\e[F' end-of-line             # End
+bindkey '^[b' backward-word            # Opt <--
+bindkey '^[f' forward-word             # Opt -->
+bindkey '^A' beginning-of-line        # Cmd <--
+bindkey '^E' end-of-line              # Cmd -->
 
 ########################################################################
 # Aliases
