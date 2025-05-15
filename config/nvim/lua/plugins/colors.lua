@@ -1,10 +1,3 @@
--- OneDark Color Scheme
--- Styles: dark, darker, cool, deep, warm, warmer, light
-local style = 'darker'
-
-require'onedark'.setup{style = style}
-require'onedark'.load()
-
 local palette = {
   baby_pink = "#DE8C92",
   black = "#1e222a",
@@ -39,4 +32,14 @@ local palette = {
   yellow = "#e7c787",
 }
 
-return palette
+return {
+  'navarasu/onedark.nvim',
+  lazy = false,
+  priority = 1000,
+  config = function()
+    -- OneDark Color Scheme
+    -- Styles: dark, darker, cool, deep, warm, warmer, light
+    require'onedark'.setup{style = 'darker'}
+    require'onedark'.load()
+  end,
+}

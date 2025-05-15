@@ -1,86 +1,59 @@
-local fn = vim.fn        
+return {
+  -- Color Schemes
+  { import = 'plugins.colors' },
 
--- auto-install plugin manager 'packer.nvim'
-local data_path = fn.stdpath('data')
-local bootstrapping, install_path = false, data_path..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-  bootstrapping = fn.system('git clone --depth 1 https://github.com/wbthomason/packer.nvim '..install_path)
-  vim.opt.runtimepath:append(data_path..'/site/pack/*/start/*')
-end
-
-return require('packer').startup(function(use)
   -- Libraries & Optimizations
-  use {'nvim-tree/nvim-web-devicons', as='icons'}
-  use {'nvim-lua/plenary.nvim', as='plenary'}
-  use {'lewis6991/impatient.nvim'}
+  { 'nvim-tree/nvim-web-devicons', name='icons' },
+  { 'nvim-lua/plenary.nvim', name='plenary' },
+  { 'lewis6991/impatient.nvim' },
 
   -- File Explorer
-  use {'kyazdani42/nvim-tree.lua', requires='icons', config=[[require'plugins.config.tree']]}
+  { 'kyazdani42/nvim-tree.lua', dependencies='icons',   opts={} },
 
-  -- Fuzzy Finder
-  use {'nvim-telescope/telescope.nvim', requires='plenary', config=[[require'plugins.config.telescope']]}
-  use {'nvim-telescope/telescope-fzf-native.nvim', run='make', config=[[require'telescope'.load_extension'fzf']]}
+  -- Fuzzy Finders
+  { import = 'plugins.find' },
 
   -- Buffer Management
-  use {'famiu/bufdelete.nvim'}
-  use {'akinsho/bufferline.nvim', requires='icons', config=[[require'plugins.config.bufferline']]}
+  { import = 'plugins.buffer' },
 
   -- Terminal Integration
-  use {"akinsho/toggleterm.nvim", config=[[require'plugins.config.toggleterm']]}
-  use {"ojroques/vim-oscyank"}
+  { import = 'plugins.terminal' },
 
   -- Git integration
-  use {'lewis6991/gitsigns.nvim', config=[[require'plugins.config.git']]}
-
-  -- Color Schemes
-  use {'navarasu/onedark.nvim', config=[[require'colors']]}
+  { 'lewis6991/gitsigns.nvim', opts={} },
 
   -- Greeter (start screen / dashboard)
-  use {'goolord/alpha-nvim', requires='icons', config=[[require'plugins.config.greeter']]}
+  { import = 'plugins.greeter' },
 
   -- Statusline
-  use {'nvim-lualine/lualine.nvim', requires='icons', config=[[require'plugins.config.statusline']]}
-
+  { import = 'plugins.statusline' },
+  
   -- TreeSitter syntax highlighting/plugins (:TSInstall to add languages)
-  use {'nvim-treesitter/nvim-treesitter', run=':TSUpdate', config=[[require'plugins.config.treesitter']]}
-  use {'nvim-treesitter/nvim-treesitter-textobjects'}
-  use {'p00f/nvim-ts-rainbow'}
+  { import = 'plugins.highlight' },
 
   -- LSP
-  use {'neovim/nvim-lspconfig'}
+  { 'neovim/nvim-lspconfig' },
 
   -- Editing 
-  use {'tpope/vim-repeat'}
-  use {'tpope/vim-surround'}
-  use {'tpope/vim-unimpaired'}
-  use {'junegunn/vim-easy-align'}
-  use {'andymass/vim-matchup'}
-  use {'windwp/nvim-autopairs', config=[[require'nvim-autopairs'.setup()]]}
-  use {'numToStr/Comment.nvim', config=[[require'Comment'.setup()]]}
-  use {'lukas-reineke/indent-blankline.nvim', config=[[require'plugins.config.indent']]}
+  { 'tpope/vim-repeat' },
+  { 'tpope/vim-surround' },
+  { 'tpope/vim-unimpaired' },
+  { 'junegunn/vim-easy-align' },
+  { 'andymass/vim-matchup' },
+  { 'windwp/nvim-autopairs', opts={} },
+  { 'numToStr/Comment.nvim', opts={} },
+
+  -- Indentation
+  { import = 'plugins.indent' },
 
   -- Text Objects (see also: treesitter textobjects!)
-  use {'kana/vim-textobj-user'} -- library
-  use {'kana/vim-textobj-line'} -- al, il (line)
-  use {'kana/vim-textobj-entire'} -- ae, ie (entire buffer)
-  use {'Julian/vim-textobj-variable-segment'} -- av, iv (a_segment_of anyVarName)
-  use {'beloglazov/vim-textobj-quotes'} -- aq, iq (nearest quotes of any kind)
-  use {'glts/vim-textobj-comment'} -- ac, ic (comment)
+  { 'kana/vim-textobj-user', lazy=false, priority=100 }, -- library
+  { 'kana/vim-textobj-line' }, -- al, il (line)
+  { 'kana/vim-textobj-entire' }, -- ae, ie (entire buffer)
+  { 'Julian/vim-textobj-variable-segment' }, -- av, iv (a_segment_of anyVarName)
+  { 'beloglazov/vim-textobj-quotes' }, -- aq, iq (nearest quotes of any kind)
+  { 'glts/vim-textobj-comment' }, -- ac, ic (comment)
 
- -- Completion & Snippets 
-  use {'hrsh7th/nvim-cmp', config=[[require'plugins.config.cmp']], requires={
-    'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-nvim-lua',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
-    'hrsh7th/cmp-cmdline',
-  }}
-
-  -- Have packer manage itself 
-  use 'wbthomason/packer.nvim'
-  if bootstrapping then -- keep this at the end
-      require('packer').sync()
-  end
-end)
+  -- Completion & Snippets
+  { import = 'plugins.cmp' },
+}

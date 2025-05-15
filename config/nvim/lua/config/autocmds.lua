@@ -11,7 +11,7 @@ local hide_statusline_ft = {
 }
 
 -- on buffer enter / file type change
-vim.cmd[[autocmd BufEnter,BufRead,BufWinEnter,FileType,WinEnter * lua require("core.autocmds").on_buf_ft()]]
+vim.cmd[[autocmd BufEnter,BufRead,BufWinEnter,FileType,WinEnter * lua require("config.autocmds").on_buf_ft()]]
 function M.on_buf_ft()
   -- hide status line on certain windows
   local ft = api.nvim_buf_get_option(0, "ft")

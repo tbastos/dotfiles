@@ -1,4 +1,4 @@
-require 'core.options'
-require 'core.autocmds'
-require 'core.mappings'
-require 'plugins'
+require 'config.options'
+require 'config.autocmds'
+require 'config.mappings'
+require 'config.lazy'
