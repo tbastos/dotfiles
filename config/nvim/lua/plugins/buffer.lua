@@ -3,6 +3,7 @@ return {
 
   {
     'akinsho/bufferline.nvim',
+    version = '*',
     dependencies = 'icons',
     opts = {
       options = {

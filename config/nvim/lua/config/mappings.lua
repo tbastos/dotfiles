@@ -90,7 +90,7 @@ map('n', '<localleader>d', ':lua vim.diagnostic.open_float() <cr>')
 map('n', '[d', ':lua vim.diagnostic.goto_prev() <cr>')
 map('n', ']d', ':lua vim.diagnostic.goto_next() <cr>')
 map('n', '<localleader>l', ':lua vim.diagnostic.setloclist() <cr>')
-map('n', '<localleader>f', ':lua vim.lsp.buf.formatting() <cr>')
+map('n', '<localleader>f', ':lua require("conform").format({ lsp_fallback = true }) <cr>')
 
 -- easy align code
 map('n', 'ga', '<Plug>(EasyAlign)') -- for motion/object (e.g. gaip)

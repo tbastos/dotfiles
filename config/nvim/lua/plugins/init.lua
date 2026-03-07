@@ -5,7 +5,6 @@ return {
   -- Libraries & Optimizations
   { 'nvim-tree/nvim-web-devicons', name='icons' },
   { 'nvim-lua/plenary.nvim', name='plenary', priority=100 },
-  { 'lewis6991/impatient.nvim' },
 
   -- File Explorer
   { 'kyazdani42/nvim-tree.lua', dependencies='icons',   opts={} },
@@ -32,11 +31,14 @@ return {
   { import = 'plugins.highlight' },
 
   -- LSP
-  --{ 'neovim/nvim-lspconfig' }, -- requires nvim v0.10+
+  { import = 'plugins.lsp' },
 
-  -- Editing 
+  -- Formatting & Linting
+  { import = 'plugins.format' },
+
+  -- Editing
   { 'tpope/vim-repeat' },
-  { 'tpope/vim-surround' },
+  { 'kylechui/nvim-surround', opts={} },
   { 'tpope/vim-unimpaired' },
   { 'junegunn/vim-easy-align' },
   { 'andymass/vim-matchup' },

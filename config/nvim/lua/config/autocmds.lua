@@ -1,51 +1,34 @@
-local M = {}
-
-local vim = vim
 local api = vim.api
 
 local hide_statusline_ft = {
-  alpha = true,
-  help = true,
+  alpha    = true,
+  help     = true,
   NvimTree = true,
   terminal = true,
 }
 
--- on buffer enter / file type change
-vim.cmd[[autocmd BufEnter,BufRead,BufWinEnter,FileType,WinEnter * lua require("config.autocmds").on_buf_ft()]]
-function M.on_buf_ft()
-  -- hide status line on certain windows
-  local ft = api.nvim_buf_get_option(0, "ft")
-  local hide = 
-  api.nvim_set_option("laststatus", hide_statusline_ft[ft] and 0 or 2)
-end
+-- Hide statusline on certain filetypes
+api.nvim_create_autocmd({ 'BufEnter', 'BufWinEnter', 'FileType', 'WinEnter' }, {
+  callback = function()
+    local ft = vim.bo.filetype
+    vim.o.laststatus = hide_statusline_ft[ft] and 0 or 2
+  end,
+})
 
--- remember last location in files (except for git commit messages)
-vim.cmd[[
-augroup RestoreCursor
-  au!
-  au BufReadPost *
-        \ if &filetype !~ '^git\c' && line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal! g`\"" |
-        \ endif
-augroup END
-]]
+-- Restore last cursor position when reopening a file (skip git commits)
+api.nvim_create_autocmd('BufReadPost', {
+  callback = function()
+    if vim.bo.filetype:match('^git') then return end
+    local mark = api.nvim_buf_get_mark(0, '"')
+    local lcount = api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
 
--- edit crontab files inplace
-vim.cmd[[
-augroup EditingCrontab
-  au!
-  au FileType crontab setlocal backupcopy=yes
-  " Caveat: on OS X the file has no ft, so we must use a pattern
-  au BufEnter /private/tmp/crontab.* setlocal backupcopy=yes
-augroup END
-]]
-
--- language-specific settings
-vim.cmd[[
-augroup EditingFileType
-  au!
-  au FileType python setlocal tabstop=2
-augroup END
-]]
-
-return M
+-- Edit crontab in-place (required on macOS)
+api.nvim_create_autocmd({ 'FileType', 'BufEnter' }, {
+  pattern = { 'crontab', '/private/tmp/crontab.*' },
+  callback = function() vim.opt_local.backupcopy = 'yes' end,
+})

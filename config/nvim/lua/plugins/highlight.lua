@@ -2,85 +2,63 @@ return {
 
   {
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
-    opts = {
-      -- A list of parser names, or "all"
-      ensure_installed = {'c', 'cpp', 'go', 'lua'},
-      sync_install = false, -- install parsers synchronously?
-
-      -- List of parsers to ignore installing (for "all")
-      ignore_install = {}, -- list of languages
-
-      highlight = {
-        enable = true, -- false disables the whole extension
-        disable = {}, -- list of language that will be disabled
-        additional_vim_regex_highlighting = false,
-        use_languagetree = true,
-      },
-      indent = {
-        enable = true,
-        disable = {},
-      },
-      matchup = {
-        enable = true,
-        disable = {},
-      },
-      rainbow = {
-        enable = true,
-        disable = {},
-        extended_mode = true, -- also highlight non-bracket delimiters like html tags (bool or table: lang -> bool)
-        max_file_lines = nil, -- disable for files with more than n lines (int)
-      },
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true, -- automatically jump forward to textobj, similar to targets.vim
-          keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["a,"] = "@parameter.outer",
-            ["i,"] = "@parameter.inner",
-            ["aC"] = "@class.outer",
-            ["iC"] = "@class.inner",
-            ["ab"] = "@block.outer",
-            ["ib"] = "@block.inner",
-            ["a;"] = "@statement.outer",
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>a"] = "@parameter.inner",
-          },
-          swap_previous = {
-            ["<leader>A"] = "@parameter.inner",
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true, -- whether to set jumps in the jumplist
-          goto_next_start = {
-            ["]m"] = "@function.outer",
-            ["]]"] = "@class.outer",
-          },
-          goto_next_end = {
-            ["]M"] = "@function.outer",
-            ["]["] = "@class.outer",
-          },
-          goto_previous_start = {
-            ["[m"] = "@function.outer",
-            ["[["] = "@class.outer",
-          },
-          goto_previous_end = {
-            ["[M"] = "@function.outer",
-            ["[]"] = "@class.outer",
-          },
-        },
-      },
-    },
+    config = function()
+      require('nvim-treesitter.install').install(
+        { 'c', 'cpp', 'go', 'lua', 'python' }
+      )
+    end,
   },
 
-  {'nvim-treesitter/nvim-treesitter-textobjects'},
-  {'p00f/nvim-ts-rainbow'},
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = 'nvim-treesitter/nvim-treesitter',
+    config = function()
+      require('nvim-treesitter-textobjects').setup({
+        select = { lookahead = true },
+        move   = { set_jumps = true },
+      })
+
+      local sel  = require('nvim-treesitter-textobjects.select')
+      local swap = require('nvim-treesitter-textobjects.swap')
+      local move = require('nvim-treesitter-textobjects.move')
+
+      -- Select text objects (visual + operator-pending modes)
+      local sel_map = {
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["a,"] = "@parameter.outer",
+        ["i,"] = "@parameter.inner",
+        ["aC"] = "@class.outer",
+        ["iC"] = "@class.inner",
+        ["ab"] = "@block.outer",
+        ["ib"] = "@block.inner",
+        ["a;"] = "@statement.outer",
+      }
+      for key, query in pairs(sel_map) do
+        vim.keymap.set({'x', 'o'}, key, function()
+          sel.select_textobject(query, 'textobjects')
+        end, { silent = true })
+      end
+
+      -- Swap parameters
+      vim.keymap.set('n', '<leader>a', function() swap.swap_next('@parameter.inner',     'textobjects') end, { silent = true })
+      vim.keymap.set('n', '<leader>A', function() swap.swap_previous('@parameter.inner', 'textobjects') end, { silent = true })
+
+      -- Move between functions and classes
+      local o = { silent = true }
+      vim.keymap.set('n', ']m',  function() move.goto_next_start('@function.outer',     'textobjects') end, o)
+      vim.keymap.set('n', ']]',  function() move.goto_next_start('@class.outer',         'textobjects') end, o)
+      vim.keymap.set('n', ']M',  function() move.goto_next_end('@function.outer',        'textobjects') end, o)
+      vim.keymap.set('n', '][',  function() move.goto_next_end('@class.outer',           'textobjects') end, o)
+      vim.keymap.set('n', '[m',  function() move.goto_previous_start('@function.outer',  'textobjects') end, o)
+      vim.keymap.set('n', '[[',  function() move.goto_previous_start('@class.outer',     'textobjects') end, o)
+      vim.keymap.set('n', '[M',  function() move.goto_previous_end('@function.outer',    'textobjects') end, o)
+      vim.keymap.set('n', '[]',  function() move.goto_previous_end('@class.outer',       'textobjects') end, o)
+    end,
+  },
+
+  { 'HiPhish/rainbow-delimiters.nvim' },
 
 }

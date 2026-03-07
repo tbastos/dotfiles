@@ -26,13 +26,11 @@ local function setup()
     button('SPC r', '  Recently opened files'),
     button('SPC s', '  Find word'),
     button('SPC m', '  Jump to bookmarks'),
-  --  button('s', '  Sessions'),
     button('d', '漣 Edit dotfiles', '<CMD>cd ~/.dotfiles/<CR><CMD>e $MYVIMRC<CR>'),
     button('q', '  Quit', '<CMD>qa<CR>'),
   }
 
   greeter.section.footer.val = require'alpha.fortune'()
-  --greeter.section.footer.opts.hl = 'Comment'
 
   require'alpha'.setup(greeter.config)
 end
