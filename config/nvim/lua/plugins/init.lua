@@ -4,7 +4,7 @@ return {
 
   -- Libraries & Optimizations
   { 'nvim-tree/nvim-web-devicons', name='icons' },
-  { 'nvim-lua/plenary.nvim', name='plenary' },
+  { 'nvim-lua/plenary.nvim', name='plenary', priority=100 },
   { 'lewis6991/impatient.nvim' },
 
   -- File Explorer
@@ -32,7 +32,7 @@ return {
   { import = 'plugins.highlight' },
 
   -- LSP
-  { 'neovim/nvim-lspconfig' },
+  --{ 'neovim/nvim-lspconfig' }, -- requires nvim v0.10+
 
   -- Editing 
   { 'tpope/vim-repeat' },
