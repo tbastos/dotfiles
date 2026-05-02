@@ -16,6 +16,8 @@ case "$OSTYPE" in
   ;;
 esac
 
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+
 # EDITOR
 if (( $+commands[nvim] )); then
   export EDITOR=nvim

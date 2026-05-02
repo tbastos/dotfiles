@@ -4,5 +4,6 @@ packer_compiled.lua
 # ignore dotfiles
 .*
 !/.gitignore
+!/.stylua.toml
 !/config/zsh/.p10k.zsh
 !/config/zsh/.zshrc
