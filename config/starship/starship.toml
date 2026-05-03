@@ -1,11 +1,9 @@
 format = """
+$username\
+$hostname\
 $directory\
 $git_branch\
 $git_status\
-$fill\
-$status\
-$cmd_duration\
-$jobs\
 $python\
 $golang\
 $nodejs\
@@ -16,8 +14,20 @@ $kotlin\
 $rust\
 $terraform\
 $kubernetes\
+$fill\
+$status\
+$cmd_duration\
+$jobs\
 $line_break\
 $character"""
+
+[username]
+show_always = false
+format = "[$user]($style)"
+
+[hostname]
+ssh_only = true
+format = "[@$hostname]($style) "
 
 [fill]
 symbol = " "
@@ -25,12 +35,15 @@ symbol = " "
 [directory]
 truncation_length = 4
 truncate_to_repo = false
+style = "blue bold"
 
 [git_branch]
 format = "[$symbol$branch(:$remote_branch)]($style) "
+truncation_length = 24
 
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
+ignore_submodules = true
 
 [character]
 success_symbol = "[❯](green)"

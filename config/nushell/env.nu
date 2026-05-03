@@ -35,3 +35,10 @@ $env.EDITOR = (if (which nvim | is-not-empty) {
 } else {
     "vi"
 })
+
+# Zoxide
+if (which zoxide | is-not-empty) {
+    zoxide init nushell | save -f ~/.cache/zoxide.nu
+} else {
+    "" | save -f ~/.cache/zoxide.nu
+}

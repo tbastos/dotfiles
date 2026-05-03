@@ -52,3 +52,5 @@ $env.config.keybindings ++= [
         event: { edit: redo }
     }
 ]
+
+source ~/.cache/zoxide.nu

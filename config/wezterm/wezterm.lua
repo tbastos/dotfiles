@@ -29,7 +29,6 @@ config.keys = {
 }
 
 config.bypass_mouse_reporting_modifiers = "SUPER"
-
 config.mouse_bindings = {
   {
     event = { Up = { streak = 1, button = "Left" } },
