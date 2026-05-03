@@ -4,10 +4,10 @@ Install preferred [Nerd Font](https://www.nerdfonts.com/font-downloads) (JetBrai
 
 ```zsh
 # On macOS:
-brew install fd fzf git python rcm ripgrep lazygit neovim starship tmux
+brew install delta eza fd fzf git nushell python rcm ripgrep lazygit neovim starship tmux
 
 # On Debian Linux:
-sudo apt install fd-find fzf git rcm ripgrep tmux
+sudo apt install eza fd-find fzf git git-delta lazygit nushell rcm ripgrep tmux
 ```
 
 Or fetch the latest binary releases: [lazygit](https://github.com/jesseduffield/lazygit/releases) | [neovim](https://github.com/neovim/neovim/releases)

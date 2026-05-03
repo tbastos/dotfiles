@@ -14,10 +14,20 @@
 [core]
   autocrlf = false
   filemode = false
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  line-numbers = true
+  syntax-theme = OneHalfDark
 
 [diff]
   tool = vimdiff
   submodule = log
+  colorMoved = default
 
 [difftool]
   prompt = false

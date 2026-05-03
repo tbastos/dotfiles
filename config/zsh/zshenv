@@ -8,13 +8,14 @@ case "$OSTYPE" in
     eval "$(/opt/homebrew/bin/brew shellenv)"
     export CLICOLOR=1
   ;;
-  linux*)
-    alias ls='ls --color=auto'
-  ;;
   dragonfly*|freebsd*|netbsd*|openbsd*)
     export CLICOLOR=1
   ;;
 esac
+
+if (( $+commands[eza] )); then
+  alias ls='eza --hyperlink'
+fi
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
