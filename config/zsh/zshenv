@@ -14,7 +14,7 @@ case "$OSTYPE" in
 esac
 
 if (( $+commands[eza] )); then
-  alias ls='eza --hyperlink'
+  alias ls='eza --hyperlink --icons'
 fi
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
