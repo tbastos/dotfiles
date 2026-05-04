@@ -69,22 +69,29 @@ chpwd_functions=( auto-ls $chpwd_functions )
 
 # Git
 alias g='git'
-alias gs='git status -sb'
-alias gsu='git submodule update --recursive'
-alias gl='git log --oneline --graph --decorate -20'
 alias ga='git add'
 alias gaa='git add -A'
+alias gb='git branch'
+alias gbsu='git branch --set-upstream-to'
+alias gclu='git cl upload'
 alias gc='git commit -m'
 alias gca='git commit --amend --no-edit'
-alias gb='git branch'
-alias gco='git checkout'
 alias gcb='git checkout -b'
-alias gp='git push'
-alias gpl='git pull'
+alias gco='git checkout'
 alias gd='git diff'
 alias gds='git diff --staged'
+alias gl='git log --oneline --graph --decorate -20'
+alias gp='git push'
+alias gpl='git pull'
+alias grc='git rebase --continue'
+alias gs='git status -sb'
+alias gsmu='git submodule update --recursive'
 alias gst='git stash'
 alias gstp='git stash pop'
+
+gri() { git rebase -i HEAD~$1 }
+
+alias lg='lazygit'
 
 #######################################################################
 # History

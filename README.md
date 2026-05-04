@@ -7,7 +7,7 @@ Install preferred [Nerd Font](https://www.nerdfonts.com/font-downloads) (JetBrai
 brew install delta eza fd fzf git nushell python rcm ripgrep lazygit neovim starship tmux zoxide
 
 # On Debian Linux:
-sudo apt install eza fd-find fzf git git-delta lazygit nushell rcm ripgrep tmux zoxide
+sudo apt install eza fd-find fzf git git-delta lazygit nushell rcm ripgrep starship tmux zoxide
 ```
 
 Or fetch the latest binary releases: [lazygit](https://github.com/jesseduffield/lazygit/releases) | [neovim](https://github.com/neovim/neovim/releases)
