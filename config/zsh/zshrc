@@ -100,10 +100,26 @@ alias lg='lazygit'
 HISTFILE="$HOME/.config/zsh/history"
 HISTSIZE=1000
 SAVEHIST=$HISTSIZE
+setopt NO_BEEP
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
 setopt HIST_FIND_NO_DUPS
+
+########################################################################
+# Completion
+########################################################################
+
+autoload -Uz compinit && compinit -u
+setopt COMPLETE_ALIASES
+
+(( $+commands[eza] )) && compdef ls=eza l=eza la=eza ll=eza lr=eza ldot=eza
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:descriptions' format '%B%d%b'
 
 ########################################################################
 # Extra Configuration Files
