@@ -3,7 +3,7 @@ tmux-attach() { tmux new-session -A -s ${1:-main}; }
 
 # zsh/tmux window title integration
 function tmux_title() {
-  if [[ `pwd -P` =~ $HOME/([^/]+)/.* ]]; then
+  if [[ `pwd -P` =~ ^"$HOME"/([^/]+) ]]; then
     tmux rename-window "${match[1]}"
   else
     tmux rename-window "$(basename "`pwd`")"
