@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 config.font_size = 14
-config.color_scheme = "OneDark (base16)"
+config.color_scheme = "tokyonight_moon"
 
 config.adjust_window_size_when_changing_font_size = false
 config.enable_tab_bar = false

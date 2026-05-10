@@ -22,7 +22,7 @@
 [delta]
   navigate = true
   line-numbers = true
-  syntax-theme = OneHalfDark
+  syntax-theme = ansi
 
 [diff]
   tool = vimdiff
