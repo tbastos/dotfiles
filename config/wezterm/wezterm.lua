@@ -3,6 +3,7 @@ local config = wezterm.config_builder()
 
 config.font_size = 14
 config.color_scheme = "tokyonight_moon"
+config.max_fps = 120
 
 config.adjust_window_size_when_changing_font_size = false
 config.enable_tab_bar = false
@@ -55,7 +56,7 @@ wezterm.on("open-uri", function(window, pane, uri)
     local url = wezterm.url.parse(uri)
     if is_shell(pane:get_foreground_process_name()) then
       local success, stdout, _ =
-        wezterm.run_child_process({ "file", "--brief", "--mime-type", url.file_path })
+          wezterm.run_child_process({ "file", "--brief", "--mime-type", url.file_path })
       if success then
         if stdout:find("directory") then
           pane:send_text(wezterm.shell_join_args({ "cd", url.file_path }) .. "\r")

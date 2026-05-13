@@ -130,6 +130,5 @@ for config_file ($ZDOTDIR/*.zsh(rN)); do
 done
 
 # Syntax highlighting (must be sourced last)
-[[ -f ~/.dotfiles/vendor/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]] && \
-  source ~/.dotfiles/vendor/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+eval "$($HOME/.cargo/bin/zsh-patina activate)"
 

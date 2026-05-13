@@ -2,21 +2,23 @@
 
 Install preferred [Nerd Font](https://www.nerdfonts.com/font-downloads) (JetBrainsMono Nerd Font).
 
-```zsh
+```sh
 # On macOS:
-brew install delta eza fd fzf git nushell python rcm ripgrep lazygit neovim starship tmux zoxide
+brew install delta eza fd fzf git nushell python rcm ripgrep rust lazygit neovim starship tmux zoxide
 
 # On Debian Linux:
-sudo apt install eza fd-find fzf git git-delta lazygit nushell rcm ripgrep starship tmux zoxide
+sudo apt install eza fd-find fzf git git-delta lazygit nushell rcm ripgrep rust starship tmux zoxide
+
+# Then:
+cargo install --locked zsh-patina
 ```
 
-Or fetch the latest binary releases: [lazygit](https://github.com/jesseduffield/lazygit/releases) | [neovim](https://github.com/neovim/neovim/releases)
 
 ### Install
 
 Clone this repo (and submodules) to `~/.dotfiles` and use [rcm](https://github.com/thoughtbot/rcm) to link all dotfiles and dirs:
 
-```zsh
+```sh
 git clone --recursive https://github.com/tbastos/dotfiles.git ~/.dotfiles
 lsrc # dry run
 rcup -v
@@ -24,7 +26,7 @@ rcup -v
 
 ### Update
 
-```zsh
+```sh
 cd ~/.dotfiles && git pull
 git submodule update --init --recursive
 ```
