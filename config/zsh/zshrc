@@ -65,7 +65,8 @@ alias .....='cd ../../../../'
 
 # automatically list directory contents on 'cd'
 auto-ls () { ls; }
-chpwd_functions=( auto-ls $chpwd_functions )
+autoload -Uz add-zsh-hook
+add-zsh-hook chpwd auto-ls
 
 # Git
 alias g='git'
