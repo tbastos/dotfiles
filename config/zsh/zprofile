@@ -1,0 +1,18 @@
+# .zprofile — sourced for login shells, AFTER the system /etc/zprofile.
+#
+# macOS /etc/zprofile runs `eval $(/usr/libexec/path_helper -s)`, which REBUILDS
+# PATH: every dir in /etc/paths and /etc/paths.d/* goes to the front, and your
+# existing entries (Homebrew, ~/.local/bin) are appended after them. That is why
+# /opt/homebrew/bin ends up near the end no matter where .zshenv put it — .zshenv
+# is read *before* /etc/zprofile, so path_helper always gets the last word.
+#
+# path_helper only rewrites PATH, so the rest of the Homebrew environment set by
+# `brew shellenv` in .zshenv (HOMEBREW_PREFIX, MANPATH, INFOPATH, FPATH) survives.
+# Here we just restore the PATH ordering we want, now that path_helper has run.
+
+typeset -U path PATH                       # keep PATH unique (drop duplicates)
+
+case "$OSTYPE" in
+  darwin*) path=("$HOME/.local/bin" /opt/homebrew/bin /opt/homebrew/sbin $path) ;;
+  *)       path=("$HOME/.local/bin" $path) ;;
+esac

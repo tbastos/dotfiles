@@ -1,17 +1,22 @@
 ZDOTDIR=~/.config/zsh
 
-export PATH=~/.local/bin:$PATH
-
 # OS-specific settings
 case "$OSTYPE" in
   darwin*)
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    eval "$(/opt/homebrew/bin/brew shellenv zsh)"
     export CLICOLOR=1
   ;;
   dragonfly*|freebsd*|netbsd*|openbsd*)
     export CLICOLOR=1
   ;;
 esac
+
+# Put personal bin first in PATH. On macOS `brew shellenv` (above) already
+# prepended Homebrew. This sets the order for NON-login shells (zsh -c ...);
+# for login shells /etc/zprofile reshuffles PATH via path_helper and
+# config/zsh/zprofile restores this same ordering afterwards.
+typeset -U path PATH
+path=("$HOME/.local/bin" $path)
 
 if (( $+commands[eza] )); then
   alias ls='eza --hyperlink --icons'
